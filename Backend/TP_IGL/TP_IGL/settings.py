@@ -107,7 +107,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'gestion_dpi',
         'USER': 'root',
-        'PASSWORD': 'meer@esi.28',
+        'PASSWORD': '****',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -121,7 +121,7 @@ REST_FRAMEWORK={
 
 }
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
@@ -158,7 +158,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+AUTH_USER_MODEL = 'authentification.User'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
