@@ -73,4 +73,3 @@ class LoginSerializer(serializers.ModelSerializer):
             "refresh_token": str(tokens.get('refresh')),
             'id': id,
         }
-
