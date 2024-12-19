@@ -12,24 +12,20 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from pyzbar.pyzbar import decode
 from PIL import Image
 
-from .serializers import SearchDPIByNSSSerializer
-from .serializers import QRSearchSerializer
 class DPICreationView(APIView):
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = DPICreationSerializer(data=request.data)
         if serializer.is_valid():
             dpi = serializer.save()
             return Response(
                 {
-                    "message": "DPI créé avec succès",
+                    "message": "DPI created successfully",
                     "dpi_id": dpi.id_dpi,
-                    "qr_code_url": dpi.qr_code.url,  # Retourner l'URL du QR code
+                    "qr_code": dpi.qr_code.url,  # URL of the generated QR code
                 },
                 status=status.HTTP_201_CREATED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class QRCodeView(APIView):
     def get(self, request, dpi_id):
         # Récupérer le DPI par son ID
@@ -39,4 +35,3 @@ class QRCodeView(APIView):
         serializer = QRCodeSerializer(dpi)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
