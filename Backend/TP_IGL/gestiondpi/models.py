@@ -52,17 +52,30 @@ class PharmacienHospitalier(models.Model):
 
 class DPI(models.Model):
     id_dpi = models.AutoField(primary_key=True)
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE,default=1)
-    medecin = models.ForeignKey(Medecin, related_name="medcin", on_delete=models.CASCADE,default=1)
+    patient = models.OneToOneField(Patient, on_delete=models.CASCADE, default=1)
+    medecin = models.ForeignKey(Medecin, related_name="medcin", on_delete=models.CASCADE, default=1)
     antecedents = models.TextField()
+    qr_code = models.ImageField(upload_to='qrcodes/', blank=True, null=True)  # Champ pour stocker le QR code
+
 
 
 class Consultation(models.Model):
     id_consultation = models.AutoField(primary_key=True)
     dpi = models.ForeignKey(DPI, related_name="consultations", on_delete=models.CASCADE)
     date_consult = models.DateField()
-    resume = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
+
+class Resume(models.Model):
+    consultation = models.OneToOneField('Consultation', related_name="resume", on_delete=models.CASCADE)  # Une consultation a un resume
+    diagnostic = models.TextField(blank=True, null=True)
+    symptomes = models.TextField(blank=True, null=True)
+    antecedents = models.TextField(blank=True, null=True)
+    autres_informations = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Résumé pour la consultation {self.consultation.id_consultation}"
 class Ordonnance(models.Model):
     id_ordonnance = models.AutoField(primary_key=True)
     consultation = models.OneToOneField(Consultation, related_name="ordonnance", on_delete=models.CASCADE)

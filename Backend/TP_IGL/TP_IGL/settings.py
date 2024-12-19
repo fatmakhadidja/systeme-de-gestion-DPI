@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
     'gestiondpi',
-    'authentification'
+    'authentification',
+    'creationdpi'
 ]
 
 
@@ -105,9 +106,9 @@ WSGI_APPLICATION = 'TP_IGL.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gestion_dpi',
+        'NAME': 'TPTEST2',
         'USER': 'root',
-        'PASSWORD': '****',
+        'PASSWORD': 'meer@esi.28',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -167,6 +168,7 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
