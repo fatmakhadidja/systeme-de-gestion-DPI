@@ -95,23 +95,3 @@ class QRCodeSerializer(serializers.ModelSerializer):
         return None
 
 
-class SearchDPIByNSSSerializer(serializers.Serializer):
-    nss = serializers.CharField(max_length=20)
-
-    def validate_nss(self, value):
-        # Ensure that the NSS exists in the Patient's record
-        try:
-            patient = Patient.objects.get(NSS=value)
-        except Patient.DoesNotExist:
-            raise serializers.ValidationError("Patient with this NSS does not exist.")
-        return value
-
-class QRSearchSerializer(serializers.ModelSerializer):
-    qr_code_url = serializers.SerializerMethodField()
-
-    class Meta:
-        model = DPI
-        fields = ['id_dpi', 'antecedents', 'qr_code_url']
-
-    def get_qr_code_url(self, obj):
-        return obj.qr_code.url if obj.qr_code else None
