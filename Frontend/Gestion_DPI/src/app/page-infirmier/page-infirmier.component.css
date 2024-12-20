@@ -41,7 +41,7 @@
     padding-top : 1rem;
   }
 
-  .soins-ajoutees-titre {
+  .soins-ajoutes-titre {
     color : #4a4a4a;
   }
 
@@ -50,7 +50,7 @@
     max-height: 300px;
   }
   
-  .liste-soins-ajoutees {
+  .liste-soins-ajoutes {
     max-height: 300px;
     overflow-y: auto; /* Scroll for added forms */
   }
