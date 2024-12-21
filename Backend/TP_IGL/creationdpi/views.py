@@ -13,19 +13,23 @@ from pyzbar.pyzbar import decode
 from PIL import Image
 
 class DPICreationView(APIView):
-    def post(self, request, *args, **kwargs):
+     def post(self, request, *args, **kwargs):
+        # Sérialisation et validation des données de la requête
         serializer = DPICreationSerializer(data=request.data)
         if serializer.is_valid():
+            # Création du DPI (l'utilisateur est automatiquement créé via le sérialiseur)
             dpi = serializer.save()
+
             return Response(
                 {
-                    "message": "DPI created successfully",
+                    "message": "DPI créé avec succès",
                     "dpi_id": dpi.id_dpi,
-                    "qr_code": dpi.qr_code.url,  # URL of the generated QR code
+                    "qr_code": dpi.qr_code.url,  # URL du QR code généré
                 },
                 status=status.HTTP_201_CREATED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class QRCodeView(APIView):
     def get(self, request, dpi_id):
         # Récupérer le DPI par son ID
