@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from gestiondpi.models import DPI ,Patient
-from .serializers import QRCodeSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 from pyzbar.pyzbar import decode
 from PIL import Image
