@@ -80,3 +80,14 @@ class DPICreationSerializer(serializers.Serializer):
 
         return dpi
 
+class QRCodeSerializer(serializers.ModelSerializer):
+    qr_code_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = DPI
+        fields = ['id_dpi', 'qr_code_url']
+
+    def get_qr_code_url(self, obj):
+        if obj.qr_code:
+            return obj.qr_code.url
+        return None
