@@ -151,3 +151,10 @@ input::placeholder{
     font-family: var(--font-family-text);
     font-size: 0.8rem;
 }
+
+
+@media (max-width : 600) {
+    p{
+        font-size: 0.6rem;
+    }
+}
