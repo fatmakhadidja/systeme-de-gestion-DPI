@@ -48,16 +48,12 @@ class PharmacienHospitalier(models.Model):
         ordonnance.etat_ordonnance = True
         ordonnance.save()
 
-
-
-
-
 class DPI(models.Model):
     id_dpi = models.AutoField(primary_key=True)
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE , default=1)
     medecin = models.ForeignKey(Medecin, related_name="medcin", on_delete=models.CASCADE , default=1)
     antecedents = models.TextField(blank=True)
-    qr_code = models.ImageField(upload_to='qrcodes/', unique=True )
+    qr_code = models.ImageField(upload_to='qrcodes/', unique=True, default='default_qr')
 
     def save(self, *args, **kwargs):
         # Generate QR code when saving the DPI
@@ -84,35 +80,19 @@ class DPI(models.Model):
 
         self.qr_code.save(unique_filename, ContentFile(buffer.getvalue()), save=False)
 
-class Consultation(models.Model):
-    id_consultation = models.AutoField(primary_key=True)
-    dpi = models.ForeignKey(DPI, related_name="consultations", on_delete=models.CASCADE)
-    date_consult = models.DateField()
-
-    def __str__(self):
-        return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
-
 class Resume(models.Model):
-    consultation = models.OneToOneField('Consultation', related_name="resume", on_delete=models.CASCADE)  # Une consultation a un resume
     diagnostic = models.TextField(blank=True, null=True)
     symptomes = models.TextField(blank=True, null=True)
     antecedents = models.TextField(blank=True, null=True)
     autres_informations = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Résumé pour la consultation {self.consultation.id_consultation}"
+        return "Résumé"
+ 
 class Ordonnance(models.Model):
     id_ordonnance = models.AutoField(primary_key=True)
-    consultation = models.OneToOneField(Consultation, related_name="ordonnance", on_delete=models.CASCADE)
     date_prescription = models.DateField()
     etat_ordonnance = models.BooleanField(default=False)
-
-class Prescription(models.Model):
-    id_prescription = models.AutoField(primary_key=True)
-    ordonnance = models.ForeignKey(Ordonnance, related_name="prescriptions", on_delete=models.CASCADE)
-    dose = models.CharField(max_length=50)
-    duree = models.CharField(max_length=50)
-    medicament = models.OneToOneField('Medicament', related_name="prescription", on_delete=models.CASCADE,default=1)
 
 class Medicament(models.Model):
     id_medicament= models.AutoField(primary_key=True)
@@ -120,6 +100,25 @@ class Medicament(models.Model):
     description = models.TextField()
     prix = models.DecimalField(max_digits=10, decimal_places=2)
     quantite = models.PositiveIntegerField()
+
+
+class Prescription(models.Model):
+    id_prescription = models.AutoField(primary_key=True)
+    ordonnance = models.ForeignKey(Ordonnance, related_name="prescriptions", on_delete=models.CASCADE)
+    dose = models.CharField(max_length=50)
+    duree = models.CharField(max_length=50)
+    medicament = models.OneToOneField(Medicament, related_name="prescription", on_delete=models.CASCADE,default=1)
+
+class Consultation(models.Model):
+    id_consultation = models.AutoField(primary_key=True)
+    dpi = models.ForeignKey(DPI, related_name="consultations", on_delete=models.CASCADE)
+    date_consult = models.DateField()
+    resume =models.ForeignKey(Resume, related_name="consultation",on_delete=models.CASCADE,default=1)
+    ordonnance = models.ForeignKey(Ordonnance,related_name="consultation",on_delete=models.CASCADE, default=1)
+    prescription = models.ForeignKey(Prescription,related_name="consultation",on_delete=models.CASCADE,default=1)
+
+    def __str__(self):
+        return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
 
 
 class Examen(models.Model):
