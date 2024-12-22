@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ConsultationSerializer,SoinSerializer,PatientSerializer
-from gestiondpi.models import Patient
+from gestiondpi.models import Patient,Soin
 
 # the expected format of the info from the frontend
 # {
@@ -86,3 +86,16 @@ class GetPatients(APIView):
         patients = Patient.objects.all()  # Get all patients
         serializer = PatientSerializer(patients, many=True)  # Serialize the queryset
         return Response(serializer.data)  # Return serialized data in the response
+# the data sent to the front end will be in this format (list of JSON data):
+# [
+# {'dpi': "",
+#  'infirmier' : " ",
+#  'description' : " ", 
+# 'date_soin' : " ",
+#  'observation' : " "}
+#  ]   
+class GetSoins(APIView):
+    def get(self,request):
+        soins = Soin.objects.all()  
+        serializer = SoinSerializer(soins,many=True)
+        return Response(serializer.data)  
