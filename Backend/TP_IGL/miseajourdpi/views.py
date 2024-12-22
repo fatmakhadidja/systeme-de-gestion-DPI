@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
 from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI
+from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Ordonnance
 
 # the expected format of the info from the frontend
 # {
@@ -170,4 +170,33 @@ class GetConsultations(APIView):
         return Response(data)
 
             
-
+#-------------------------------------------------------------------------------------------  
+# the data sent to the front end will be in this format (list of JSON data):
+# [
+#     {
+#         "medicament": "string",
+#         "dose": "string",
+#         "duree": "string"
+#     },
+# ]
+# the data sent from the front will be i the format 
+# {"dpi" :  1}
+class GetOrdonnance(APIView):
+    def get(self,request):
+        dpi = request.data['dpi']
+        data = []
+        if dpi is None:
+            return Response({"error": "dpi parameter is required"}, status=400)
+        
+        consultation = Consultation.objects.get(dpi=dpi)
+        ordonnance = consultation.ordonnance
+        prescriptions = Prescription.objects.filter(ordonnance=ordonnance)
+        for prescription in prescriptions :
+            data.append(
+                {
+                    "medicament" : prescription.medicament.nom,
+                    "dose" : prescription.dose,
+                    "duree" : prescription.duree
+                }
+            )
+        return Response(data)    
