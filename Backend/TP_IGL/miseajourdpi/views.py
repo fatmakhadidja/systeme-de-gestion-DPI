@@ -6,40 +6,36 @@ from gestiondpi.models import Patient
 
 # the expected format of the info from the frontend
 # {
-#   "dpi": 1,
-#   "resume": {
-#     "diagnostic": "Patient is stable after surgery.",
-#     "symptomes": "Pain in the abdomen.",
-#     "antecedents": "No known previous conditions.",
-#     "autres_informations": "Patient needs a follow-up visit."
-#   },
-#   "prescription": {
-#     "dose": "500mg",
-#     "duree": "7 days",
-#     "medicament": {
-#       "nom": "Aspirin",
-#       "description": "Pain relief",
-#       "prix": 10.99,
-#       "quantite": 30
+#     "dpi": 1, 
+#     "resume": {
+#         "diagnostic": "string", 
+#         "symptomes": "string", 
+#         "antecedents": "string", 
+#         "autres_informations": "string"
 #     },
-#     "ordonnance": {
-#       "date_prescription": "2023-12-21",
-#       "etat_ordonnance": true
-#     }
-#   },
-#   "examen": [
-#     {
-#       "type": "biologique",
-#       "description": "Blood test",
-#       "parametres": ["WBC count", "Hemoglobin"]
+#     "prescription": {
+#         "dose": "string",
+#         "duree": "string",
+#         "medicament": {
+#             "nom": "string",
+#             "description": "string",
+#             "prix": 10,
+#             "quantite": 5
+#         },
+#         "ordonnance": {
+#             "date_prescription": "2025-05-30",
+#             "etat_ordonnance": true
+#         }
 #     },
-#     {
-#       "type": "radiologique",
-#       "description": "Chest X-ray",
-#       "parametres": ["X-ray report"]
+#     "bilan_biologique": {
+#         "description": "string"
+#     },
+#     "bilan_radiologique": {
+#         "description": "string",
+#         "type": "string"
 #     }
-#   ]
 # }
+
 class AjouterConsultation(APIView):
     def post(self, request):
         # Serialize the data from the frontend to create a new consultation

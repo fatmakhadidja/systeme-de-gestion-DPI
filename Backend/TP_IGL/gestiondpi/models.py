@@ -107,42 +107,32 @@ class Prescription(models.Model):
     medicament = models.OneToOneField(Medicament, related_name="prescription", on_delete=models.CASCADE,default=1)
 
 
-
-class Examen(models.Model):
-
-    TYPE_CHOICES = [
-        ('biologique', 'Biologique'),
-        ('radiologique', 'Radiologique'),
-    ]
-    id_examen = models.AutoField(primary_key=True)
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    description = models.TextField()
-    parametres = models.JSONField(default=list, blank=True)  # Stores as JSON array
-
-
 class Consultation(models.Model):
     id_consultation = models.AutoField(primary_key=True)
-    dpi = models.ForeignKey(DPI, related_name="consultations", on_delete=models.CASCADE)
+    dpi = models.ForeignKey('DPI', related_name="consultations", on_delete=models.CASCADE)
     date_consult = models.DateField()
-    resume =models.OneToOneField(Resume, related_name="consultation",on_delete=models.CASCADE,default=1)
-    prescription = models.OneToOneField(Prescription,related_name="consultation",on_delete=models.CASCADE,default=1)
-    examen = models.ManyToManyField(Examen, blank=True) 
+    resume = models.OneToOneField('Resume', related_name="consultation", on_delete=models.CASCADE, default=1)
+    prescription = models.OneToOneField('Prescription', related_name="consultation", on_delete=models.CASCADE, default=1)
+    
+    # Add bilanRadiologue and bilanBiologique, allowing them to be null
+    bilan_radiologue = models.ForeignKey('BilanRadiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)
+    bilan_biologique = models.ForeignKey('BilanBiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
     
+
 class BilanBiologique(models.Model):
     id_bilanbiologique = models.AutoField(primary_key=True)
-    examen = models.OneToOneField(Examen, on_delete=models.CASCADE, related_name="bilan_biologique")
+    description = models.TextField(default="")
     parametres = models.ManyToManyField('ParametreBiologique', related_name="bilans_biologiques")
-    laborantin = models.ForeignKey(Laborantin, related_name="bilanbiologiques", on_delete=models.CASCADE,default=1)
+    laborantin = models.ForeignKey('Laborantin', related_name="bilanbiologiques", on_delete=models.CASCADE,null=True,)
 
 class ParametreBiologique(models.Model):
-    id_parametrebiologique= models.AutoField(primary_key=True)
+    id_parametrebiologique = models.AutoField(primary_key=True)
     nom = models.CharField(max_length=100)
     unite_mesure = models.CharField(max_length=20)
     valeur_normale = models.CharField(max_length=100)
-
 
 class ParametreBioMesure(models.Model):
     id_parametrebiomesure = models.AutoField(primary_key=True)
@@ -152,10 +142,12 @@ class ParametreBioMesure(models.Model):
 
 class BilanRadiologique(models.Model):
     id_bilanradiologique = models.AutoField(primary_key=True)
-    examen = models.OneToOneField(Examen, on_delete=models.CASCADE, related_name="bilan_radiologique")
+    description = models.TextField(default="")
+    type = models.TextField(default="")
     image = models.ImageField(upload_to="radiologies/")
     compte_rendu = models.TextField()
-    radiologue = models.ForeignKey(Radiologue, related_name="bilanradiologiques", on_delete=models.CASCADE,default=1)
+    radiologue = models.ForeignKey('Radiologue', related_name="bilanradiologiques", on_delete=models.CASCADE,null=True,)
+
 
 class Soin(models.Model):
     id_soin = models.AutoField(primary_key=True)
