@@ -24,34 +24,46 @@ class DPICreationSerializer(serializers.Serializer):
     telephone = serializers.CharField(max_length=15)
     mutuelle = serializers.CharField(max_length=100)
     personne_a_contacter = serializers.CharField(max_length=100)
-    nom_complet_medecin = serializers.CharField(max_length=200)  # Nom complet du médecin (prénom + nom)
+    nom_complet_medecin = serializers.CharField(max_length=200)  # Nom complet du médecin (prénom + nom ou nom + prénom)
     antecedents = serializers.CharField(allow_blank=True, default="")
 
     def validate(self, data):
-        # Séparer le nom et le prénom du médecin à partir de nom_complet_medecin
-        try:
-            prenom_medecin, nom_medecin = data['nom_complet_medecin'].split()
-        except ValueError:
-            raise serializers.ValidationError({"medecin": "Le nom du médecin doit être composé d'un prénom et d'un nom."})
+        nom_complet = data['nom_complet_medecin'].strip()
 
-        # Recherche du médecin avec prénom et nom
+        # Essayer d'extraire le prénom et le nom, en testant les deux possibilités
+        try:
+            parts = nom_complet.split()
+            if len(parts) < 2:
+                raise ValueError("Le nom doit contenir au moins deux parties")
+            prenom_medecin, nom_medecin = parts[0], parts[1]
+        except ValueError:
+            raise serializers.ValidationError({"medecin": "Le nom du médecin doit être composé d'au moins un prénom et un nom."})
+
+        # Chercher le médecin en vérifiant les deux permutations
+        utilisateur_medecin = None
         try:
             utilisateur_medecin = User.objects.get(
-                first_name=prenom_medecin,  # Prénom
-                last_name=nom_medecin,      # Nom
-                role=User.MEDECIN           # Rôle du médecin
+                first_name=prenom_medecin,
+                last_name=nom_medecin,
+                role=User.MEDECIN
             )
         except User.DoesNotExist:
-            raise serializers.ValidationError({"medecin": "Médecin introuvable avec ce nom et prénom."})
+            try:
+                utilisateur_medecin = User.objects.get(
+                    first_name=nom_medecin,
+                    last_name=prenom_medecin,
+                    role=User.MEDECIN
+                )
+            except User.DoesNotExist:
+                raise serializers.ValidationError({"medecin": "Médecin introuvable avec ce nom complet."})
 
-        # Ajout du médecin validé au contexte
+        # Ajouter le médecin validé au contexte
         data['utilisateur_medecin'] = utilisateur_medecin
         return data
 
     def create(self, validated_data):
         # Création de l'email patient
         email = f"{validated_data['prenom_patient'].lower()}{validated_data['nom_patient'].lower()}{validated_data['nss']}@gmail.com"
-        # Création du mot de passe avec le NSS
         password = validated_data['nss']
 
         # Créer l'utilisateur patient avec UserRegisterSerializer
@@ -64,10 +76,9 @@ class DPICreationSerializer(serializers.Serializer):
             'password2': password,
         }
 
-        # Utiliser UserRegisterSerializer pour créer l'utilisateur
         user_serializer = UserRegisterSerializer(data=user_data)
         user_serializer.is_valid(raise_exception=True)
-        utilisateur_patient = user_serializer.save()  # L'utilisateur est créé ici
+        utilisateur_patient = user_serializer.save()
 
         # Création du dossier patient
         patient = Patient.objects.create(
@@ -80,7 +91,7 @@ class DPICreationSerializer(serializers.Serializer):
             personne_a_contacter=validated_data['personne_a_contacter']
         )
 
-        # Récupération ou création du médecin
+        # Récupérer ou créer le médecin
         medecin, created = Medecin.objects.get_or_create(
             utilisateur=validated_data['utilisateur_medecin']
         )
@@ -96,6 +107,7 @@ class DPICreationSerializer(serializers.Serializer):
         dpi.save()
 
         return dpi
+
 
 
 class QRCodeSerializer(serializers.ModelSerializer):

@@ -1,4 +1,3 @@
-
 from django.db import models
 from authentification.models import User
 import qrcode
@@ -21,8 +20,6 @@ class Medecin(models.Model):
     id_medecin = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)
     specialite = models.CharField(max_length=100)
-
-
 
 class Infirmier(models.Model):
         id_infirmier = models.AutoField(primary_key=True)
@@ -113,9 +110,8 @@ class Consultation(models.Model):
     id_consultation = models.AutoField(primary_key=True)
     dpi = models.ForeignKey(DPI, related_name="consultations", on_delete=models.CASCADE)
     date_consult = models.DateField()
-    resume =models.ForeignKey(Resume, related_name="consultation",on_delete=models.CASCADE,default=1)
-    ordonnance = models.ForeignKey(Ordonnance,related_name="consultation",on_delete=models.CASCADE, default=1)
-    prescription = models.ForeignKey(Prescription,related_name="consultation",on_delete=models.CASCADE,default=1)
+    resume =models.OneToOneField(Resume, related_name="consultation",on_delete=models.CASCADE,default=1)
+    prescription = models.OneToOneField(Prescription,related_name="consultation",on_delete=models.CASCADE,default=1)
 
     def __str__(self):
         return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
