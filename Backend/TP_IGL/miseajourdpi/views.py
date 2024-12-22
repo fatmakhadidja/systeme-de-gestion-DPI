@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
 from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI
+from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Ordonnance
 
 # the expected format of the info from the frontend
 # {
@@ -170,4 +170,59 @@ class GetConsultations(APIView):
         return Response(data)
 
             
-
+#-------------------------------------------------------------------------------------------  
+# the data sent to the front end will be in this format (list of JSON data):
+# [
+#     {
+#         "medicament": "string",
+#         "dose": "string",
+#         "duree": "string"
+#     },
+# ]
+# the data sent from the front will be i the format 
+# {"id_consult" :  1}
+class GetOrdonnance(APIView):
+    def get(self,request):
+        id_consult = request.data['id_consult']
+        data = []
+        if id_consult is None:
+            return Response({"error": "id_consult parameter is required"}, status=400)
+        
+        consultation = Consultation.objects.get(id_consultation=id_consult)
+        ordonnance = consultation.ordonnance
+        prescriptions = Prescription.objects.filter(ordonnance=ordonnance)
+        for prescription in prescriptions :
+            data.append(
+                {
+                    "medicament" : prescription.medicament.nom,
+                    "dose" : prescription.dose,
+                    "duree" : prescription.duree
+                }
+            )
+        return Response(data)    
+    
+#-------------------------------------------------------------------------------------------
+# the data sent to the front end will be in this format (JSON data):
+# {
+#     "diagnostic": "string",
+#     "symptomes": "string",
+#     "antecedents": "string",
+#     "autres_informations": "string"
+# }
+# the data sent from the front will be i the format 
+# {"id_consult" :  1}
+class GetResume(APIView):
+    def get(self,request):
+        id_consult = request.data['id_consult']
+        data ={}
+        if id_consult is None:
+            return Response({"error": "id_consult parameter is required"}, status=400)
+        consultation = Consultation.objects.get(id_consultation=id_consult) 
+        resume = consultation.resume
+        data = {
+            "diagnostic" : resume.diagnostic,
+            "symptomes" : resume.symptomes,
+            "antecedents" : resume.antecedents,
+            "autres_informations" :resume.autres_informations
+        }
+        return Response(data)    
