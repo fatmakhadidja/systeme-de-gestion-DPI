@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/', include("authentification.urls")),
     path('api/dpi/', include("creationdpi.urls")),
+    path('api/miseajourdpi/',include("miseajourdpi.urls")),
 
 
 ]

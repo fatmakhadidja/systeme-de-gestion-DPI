@@ -106,15 +106,6 @@ class Prescription(models.Model):
     duree = models.CharField(max_length=50)
     medicament = models.OneToOneField(Medicament, related_name="prescription", on_delete=models.CASCADE,default=1)
 
-class Consultation(models.Model):
-    id_consultation = models.AutoField(primary_key=True)
-    dpi = models.ForeignKey(DPI, related_name="consultations", on_delete=models.CASCADE)
-    date_consult = models.DateField()
-    resume =models.OneToOneField(Resume, related_name="consultation",on_delete=models.CASCADE,default=1)
-    prescription = models.OneToOneField(Prescription,related_name="consultation",on_delete=models.CASCADE,default=1)
-
-    def __str__(self):
-        return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
 
 
 class Examen(models.Model):
@@ -124,11 +115,22 @@ class Examen(models.Model):
         ('radiologique', 'Radiologique'),
     ]
     id_examen = models.AutoField(primary_key=True)
-    consultation = models.ForeignKey(Consultation, related_name="examens", on_delete=models.CASCADE)
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     description = models.TextField()
-    date_prescription = models.DateField()
+    parametres = models.JSONField(default=list, blank=True)  # Stores as JSON array
 
+
+class Consultation(models.Model):
+    id_consultation = models.AutoField(primary_key=True)
+    dpi = models.ForeignKey(DPI, related_name="consultations", on_delete=models.CASCADE)
+    date_consult = models.DateField()
+    resume =models.OneToOneField(Resume, related_name="consultation",on_delete=models.CASCADE,default=1)
+    prescription = models.OneToOneField(Prescription,related_name="consultation",on_delete=models.CASCADE,default=1)
+    examen = models.ManyToManyField(Examen, blank=True) 
+
+    def __str__(self):
+        return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
+    
 class BilanBiologique(models.Model):
     id_bilanbiologique = models.AutoField(primary_key=True)
     examen = models.OneToOneField(Examen, on_delete=models.CASCADE, related_name="bilan_biologique")
