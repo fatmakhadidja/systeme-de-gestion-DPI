@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .serializers import ConsultationSerializer,SoinSerializer,PatientSerializer
-from gestiondpi.models import Patient,Soin,Consultation,Ordonnance,Prescription
+from rest_framework import status,request
+from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
+from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI
 
 # the expected format of the info from the frontend
 # {
@@ -36,7 +36,6 @@ from gestiondpi.models import Patient,Soin,Consultation,Ordonnance,Prescription
 #         "type": "string"
 #     }
 # }
-
 class AjouterConsultation(APIView):
     def post(self, request):
         # Serialize the data from the frontend to create a new consultation
@@ -81,12 +80,43 @@ class RemplirSoin(APIView):
             return Response(soin_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+#-------------------------------------------------------------------------------------------  
+# the data sent to the front end will be in this format (list of JSON data):
+# [
+#     {
+#         "id_patient": 1,
+#         "first_name": "Lokman",
+#         "last_name": "Djerfi"
+#     }
+# ] 
+
+#  the data sent from the front wiil be in the format 
+# {"medecin_first_name" :  "Nadine",
+# "medecin_last_name": "Bousdjira"
+# }   
 class GetPatients(APIView):
     def get(self, request):
-        patients = Patient.objects.all()  # Get all patients
-        serializer = PatientSerializer(patients, many=True)  # Serialize the queryset
+        # Get first_name and last_name from query parameters
+        first_name = request.data['medecin_first_name']
+        last_name = request.data['medecin_last_name']
+        
+        if not first_name or not last_name:
+            return Response({"error": "first_name and last_name are required"}, status=400)
+        
+        # Search for Medecin using both first_name and last_name
+        try:
+            medecin = Medecin.objects.get(utilisateur__first_name=first_name, utilisateur__last_name=last_name)
+        except Medecin.DoesNotExist:
+            return Response({"error": "Medecin not found"}, status=404)
+        
+        dpis = DPI.objects.filter(medecin=medecin)  # Get all patients
+        serializer =DPISerializer(dpis, many=True)  # Serialize the queryset
         return Response(serializer.data)  # Return serialized data in the response
+
+
+#-------------------------------------------------------------------------------------------  
 # the data sent to the front end will be in this format (list of JSON data):
 # [
 # {'dpi': "",
@@ -95,20 +125,41 @@ class GetPatients(APIView):
 # 'date_soin' : " ",
 #  'observation' : " "}
 #  ]   
+
+#  the data sent from the front wiil be in the format 
+# {"dpi" :  1}
 class GetSoins(APIView):
     def get(self,request):
-        soins = Soin.objects.all()  
+        dpi = request.data['dpi']
+        data = []
+        if dpi is None:
+            return Response({"error": "dpi parameter is required"}, status=400)
+        soins = Soin.objects.filter(dpi=dpi)  
         serializer = SoinSerializer(soins,many=True)
         return Response(serializer.data) 
-    
 
+
+#-------------------------------------------------------------------------------------------  
+# the data sent to the front end will be in this format (list of JSON data):
+# [
+#     {
+#         "num_consult": 1,
+#         "date_consult": "2024-12-22",
+#         "ordonnance": true,
+#         "prescription": true,
+#         "resume": true
+#     }
+# ]
+# the data sent from the front will be i the format 
+# {"dpi" :  1}
 class GetConsultations(APIView):
-    
     def get(self, request):
+        dpi = request.data['dpi']
         data = []
-        consultations = Consultation.objects.all()
+        if dpi is None:
+            return Response({"error": "dpi parameter is required"}, status=400)
+        consultations = Consultation.objects.filter(dpi=dpi)
         for consultation in consultations:
-        
             data.append({
                "num_consult": consultation.id_consultation,
                "date_consult": consultation.date_consult,

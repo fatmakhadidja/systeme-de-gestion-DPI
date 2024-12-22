@@ -182,3 +182,10 @@ class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
         fields = ['id_patient', 'first_name', 'last_name']   
+
+class DPISerializer(serializers.ModelSerializer):
+    patient = PatientSerializer()
+
+    class Meta : 
+        model = DPI
+        fields=['patient']        
