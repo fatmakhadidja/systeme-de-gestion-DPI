@@ -48,8 +48,8 @@ class PrescriptionSerializer(serializers.ModelSerializer):
 
 class ConsultationSerializer(serializers.ModelSerializer):
     dpi = serializers.PrimaryKeyRelatedField(queryset=DPI.objects.all())
-    resume = ResumeSerializer()
-    prescription = PrescriptionSerializer()
+    resume = ResumeSerializer(required=False)
+    prescription = PrescriptionSerializer(required=False)
     examen = ExamenSerializer(many=True, required=False)  # Accepts a list of exams
 
     class Meta:
