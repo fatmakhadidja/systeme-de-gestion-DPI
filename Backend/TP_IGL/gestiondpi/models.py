@@ -86,10 +86,6 @@ class Resume(models.Model):
     def __str__(self):
         return "Résumé"
  
-class Ordonnance(models.Model):
-    id_ordonnance = models.AutoField(primary_key=True)
-    date_prescription = models.DateField()
-    etat_ordonnance = models.BooleanField(default=False)
 
 class Medicament(models.Model):
     id_medicament= models.AutoField(primary_key=True)
@@ -99,20 +95,20 @@ class Medicament(models.Model):
     quantite = models.PositiveIntegerField()
 
 
-class Prescription(models.Model):
-    id_prescription = models.AutoField(primary_key=True)
-    ordonnance = models.ForeignKey(Ordonnance, related_name="prescriptions", on_delete=models.CASCADE)
-    dose = models.CharField(max_length=50)
-    duree = models.CharField(max_length=50)
-    medicament = models.OneToOneField(Medicament, related_name="prescription", on_delete=models.CASCADE,default=1)
 
+    
+class Ordonnance(models.Model):
+    id_ordonnance = models.AutoField(primary_key=True)
+    date_prescription = models.DateField()
+    etat_ordonnance = models.BooleanField(default=False)
+    
 
 class Consultation(models.Model):
     id_consultation = models.AutoField(primary_key=True)
     dpi = models.ForeignKey('DPI', related_name="consultations", on_delete=models.CASCADE)
     date_consult = models.DateField()
-    resume = models.OneToOneField('Resume', related_name="consultation", on_delete=models.CASCADE, default=1)
-    prescription = models.OneToOneField('Prescription', related_name="consultation", on_delete=models.CASCADE, default=1)
+    resume = models.OneToOneField('Resume', related_name="consultation", on_delete=models.CASCADE)
+    ordonnance = models.OneToOneField(Ordonnance, related_name="Consultation", on_delete=models.CASCADE)
     
     # Add bilanRadiologue and bilanBiologique, allowing them to be null
     bilan_radiologue = models.ForeignKey('BilanRadiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)
@@ -121,6 +117,13 @@ class Consultation(models.Model):
     def __str__(self):
         return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
     
+    
+class Prescription(models.Model):
+    id_prescription = models.AutoField(primary_key=True)
+    ordonnance = models.ForeignKey(Ordonnance, related_name="prescriptions", on_delete=models.CASCADE)
+    dose = models.CharField(max_length=50)
+    duree = models.CharField(max_length=50)
+    medicament = models.OneToOneField(Medicament, related_name="prescription", on_delete=models.CASCADE,default=1)    
 
 class BilanBiologique(models.Model):
     id_bilanbiologique = models.AutoField(primary_key=True)

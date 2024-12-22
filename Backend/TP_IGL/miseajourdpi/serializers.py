@@ -9,40 +9,58 @@ class ResumeSerializer(serializers.ModelSerializer):
         model = Resume
         fields = ['diagnostic', 'symptomes', 'antecedents', 'autres_informations']
 
-class OrdonnanceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ordonnance
-        fields = ['date_prescription', 'etat_ordonnance']
 
 class MedicamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medicament
         fields = ['nom', 'description', 'prix', 'quantite']
 
+
+
 class PrescriptionSerializer(serializers.ModelSerializer):
-    ordonnance = OrdonnanceSerializer()
     medicament = MedicamentSerializer()
 
-    class Meta:
-        model = Prescription
-        fields = ['dose', 'duree', 'medicament', 'ordonnance']
+    class Meta : 
+        model =Prescription
+        fields = ['dose','duree','medicament']
 
     def create(self, validated_data):
-        ordonnance_data = validated_data.pop('ordonnance')
+        # Extract the medicament data
         medicament_data = validated_data.pop('medicament')
 
-        ordonnance = Ordonnance.objects.create(**ordonnance_data)
+        # Create the Medicament instance
         medicament = Medicament.objects.create(**medicament_data)
 
-        prescription = Prescription.objects.create(
-            ordonnance=ordonnance,
-            medicament=medicament,
-            **validated_data
-        )
-        return prescription
+        # Create the Prescription instance and associate the medicament
+        prescription = Prescription.objects.create(medicament=medicament, **validated_data)
 
+        return prescription    
+  
 
+class OrdonnanceSerializer(serializers.ModelSerializer):
+    # Include the PrescriptionSerializer to handle the nested prescriptions
+    prescription = PrescriptionSerializer(many=True, required=False)
+
+    class Meta:
+        model = Ordonnance
+        fields = ['date_prescription', 'etat_ordonnance', 'prescription']
+
+    def create(self, validated_data):
+        # Extract prescription data from validated_data
+        prescription_data = validated_data.pop('prescription', [])
+
+        # Create the Ordonnance instance
+        ordonnance = Ordonnance.objects.create(**validated_data)
+
+        # Create and associate prescriptions if data is provided
+        for prescription in prescription_data:
+            prescription_serializer = PrescriptionSerializer(data=prescription)
+            if prescription_serializer.is_valid(raise_exception=True):
+                prescription_serializer.save(ordonnance=ordonnance)
+
+        return ordonnance
     
+
 
 
 class BilanRadiologiqueSerializer(serializers.ModelSerializer):
@@ -58,7 +76,7 @@ class BilanBiologiqueSerializer(serializers.ModelSerializer):
 class ConsultationSerializer(serializers.ModelSerializer):
     dpi = serializers.PrimaryKeyRelatedField(queryset=DPI.objects.all())
     resume = ResumeSerializer(required=True)
-    prescription = PrescriptionSerializer(required=False)
+    ordonnance = OrdonnanceSerializer(required=False)
     
     # Use the Bilan serializers
     bilan_biologique = BilanBiologiqueSerializer(required=False)
@@ -66,33 +84,40 @@ class ConsultationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Consultation
-        fields = ['dpi', 'resume', 'prescription', 'bilan_biologique', 'bilan_radiologique']
+        fields = ['dpi', 'resume', 'ordonnance', 'bilan_biologique', 'bilan_radiologique']
 
     def create(self, validated_data):
         dpi = validated_data.pop('dpi')
         resume_data = validated_data.pop('resume')
-        prescription_data = validated_data.pop('prescription', None)
+        ordonnance_data = validated_data.pop('ordonnance', None)
         bilan_biologique_data = validated_data.pop('bilan_biologique', None)
         bilan_radiologique_data = validated_data.pop('bilan_radiologique', None)
 
         # Create the Resume instance
         resume = Resume.objects.create(**resume_data)
 
-        # Create the Prescription instance if data is provided
-        if prescription_data:
-            prescription_serializer = PrescriptionSerializer(data=prescription_data)
-            if prescription_serializer.is_valid(raise_exception=True):
-                prescription = prescription_serializer.save()
-        else:
-            prescription = None
+        # Create the Ordonnance instance if data is provided
+        ordonnance = None
+        if ordonnance_data:
+            ordonnance_serializer = OrdonnanceSerializer(data=ordonnance_data)
+            if ordonnance_serializer.is_valid(raise_exception=True):
+                ordonnance = ordonnance_serializer.save()
+
+            # Create Prescriptions if provided in ordonnance
+            prescription_data = ordonnance_data.get('prescription', [])
+            if prescription_data:
+                for prescription in prescription_data:
+                    prescription_serializer = PrescriptionSerializer(data=prescription)
+                    if prescription_serializer.is_valid(raise_exception=True):
+                        prescription_serializer.save(ordonnance=ordonnance)
 
         # Create the Consultation instance
         consultation = Consultation.objects.create(
             dpi=dpi,
             resume=resume,
-            prescription=prescription,
+            ordonnance=ordonnance,
             date_consult=date.today(),
-        ) 
+        )
 
         # Create BilanBiologique if data is provided
         if bilan_biologique_data:
@@ -108,12 +133,10 @@ class ConsultationSerializer(serializers.ModelSerializer):
                 bilan_radiologique = bilan_radiologique_serializer.save()
                 consultation.bilan_radiologique = bilan_radiologique
 
-               
-
         # Save the consultation after adding bilan objects
         consultation.save()
 
-        return consultation        
+        return consultation
 
 
 # Serializer for Soin model
