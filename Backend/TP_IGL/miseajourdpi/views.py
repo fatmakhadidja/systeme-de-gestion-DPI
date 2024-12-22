@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ConsultationSerializer,SoinSerializer,PatientSerializer
-from gestiondpi.models import Patient,Soin
+from gestiondpi.models import Patient,Soin,Consultation,Ordonnance,Prescription
 
 # the expected format of the info from the frontend
 # {
@@ -13,18 +13,19 @@ from gestiondpi.models import Patient,Soin
 #         "antecedents": "string", 
 #         "autres_informations": "string"
 #     },
-#     "prescription": {
-#         "dose": "string",
-#         "duree": "string",
-#         "medicament": {
-#             "nom": "string",
-#             "description": "string",
-#             "prix": 10,
-#             "quantite": 5
-#         },
-#         "ordonnance": {
+#     
+#           "ordonnance": {
 #             "date_prescription": "2025-05-30",
-#             "etat_ordonnance": true
+#             "etat_ordonnance": true,
+#             "prescription": [{
+#                 "dose": "string",
+#                 "duree": "string",
+#                 "medicament": {
+#                 "nom": "string",
+#                 "description": "string",
+#                 "prix": 10,
+#                 "quantite": 5
+#           }],
 #         }
 #     },
 #     "bilan_biologique": {
@@ -98,4 +99,24 @@ class GetSoins(APIView):
     def get(self,request):
         soins = Soin.objects.all()  
         serializer = SoinSerializer(soins,many=True)
-        return Response(serializer.data)  
+        return Response(serializer.data) 
+    
+
+class GetConsultations(APIView):
+    
+    def get(self, request):
+        data = []
+        consultations = Consultation.objects.all()
+        for consultation in consultations:
+        
+            data.append({
+               "num_consult": consultation.id_consultation,
+               "date_consult": consultation.date_consult,
+               "ordonnance": bool(consultation.ordonnance),
+               "prescription": bool(Prescription.objects.filter(ordonnance=consultation.ordonnance).exists()),
+               "resume": bool(consultation.resume),
+            })
+        return Response(data)
+
+            
+
