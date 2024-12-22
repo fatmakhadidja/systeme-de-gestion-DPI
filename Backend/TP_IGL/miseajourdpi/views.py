@@ -36,7 +36,6 @@ from gestiondpi.models import Patient,Soin,Consultation,Ordonnance,Prescription
 #         "type": "string"
 #     }
 # }
-
 class AjouterConsultation(APIView):
     def post(self, request):
         # Serialize the data from the frontend to create a new consultation
@@ -81,12 +80,25 @@ class RemplirSoin(APIView):
             return Response(soin_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+#-------------------------------------------------------------------------------------------  
+# the data sent to the front end will be in this format (list of JSON data):
+# [
+#     {
+#         "id_patient": 1,
+#         "first_name": "Lokman",
+#         "last_name": "Djerfi"
+#     }
+# ]    
 class GetPatients(APIView):
     def get(self, request):
         patients = Patient.objects.all()  # Get all patients
         serializer = PatientSerializer(patients, many=True)  # Serialize the queryset
         return Response(serializer.data)  # Return serialized data in the response
+
+
+#-------------------------------------------------------------------------------------------  
 # the data sent to the front end will be in this format (list of JSON data):
 # [
 # {'dpi': "",
@@ -100,10 +112,20 @@ class GetSoins(APIView):
         soins = Soin.objects.all()  
         serializer = SoinSerializer(soins,many=True)
         return Response(serializer.data) 
-    
 
+
+#-------------------------------------------------------------------------------------------  
+# the data sent to the front end will be in this format (list of JSON data):
+# [
+#     {
+#         "num_consult": 1,
+#         "date_consult": "2024-12-22",
+#         "ordonnance": true,
+#         "prescription": true,
+#         "resume": true
+#     }
+# ]
 class GetConsultations(APIView):
-    
     def get(self, request):
         data = []
         consultations = Consultation.objects.all()
