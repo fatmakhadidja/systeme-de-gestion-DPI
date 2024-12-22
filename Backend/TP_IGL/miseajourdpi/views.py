@@ -180,15 +180,15 @@ class GetConsultations(APIView):
 #     },
 # ]
 # the data sent from the front will be i the format 
-# {"dpi" :  1}
+# {"id_consult" :  1}
 class GetOrdonnance(APIView):
     def get(self,request):
-        dpi = request.data['dpi']
+        id_consult = request.data['id_consult']
         data = []
-        if dpi is None:
+        if id_consult is None:
             return Response({"error": "dpi parameter is required"}, status=400)
         
-        consultation = Consultation.objects.get(dpi=dpi)
+        consultation = Consultation.objects.get(id_consultation=id_consult)
         ordonnance = consultation.ordonnance
         prescriptions = Prescription.objects.filter(ordonnance=ordonnance)
         for prescription in prescriptions :
@@ -200,3 +200,5 @@ class GetOrdonnance(APIView):
                 }
             )
         return Response(data)    
+    
+#-------------------------------------------------------------------------------------------  
