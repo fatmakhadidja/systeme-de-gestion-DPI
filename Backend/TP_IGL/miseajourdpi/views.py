@@ -186,7 +186,7 @@ class GetOrdonnance(APIView):
         id_consult = request.data['id_consult']
         data = []
         if id_consult is None:
-            return Response({"error": "dpi parameter is required"}, status=400)
+            return Response({"error": "id_consult parameter is required"}, status=400)
         
         consultation = Consultation.objects.get(id_consultation=id_consult)
         ordonnance = consultation.ordonnance
@@ -201,4 +201,28 @@ class GetOrdonnance(APIView):
             )
         return Response(data)    
     
-#-------------------------------------------------------------------------------------------  
+#-------------------------------------------------------------------------------------------
+# the data sent to the front end will be in this format (JSON data):
+# {
+#     "diagnostic": "string",
+#     "symptomes": "string",
+#     "antecedents": "string",
+#     "autres_informations": "string"
+# }
+# the data sent from the front will be i the format 
+# {"id_consult" :  1}
+class GetResume(APIView):
+    def get(self,request):
+        id_consult = request.data['id_consult']
+        data ={}
+        if id_consult is None:
+            return Response({"error": "id_consult parameter is required"}, status=400)
+        consultation = Consultation.objects.get(id_consultation=id_consult) 
+        resume = consultation.resume
+        data = {
+            "diagnostic" : resume.diagnostic,
+            "symptomes" : resume.symptomes,
+            "antecedents" : resume.antecedents,
+            "autres_informations" :resume.autres_informations
+        }
+        return Response(data)    
