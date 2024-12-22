@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ConsultationSerializer,SoinSerializer
+from .serializers import ConsultationSerializer,SoinSerializer,PatientSerializer
 from gestiondpi.models import Patient
 
 # the expected format of the info from the frontend
@@ -85,7 +85,8 @@ class RemplirSoin(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class GetPatients (APIView) :
-    def get(self,request):
-        return(Patient.objects.all)
-    
+class GetPatients(APIView):
+    def get(self, request):
+        patients = Patient.objects.all()  # Get all patients
+        serializer = PatientSerializer(patients, many=True)  # Serialize the queryset
+        return Response(serializer.data)  # Return serialized data in the response

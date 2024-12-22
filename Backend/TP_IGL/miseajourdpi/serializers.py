@@ -114,3 +114,20 @@ class SoinSerializer(serializers.ModelSerializer):
         # Create and return the Soin instance
         soin = Soin.objects.create(dpi=dpi, infirmier=infirmier, **validated_data)
         return soin
+
+
+# the info sent to the frontend
+#  [
+#     {
+#         "id_patient": 1,
+#         "first_name": "Lokman",
+#         "last_name": "Djerfi"
+#     }
+# ]   
+class PatientSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source='utilisateur.first_name')  # Get first_name from the User model
+    last_name = serializers.CharField(source='utilisateur.last_name')    # Get last_name from the User model
+
+    class Meta:
+        model = Patient
+        fields = ['id_patient', 'first_name', 'last_name']   
