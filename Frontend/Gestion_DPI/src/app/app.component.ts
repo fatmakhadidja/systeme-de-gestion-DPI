@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { RecherchePatientComponent } from './recherche-patient/recherche-patient.component';
+import { CreationDPIComponent } from './creation-dpi/creation-dpi.component';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RecherchePatientComponent],
+  imports: [RouterOutlet, CreationDPIComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
