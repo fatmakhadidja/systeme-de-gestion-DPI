@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+*{
+    box-sizing: border-box;
+}
+body{
+    margin: 0;
+    font-family: 'Montserrat';
+    font-size: 18px;
+    background-color: rgba(33, 136, 121, 0.05);;
+   
+}
+
+a{
+    text-decoration: none;
+}
