@@ -13,26 +13,38 @@
   }
   
   .container h2 {
+    font-size: 1.5rem; /* Taille du texte */
+    font-weight: bold;
+    text-align: center; /* Centrage */
     font-family: 'Montserrat', sans-serif;
-    color: #242855;
-    font-size: 2rem;
-    margin-bottom: 6%;
+    background: linear-gradient(to right, #242855, #3BD6CC); 
+    -webkit-background-clip: text; /* Clip le dégradé à la zone du texte (pour WebKit) */
+    -webkit-text-fill-color: transparent; /* Rend le texte transparent pour afficher le dégradé */
+    background-clip: text; /* Support moderne pour les autres navigateurs */
+    color: transparent;
   }
-
-  .paragraphs{
+ .res{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 1rem;
+ }
+  .compteRendu , .images{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
     justify-content: center;
     position: relative;
     gap: 1rem;
+    padding: 1% 1%;
+    background-color:rgba(193, 255, 251, 0.3)    ;
   
   }
   .paragraph{
+    
     border: #3BD6CC solid 0.2rem; /* Bordure verte */
     border-radius: 1.5rem; /* Coins arrondis */
-    width: 28rem; /* Augmente la largeur du cadre */
-    height: 10rem;
+    width: 90%; /* Augmente la largeur du cadre */
+    height: 8rem;
     padding: 0.7rem; /* Ajoute de l'espace à l'intérieur du cadre */
     background-color: #f9f9f9; /* Couleur d'arrière-plan pour le contraste */
     font-family: 'Nunito', sans-serif;
@@ -43,12 +55,20 @@
     .paragraph p{
       margin: 0;
     font-size: 1rem;
+    
     font-family: 'Nunito', sans-serif;
     margin-top: 1%;
   }
-  .paragraphs p{
+  .compteRendu p{
     font-family: 'Nunito', sans-serif;
-    font-size: 1.2rem;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 1%;
+  }
+  .images p {
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
     margin-top: 1%;
   }
   .imgmed{

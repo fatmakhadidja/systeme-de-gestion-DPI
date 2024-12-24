@@ -1,0 +1,36 @@
+<div class="dialog">
+    <mat-dialog-actions>
+        <button mat-button mat-dialog-close class="btn">
+            <img src="../../../assets/images/streamline_delete-1-solid.svg" alt="">
+        </button>
+      </mat-dialog-actions>
+     
+     <div class="container">
+       
+     <h2 mat-dialog-title>Rédaction du Compte Rendu</h2>
+    <mat-dialog-content class="res">
+        <div class="compteRendu">
+       
+           <p>Compte Rendu Radiologique</p>
+
+            <textarea class="paragraph" placeholder="Rédiger votre compte rendu détaillé ici ..." name="compteRendu"></textarea>
+
+        </div>  
+        <div class="images"> 
+        <p>Chargement des Images Médicales </p>
+            <!-- Bouton pour sélectionner les fichiers -->
+<input type="file" (change)="onFileSelected($event)" multiple />
+<button (click)="uploadFiles()">Uploader</button>
+
+<!-- Liste des fichiers sélectionnés -->
+<ul>
+  <li *ngFor="let file of files">{{ file.name }}</li>
+</ul>
+        </div> 
+        <!-- <div class="imgmed" *ngFor="let image of images">
+            <button (click)="" class="btn-download"></button>
+        </div>-->
+
+    </mat-dialog-content>
+    </div>
+    </div>

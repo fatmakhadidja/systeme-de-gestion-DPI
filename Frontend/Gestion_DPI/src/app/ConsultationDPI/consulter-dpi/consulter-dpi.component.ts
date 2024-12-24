@@ -1,6 +1,7 @@
 import { Component , OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
+import { HeaderComponent } from '../../header/header.component';
 import {OrdonnanceComponent} from '../ordonnance/ordonnance.component';
 import { ResumeComponent } from '../resume/resume.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,7 +12,7 @@ import { BilanRadiologiqueComponent } from '../bilan-radiologique/bilan-radiolog
 
 @Component({
   selector: 'app-consulter-dpi',
-  imports: [CommonModule,MatTableModule,OrdonnanceComponent],
+  imports: [CommonModule,MatTableModule,OrdonnanceComponent,HeaderComponent],
   templateUrl:'./consulter-dpi.component.html' ,
   styleUrl: './consulter-dpi.component.css',
   standalone: true
