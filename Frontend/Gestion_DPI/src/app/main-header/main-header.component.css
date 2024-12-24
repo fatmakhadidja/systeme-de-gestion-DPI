@@ -29,21 +29,22 @@ header ul {
     gap: 40px; 
 }
 
-header ul li {
+header ul li a{
     font-family: var(--font-family-title);
     font-size: 16px;
     font-weight: 500; 
     color: var(--Tundora); 
     cursor: pointer; 
     transition: color 0.3s ease;
+    text-decoration: none;
 }
 
-header ul li:hover {
+header ul li a:hover {
     color: var(--Turquoise);
     text-decoration: underline;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     header {
         flex-direction: column; 
         align-items: center;
