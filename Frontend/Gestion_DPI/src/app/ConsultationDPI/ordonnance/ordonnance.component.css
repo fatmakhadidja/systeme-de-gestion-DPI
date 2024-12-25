@@ -23,8 +23,13 @@
 .tab {
   width: 100%;
   border-spacing: 0; /* No extra spacing between cells */
+  border-collapse: collapse; /* Supprime les espaces entre les bordures */
+  border: 1px solid #ddd;
 }
 
+.tab td {
+  border: 1px solid #ddd; /* Gris clair */
+}
 .coloneordo {
   background-color: #218879; /* Only the table headers are green */
   color: white;
@@ -33,9 +38,7 @@
 }
 
 .btn {
-  background-color: white; /* Style only the button */
-  border: none;
-  outline: none;
+
   cursor: pointer;
 }
 /*.dialog{width: 100%;height: auto;}*/

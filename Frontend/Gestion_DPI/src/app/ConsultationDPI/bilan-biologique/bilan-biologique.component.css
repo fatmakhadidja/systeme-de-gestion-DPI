@@ -42,9 +42,6 @@
   
   
   .btn {
-    background-color: white; /* Style only the button */
-    border: none;
-    outline: none;
     cursor: pointer;
   }
   .icons{

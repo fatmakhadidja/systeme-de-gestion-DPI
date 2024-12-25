@@ -1,9 +1,10 @@
 
-
+<app-header></app-header>
+<div class="container">
 <div class="informations_perso">
 <h2>Informations personnelle</h2>
 </div>
-<div class="container">
+<div class="subcontainer">
  
    <div class="info">
       <div class="inf NSS">
@@ -34,7 +35,7 @@
       <div class="inf perAContact">
          <p>Medecin traitant</p><div><p class="text">Medecin traitant</p></div>
       </div>
-   
+   </div>
    </div>
   <!-- <div class="img">
       <img src="" alt="">
@@ -54,7 +55,7 @@
    <img src="../../../assets/images/doctor_consult.svg" alt="">
 </div>
 <div id="Consultations" class="tabConsult">
-   <h2>Consultations</h2>
+   <h2>Vos Consultations</h2>
 
     <table mat-table [dataSource]="dataSource" class="tab">
 
@@ -102,7 +103,7 @@
     </table>
 </div>
 <div id="soins" class="tabConsult2">
-   <h2>Soins infirmiers du Patient</h2>
+   <h2>Vos Soins infirmiers</h2>
 
     <table mat-table [dataSource]="dataSource2" class="tabsoins">
 
