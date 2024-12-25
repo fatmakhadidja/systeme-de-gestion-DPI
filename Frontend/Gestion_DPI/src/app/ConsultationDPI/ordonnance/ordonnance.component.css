@@ -38,10 +38,7 @@
 }
 
 .btn {
-  background-color: white; /* Style only the button */
-  color: white;
-  border: none;
-  outline: none;
+
   cursor: pointer;
 }
 /*.dialog{width: 100%;height: auto;}*/

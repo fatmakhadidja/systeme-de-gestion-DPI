@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../../header/header.component';
+import { HeaderComponent } from '../../header-component/header.component';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -40,12 +40,34 @@ constructor(public dialog : MatDialog){} ;
    // this.dropdownOpen = false;
    this.dropdownOpen = !this.dropdownOpen;
   }
-  openRedactionCompteRendu(): void {
+ /* openRedactionCompteRendu(): void {
       
         this.dialog.open(FenetreRadiologueComponent, {
           width: '85%',
           height:'90%',
         });
     
-  }
+  }*/
+        openRedactionCompteRendu(element: any): void {
+          const dialogRef = this.dialog.open(FenetreRadiologueComponent, {
+            width: '85%',
+            height: '90%',
+            data: { element } // Envoie l'élément à modifier dans la fenêtre modale
+          });
+      
+          // Récupère la valeur "oui" après la fermeture de la fenêtre modale
+          dialogRef.afterClosed().subscribe((valeurEnvoyee: string) => {
+            if (valeurEnvoyee) {
+              this.enregistrer(valeurEnvoyee, element.date); // Met à jour l'élément avec la valeur envoyée
+            }
+          });
+        }
+      
+        // Met à jour l'élément dans le tableau avec la valeur reçue
+        enregistrer(valeur: string, date: string) {
+          const index = this.dataSource.findIndex(item => item.date === date);
+          if (index !== -1) {
+            this.dataSource[index].compteRendu = valeur; // Met à jour la valeur de "compteRendu"
+          }
+        }
 }

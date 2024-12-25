@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 
 
 import {ConsulterDpiComponent} from './ConsultationDPI/consulter-dpi/consulter-dpi.component'
-import { HeaderComponent } from './header/header.component';
+
 
 import { PageRadiologueComponent } from './Radiologue/page-radiologue/page-radiologue.component';
 

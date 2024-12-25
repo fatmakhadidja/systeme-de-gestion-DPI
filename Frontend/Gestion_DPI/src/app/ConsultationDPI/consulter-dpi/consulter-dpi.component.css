@@ -1,22 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 
+
+
+.container{
+  border: #218879 solid 0.2rem; 
+  border-radius: 1rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  width: 85%; /* Réduire la largeur globale */
+  padding: 2% 0%; /* Diminuer l'espace intérieur */
+  margin: 0 auto; 
+  margin-top: 5%;
+}
 .informations_perso{
   display: flex;
   flex-wrap: wrap;
   text-align: center;
 
+
 }
 .informations_perso h2{
   font-family: 'Montserrat', sans-serif;
   color: #3BD6CC;
-  font-size: 3rem;
+  font-size: 2.5rem;
   position: relative;
-  margin-top: 5%;
-  margin-left: 25%;
+  margin-top: 2%; /* Ajuster la marge supérieure */
+  margin-left: 25%;  /*Aligner au centre automatiquement */
+  text-align: center; 
   margin-bottom: 1%;
 }
-.container {
+.subcontainer {
   display: flex;
   flex-wrap: wrap; /* Allow items to wrap on smaller screens */
   gap: 5%; /* Adjusted gap using percentage */
@@ -25,14 +40,15 @@
   margin-left: 4%;
   justify-content: center; /* Center items on smaller screens */
 }
+/*
 .img {
-  width: 15%; /* Responsive width */
-  height: 9rem; /* Maintain aspect ratio */
+  width: 15%; 
+  height: 9rem; 
   margin: 0 auto;
   margin-top: 7%;
   background-color: #fff;
 }
-
+*/
 .info {
   display: flex;
   flex-direction: column;
@@ -95,7 +111,7 @@
 .section > a {
   text-decoration: none;
   font-family: 'Nunito', sans-serif;
-  color: #242855;
+  color: #1E90FF;
   font-size: 1.2rem;
   white-space: nowrap; /* Prevents the text from wrapping */
 }

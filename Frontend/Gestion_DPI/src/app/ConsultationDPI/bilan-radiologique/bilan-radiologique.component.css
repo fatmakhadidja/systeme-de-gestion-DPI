@@ -1,9 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 .btn {
-    background-color: white; /* Style only the button */
-    border: none;
-    outline: none;
     cursor: pointer;
   }
 .container {

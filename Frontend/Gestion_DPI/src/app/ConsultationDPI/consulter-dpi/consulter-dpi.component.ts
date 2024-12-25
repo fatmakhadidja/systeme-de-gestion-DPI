@@ -1,7 +1,7 @@
 import { Component , OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
-import { HeaderComponent } from '../../header/header.component';
+import { HeaderComponent } from '../../header-component/header.component';
 import {OrdonnanceComponent} from '../ordonnance/ordonnance.component';
 import { ResumeComponent } from '../resume/resume.component';
 import { MatDialog } from '@angular/material/dialog';
