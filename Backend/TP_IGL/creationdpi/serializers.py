@@ -3,6 +3,7 @@ from gestiondpi.models import Patient, DPI, Medecin
 from authentification.models import User
 from authentification.views import AddUserView
 from authentification.serializers import UserRegisterSerializer
+
 import qrcode
 from io import BytesIO
 from django.core.files.base import ContentFile
@@ -13,10 +14,7 @@ from django.core.files.base import ContentFile
 import qrcode
 import uuid  # To ensure a unique filename
 from django.db import IntegrityError
-from django.urls import reverse
 
-
-########################################Creation d DPI###########################################################
 class DPICreationSerializer(serializers.Serializer):
     nom_patient = serializers.CharField(max_length=100)
     prenom_patient = serializers.CharField(max_length=100)
@@ -27,7 +25,7 @@ class DPICreationSerializer(serializers.Serializer):
     mutuelle = serializers.CharField(max_length=100)
     personne_a_contacter = serializers.CharField(max_length=100)
     nom_complet_medecin = serializers.CharField(max_length=200)  # Nom complet du médecin (prénom + nom ou nom + prénom)
-
+    antecedents = serializers.CharField(allow_blank=True, default="")
 
     def validate(self, data):
         nom_complet = data['nom_complet_medecin'].strip()
@@ -102,7 +100,7 @@ class DPICreationSerializer(serializers.Serializer):
         dpi = DPI.objects.create(
             patient=patient,
             medecin=medecin,
-
+            antecedents=validated_data.get("antecedents", "")
         )
 
         # Génération automatique du QR code
@@ -123,41 +121,3 @@ class QRCodeSerializer(serializers.ModelSerializer):
         if obj.qr_code:
             return obj.qr_code.url
         return None
-
-
-
-
-###################################Affichage############################################################
-class DPIListSerializer(serializers.ModelSerializer):
-    nss = serializers.CharField(source="patient.NSS")
-    nom_patient = serializers.CharField(source="patient.utilisateur.last_name")
-    prenom_patient = serializers.CharField(source="patient.utilisateur.first_name")
-    dpi_url = serializers.SerializerMethodField()
-    class Meta:
-        model = DPI
-        fields = ["nss", "nom_patient", "prenom_patient", "dpi_url"]
-
-    def get_dpi_url(self, obj):
-        # Génère l'URL vers les détails du DPI
-        return reverse("dpi-detail", kwargs={"pk": obj.id_dpi})
-
-class DPIDetailSerializer(serializers.ModelSerializer):
-    nom_patient = serializers.CharField(source="patient.utilisateur.last_name")
-    prenom_patient = serializers.CharField(source="patient.utilisateur.first_name")
-    nss = serializers.CharField(source="patient.NSS")
-    date_de_naissance = serializers.DateField(source="patient.date_de_naissance")
-    adresse = serializers.CharField(source="patient.adresse")
-    telephone = serializers.CharField(source="patient.telephone")
-    mutuelle = serializers.CharField(source="patient.mutuelle")
-    personne_a_contacter = serializers.CharField(source="patient.personne_a_contacter")
-    nom_complet_medecin = serializers.SerializerMethodField()
-
-    class Meta:
-        model = DPI
-        fields = [
-            "nss", "nom_patient","prenom_patient","date_de_naissance","adresse","telephone","mutuelle","personne_a_contacter","nom_complet_medecin"]
-
-    def get_nom_complet_medecin(self, obj):
-        """Retourne le nom complet du médecin (prénom + nom)."""
-        utilisateur = obj.medecin.utilisateur
-        return f"{utilisateur.first_name} {utilisateur.last_name}"
