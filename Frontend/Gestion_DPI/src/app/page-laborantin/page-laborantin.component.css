@@ -11,6 +11,7 @@ h1{
     font-family: var(--font-family-title);
     background: linear-gradient(to right, var(--black), var(--Aquamarine)); /* Gradient colors */
     -webkit-background-clip: text; 
+    background-clip: border-box;
     color: transparent;
 }
 .mat-mdc-form-field{
@@ -100,6 +101,7 @@ h2{
     font-family: var(--font-family-title);
     background: linear-gradient(to right, var(--black), var(--Aquamarine)); /* Gradient colors */
     -webkit-background-clip: text; 
+    background-clip: border-box;
     color: transparent;
     font-weight: 700;
 }
