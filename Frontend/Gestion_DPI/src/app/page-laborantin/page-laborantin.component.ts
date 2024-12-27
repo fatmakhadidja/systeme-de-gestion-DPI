@@ -6,6 +6,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatButtonModule} from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -15,6 +16,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 interface Patient {
   nom: string;
   prenom: string;
@@ -90,9 +92,7 @@ export class PageLaborantinComponent{
     });
   }
 
-  genererGraphe(){
-    console.log("clicked");
-  }
+  
 }
 @Component({
   selector: 'dialog-remplir-resultat',
@@ -106,9 +106,14 @@ export class PageLaborantinComponent{
     MatDialogActions,
     MatDialogClose,
     MatExpansionModule,
-    CommonModule
+    CommonModule,
+    MatButtonModule
+
   ],
 })
+
+
+//REMPLIR RESULTATS
 export class RemplirResultat {
   readonly dialogRef = inject(MatDialogRef<RemplirResultat>);
   // readonly data = inject<DialogData>(MAT_DIALOG_DATA);
@@ -127,14 +132,79 @@ export class RemplirResultat {
     this.dialogRef.close();
   }
   readonly panelOpenState = signal(false);
-  divs: { id: number; name: string; value: string }[] = [];
+  divs: { id: number; parametre: string; valeur: string ; unite: string}[] = [];
   nextId = 1;
 
   ajouter() {
-    this.divs.push({ id: this.nextId++, name: '', value: '' });
+    this.divs.push({ id: this.nextId++, parametre: '', valeur: '', unite:''});
   }
 
   deleteDiv(id: number) {
     this.divs = this.divs.filter(div => div.id !== id);
   }
+  readonly dialog = inject(MatDialog);
+  openDialog_genererGraphe(): void{
+    const dialogRef = this.dialog.open(GenererGraphe, {
+      width: '80vw', 
+      height: 'auto',  
+      maxWidth: '80vw',
+      data: {},
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+  isDisable: boolean = true; 
+ 
+  enregistrer() {
+    this.isDisable = false; 
+    
+  }
+}
+
+@Component({
+  selector: 'dialog-generer-graphe',
+  templateUrl: 'dialog-generer-graphe.html',
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatExpansionModule,
+    CommonModule
+  ],
+})
+export class GenererGraphe {
+  readonly dialogRef = inject(MatDialogRef<GenererGraphe>);
+  // readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+
+   params :string[] = ['Glycémie',
+    'Cholestérol total',
+    'HDL',
+   ' LDL ',
+    'Triglycérides',
+    'Créatinine',
+    'Urée',
+   ' Acide urique'
+   ]
+
+   HDL = [
+    {newval: 3, oldval:12},
+    {newval: 12, oldval:12},
+    {newval: 3, oldval:12},
+    {newval: 7, oldval:12},
+    {newval: 9, oldval:12},
+    {newval: 1, oldval:12},
+    {newval: 3, oldval:12},
+    {newval: 2, oldval:12}
+   ]
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+  readonly panelOpenState = signal(false);
+  
 }
