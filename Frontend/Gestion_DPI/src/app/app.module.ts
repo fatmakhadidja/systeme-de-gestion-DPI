@@ -1,15 +1,19 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app.component';  // Standalone Component
-import { PageInfirmierComponent } from './page-infirmier/page-infirmier.component';
-import { PatientSelectionComponent } from './patient-selection/patient-selection.component';
-import { SoinFormComponent } from './soin-form/soin-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // Import BrowserAnimationsModule
+import { importProvidersFrom } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
-// This is the new approach with standalone components
 bootstrapApplication(AppComponent, {
   providers: [
-    // You can add global providers here, if necessary
-  ]
+    importProvidersFrom(
+      BrowserAnimationsModule,  // Include this to enable animations
+      FormsModule,
+      ReactiveFormsModule,
+      MatFormFieldModule,
+      MatSelectModule
+    ),
+  ],
 });
