@@ -2,7 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
 from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Ordonnance
+from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+
 
 # the expected format of the info from the frontend
 # {
@@ -226,3 +229,47 @@ class GetResume(APIView):
             "autres_informations" :resume.autres_informations
         }
         return Response(data)    
+
+# the data sent from the SGPH will be in the format 
+# {
+# "valide" :  true/false,
+# "id_consult" : 1
+# }    
+
+
+class ValiderOrdonnance(APIView):
+    def post(self, request):
+        valide = request.data.get('valide')
+        id_consult = request.data.get('id_consult')
+        
+        if valide is None or id_consult is None:
+            return Response(
+                {"error": "Both 'valide' and 'id_consult' are required fields."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            consultation = get_object_or_404(Consultation, id_consultation=id_consult)
+            ordonnance = consultation.ordonnance
+            
+            if valide is True:
+                ordonnance.etat_ordonnance = True
+                ordonnance.save()
+                return Response(
+                    {"message": "Ordonnance validated successfully."},
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    {"error": "Invalid value for 'valide'. Must be true."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+
+
