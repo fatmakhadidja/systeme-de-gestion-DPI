@@ -26,7 +26,11 @@
     "@angular/platform-server": "^19.0.0",
     "@angular/router": "^19.0.0",
     "@angular/ssr": "^19.0.4",
+<<<<<<< HEAD
     "@fortawesome/angular-fontawesome": "^1.0.0",
+=======
+    "chart.js": "^4.4.7",
+>>>>>>> meriem
     "express": "^4.18.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

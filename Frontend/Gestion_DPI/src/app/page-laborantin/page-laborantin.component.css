@@ -72,13 +72,7 @@ h2{
   #button-one{
     background-color: var(--Niagara);
   }
-  #button-two{
-    background-color: var(--Port-gore);
-    }
     #button-one:active{
-        background-color: var(--Silver);
-    }
-    #button-two:active{
         background-color: var(--Silver);
     }
     .check-icon{
@@ -130,6 +124,7 @@ h2{
     font-family: var(--font-family-text);
     align-self: center;
     margin-top: 8px;
+    cursor: pointer;
 }
 .dialog-content h4{
     font-family: var(--font-family-title);
@@ -173,11 +168,12 @@ h2{
   }
   .buttons{
     display: flex;
+    align-items: center;
     gap: 10px;
   }
 .buttons button{
     cursor: pointer;
-    border-radius: 5px; 
+    border-radius: 5px;
 }
   .buttons button[type="reset"] {
     background-color: var(--black);
@@ -185,9 +181,32 @@ h2{
 }
 .buttons button[type="submit"] {
     color: var(--black);
-    
 }
 
+ .buttons .disabled-button {
+    background-color: var(--Silver);
+  }
+  
+ .buttons .enabled-button {
+   background-color: var(--Port-gore);
+  }
+  .enabled-button:active{
+    background-color: var(--Silver);
+}
+.param-choisir{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+.param-choisir select{
+  padding: 10px;
+}
+
+.param-choisir select option{
+  display: grid;
+    font-family: var(--font-family-text);
+    color: var(--Tundora);
+}
   
     @media (max-width:800px){
         .above-table{

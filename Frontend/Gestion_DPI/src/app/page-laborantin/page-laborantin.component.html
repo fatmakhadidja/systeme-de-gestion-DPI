@@ -16,7 +16,6 @@
     <div class="above-table">
         <h2>Bilans Biologiques de {{patientSelecione.nom}} {{patientSelecione.prenom}}</h2>
         <button (click)="openDialog_remplirResultat()" id="button-one"><img src="../../assets/images/Plus circle.svg" alt="">Remplir les Résultats du Bilan</button>
-        <button (click)="genererGraphe()" id="button-two"><img src="../../assets/images/Bar chart.svg" alt="">Générer des Graphiques de Tendance</button>
     </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
     

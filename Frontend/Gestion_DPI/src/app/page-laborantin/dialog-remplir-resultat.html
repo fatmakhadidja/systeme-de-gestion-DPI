@@ -15,23 +15,24 @@
       <div *ngFor="let div of divs; let i = index" class="add-params">
         <div>
           <label for="name-{{ div.id }}">Paramètre</label>
-          <select id="name-{{ div.id }}" [(ngModel)]="div.name" name = "param-{{ div.id }}"placeholder="Choisire un parametre">
+          <select id="name-{{ div.id }}" [(ngModel)]="div.parametre" name = "param-{{ div.id }}"placeholder="Choisire un parametre">
             <option *ngFor="let param of params" [value]="param">{{param}}</option>
           </select>
         </div>
         <div>
           <label for="value-{{ div.id }}">Valeur</label>
-          <input id="value-{{ div.id }}" [(ngModel)]="div.name" placeholder="Valeur mesuré" name="valeur-{{ div.id }}">
+          <input id="value-{{ div.id }}" [(ngModel)]="div.valeur" placeholder="Valeur mesuré" name="valeur-{{ div.id }}">
         </div>
         <div>
           <label for="value-{{ div.id }}">Unité</label>
-          <input id="value-{{ div.id }}" [(ngModel)]="div.name" placeholder="Unité de mesure" name="unite-{{ div.id }}">
+          <input id="value-{{ div.id }}" [(ngModel)]="div.unite" placeholder="Unité de mesure" name="unite-{{ div.id }}">
         </div>
         <button (click)="deleteDiv(div.id)">Delete</button>
       </div>
       <mat-dialog-actions class="buttons">
+        <button (click)="openDialog_genererGraphe()" [ngClass]="{'enabled-button': !isDisable, 'disabled-button': isDisable}" [disabled] = "isDisable"><img src="../../assets/images/Bar chart.svg" alt="bar-chart">Générer des Graphiques de Tendance</button>
         <button mat-button type="reset">Annuler</button>
-        <button mat-button  cdkFocusInitial type="submit">Enregistrer</button>
+        <button mat-button  cdkFocusInitial type="submit" (click)="enregistrer()">Enregistrer</button>
       </mat-dialog-actions>
     </form>
 </mat-dialog-content>
