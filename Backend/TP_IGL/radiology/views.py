@@ -4,8 +4,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from gestiondpi.models import BilanRadiologique, RadiologyImage
-from .serializers import BilanRadiologiqueSerializer, RadiologyImageSerializer
+from gestiondpi.models import BilanRadiologique, RadiologyImage,Consultation
+from .serializers import BilanRadiologiqueSerializer, RadiologyImageSerializer,ConsultationSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.conf import settings
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -118,5 +118,31 @@ class UpdateBilanRadiologiqueView(APIView):
 
         except BilanRadiologique.DoesNotExist:
             return Response({'error': 'BilanRadiologique not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class GetBilanRadiologiqueByDPI(APIView):
+    def get(self, request, dpi_id):
+        try:
+            # Get consultations for the given DPI that have a bilan_radiologique
+            consultations_with_bilan = Consultation.objects.filter(
+                dpi_id=dpi_id, bilan_radiologue__isnull=False
+            )
+
+            if not consultations_with_bilan.exists():
+                return Response(
+                    {'message': 'No radiological bilans found for the given DPI.'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            # Extract the associated bilan radiologique objects
+            bilans_radiologiques = [
+                consultation.bilan_radiologue for consultation in consultations_with_bilan
+            ]
+
+            # Serialize the bilans
+            serializer = BilanRadiologiqueSerializer(bilans_radiologiques, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

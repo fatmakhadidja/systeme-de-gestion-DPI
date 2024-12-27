@@ -217,4 +217,32 @@ class Generergraph(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+
+class GetBilanBiologiquesByDPI(APIView):
+    def get(self, request, dpi_id):
+        try:
+            # Get all consultations for the specified DPI
+            consultations = Consultation.objects.filter(dpi_id=dpi_id)
+
+            # Extract all associated BilanBiologique objects from consultations
+            bilan_biologiques = BilanBiologique.objects.filter(
+                consultations__in=consultations
+            ).distinct()  # Avoid duplicates
+
+            # Check if any bilans exist
+            if not bilan_biologiques.exists():
+                return Response(
+                    {'message': 'No biological bilans found for the given DPI.'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            # Serialize and return the BilanBiologiques
+            serializer = BilanBiologiqueSerializer(bilan_biologiques, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
                 
