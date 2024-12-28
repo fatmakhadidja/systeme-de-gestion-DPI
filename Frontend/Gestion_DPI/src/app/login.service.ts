@@ -13,12 +13,12 @@ onLogin(usernameValue:string):void{
 
   //admin creer dpi
   //medecin consulter et cree dpi
-  // if(usernameValue === 'meriem'){
+  // if(email === 'meriem'){
   //   console.log('clicked')
   //   this.router.navigate(['/recherche-patient']);
   //   console.log(usernameValue);
   // }
-  // if(usernameValue==='amira'){
+  // if(email==='amira'){
   //   console.log('clicked')
   //   this.router.navigate(['/creation-dpi']);
   //   console.log(usernameValue);
