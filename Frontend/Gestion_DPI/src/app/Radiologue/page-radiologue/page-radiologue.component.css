@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 
-.container{
+.containerRad{
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
+    margin-top: 3%;
  
 }
-.container h2{
+.containerRad h2{
     font-size: 2rem; /* Taille du texte */
 
     text-align: center; /* Centrage */
@@ -26,6 +27,7 @@
     padding: 1% 1%;
     width: 95%;
     font-family: 'Nunito', sans-serif;
+    margin-left: 2.5%;
 }
 .dropdown-container {
     position: relative;
@@ -71,6 +73,7 @@
     width: 95%;
     margin-top: 0.5%;
     margin-bottom: 2%;
+   margin-left: 2.5%;
   }
 
   .details-table p {

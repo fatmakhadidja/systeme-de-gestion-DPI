@@ -7,17 +7,18 @@
  /* background-color: #218879 !important; /* Ensure the dialog container background is white */
 /*}*/
 
-.container {
+.containerordo {
   gap: 10%;
   position: relative;
   margin-top: -8%;
 }
 
-.container h2 {
+.containerordo h2 {
   font-family: 'Nunito', sans-serif;
   color: #242855;
   font-size: 2rem;
   margin-bottom: 6%;
+  text-align: center;
 }
 
 .tab {
