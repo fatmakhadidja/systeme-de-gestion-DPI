@@ -20,14 +20,16 @@
 
   <!-- Soins List -->
   <div *ngIf="soins.length > 0" class="soins-ajoutes">
-    <h3 class="soins-ajoutees-titre">Soins ajoutés :</h3>
-    <div class="soins-ajoutees">
+    <h3 class="soins-ajoutes-titre">Soins ajoutés :</h3>
+    <div class="liste-soins-ajoutes">
       <div *ngFor="let soin of soins; let i = index" class="soin-form">
         <app-soin-form
           [index]="i"
+          [description]="soin.description"
+          [observation]="soin.observation"
           (soinDataChanged)="updateSoinData($event, i)"
           (delete)="deleteSoin(i)"
-        ></app-soin-form>
+></app-soin-form>
       </div>
     </div>
   </div>

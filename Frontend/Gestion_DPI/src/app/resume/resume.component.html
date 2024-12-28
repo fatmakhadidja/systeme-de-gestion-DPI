@@ -1,0 +1,55 @@
+<app-header></app-header>
+<div class="main-container">
+    <form (ngSubmit)="saveResume()">
+        <h2>Résumé de la Consultation</h2>
+        
+        <label for="diagnostic">Diagnostic</label>
+        <input
+            id="diagnostic"
+            type="text"
+            placeholder="Veuillez saisir le diagnostic ici ..."
+            [(ngModel)]="resume.diagnostic"
+            name="diagnostic"
+        />
+        
+        <label for="symptomes">Symptômes du Patient</label>
+        <input
+            id="symptomes"
+            type="text"
+            placeholder="Veuillez saisir les symptômes du patient ici ..."
+            [(ngModel)]="resume.symptomes"
+            name="symptomes"
+        />
+        
+        <label for="antecedents">Antécédents Médicaux</label>
+        <input
+            id="antecedents"
+            type="text"
+            placeholder="Veuillez saisir les antécédents du patient ici ..."
+            [(ngModel)]="resume.antecedents"
+            name="antecedents"
+        />
+        
+        <label for="autres-informations">Autres Informations</label>
+        <textarea
+            id="autres-informations"
+            rows="4"
+            placeholder="Ajouter d’autres informations ici ..."
+            [(ngModel)]="resume.autres_informations"
+            name="autres_informations"
+        ></textarea>
+        
+        <div class="button-container">
+            <button type="button" class="button-cancel" (click)="cancel()">Annuler</button>
+            <button type="submit" class="button-confirm">Confirmer</button>
+        </div>
+    </form>
+</div>
+
+<!-- Boîte modale -->
+<div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <p>{{ modalMessage }}</p>
+      <button (click)="closeModal()">Fermer</button>
+    </div>
+  </div>

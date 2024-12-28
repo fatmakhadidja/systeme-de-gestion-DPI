@@ -1,0 +1,187 @@
+/* Général */
+body {
+    font-family: Nunito, sans-serif;
+    background-color: #F4F7F6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden; /* Éviter le dépassement */
+  }
+  
+  /* Conteneur principal */
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 20px;
+    position: relative; /* Nécessaire pour positionner l'image fixe */
+  }
+  
+  /* Titre */
+  form h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    border: 3px solid #25a294;
+    border-radius: 5px;
+    display: inline-block;
+    width : 65%;
+  }
+  
+  /* Champ de texte */
+  form textarea {
+    width: 90%; /* Largeur presque complète */
+    max-width: 800px; /* Limite maximale */
+    height: 300px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #4a4a4a;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: 'Nunito', sans-serif;
+    color: #7a7a7a;
+    box-sizing: border-box;
+    resize: none; /* Désactiver le redimensionnement */
+  }
+  
+  form textarea::placeholder {
+    color: #d9d9d9;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+  }
+  
+  /* Alignement des champs */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Boutons */
+  form .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  form .button-cancel,
+  form .button-confirm {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  form .button-cancel {
+    background-color: black;
+    color: white;
+    border: solid 1px black;
+    border-radius: 5px;
+  }
+  
+  form .button-confirm {
+    background-color: #4ed6c4;
+    color: white;
+    border: solid 1px #4ed6c4;
+    border-radius: 5px;
+  }
+  
+  form .button-cancel:hover {
+    background-color: white;
+    color: black;
+    border: solid 1px black;
+  }
+  
+  form .button-confirm:hover {
+    background-color: white;
+    color: #4ed6c4;
+    border: solid 1px #4ed6c4;
+  }
+  
+  /* Image styles */
+.responsive-image {
+    position: fixed; /* Always positioned relative to the viewport */
+    bottom: 0; /* Align to the bottom */
+    left: 0; /* Align to the left */
+    max-width: 25vw; /* Adjust width relative to the viewport width */
+    max-height: 25vh; /* Adjust height relative to the viewport height */
+}
+
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+    .responsive-image {
+        max-width: 15vw; /* Decrease the size further for smaller screens */
+        max-height: 15vh;
+    }
+}
+
+@media (max-width: 600px) {
+    .responsive-image {
+        max-width: 10vw; /* Further shrink for very small devices */
+        max-height: 10vh;
+    }
+}
+
+
+  
+  /* Modale */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .modal-content p {
+    font-size: 16px;
+    font-family: Nunito, sans-serif;
+    margin-bottom: 20px;
+  }
+  
+  .modal-content button {
+    background-color: black;
+    color: white;
+    border: solid 1px black;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+  }
+  
+  .modal-content button:hover {
+    background-color: white;
+    color: black;
+    border: solid 1px black;
+  }
+  
