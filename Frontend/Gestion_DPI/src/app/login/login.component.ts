@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-
+import { FormsModule } from '@angular/forms'; 
+import { LoginService } from '../login.service';
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  standalone: true,
+  standalone:true
 })
 export class LoginComponent {
 title = 'Connexion';
@@ -15,4 +16,11 @@ label2 = 'Votre mot de passe';
 ph1=`Votre nom d'utilisateur`;
 ph2='Votre mot de passe';
 button='Se Connecter';
+
+constructor(private loginService: LoginService) { }
+
+// onLogin(usernameValue:string){
+//   this.loginService.onLogin(usernameValue);
+// }
+
 }
