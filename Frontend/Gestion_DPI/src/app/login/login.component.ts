@@ -17,10 +17,15 @@ ph1=`Votre email`;
 ph2='Votre mot de passe';
 button='Se Connecter';
 
+name1='username';
+name2='password';
+
+
 constructor(private loginService: LoginService) { }
 
 // onLogin(usernameValue:string){
 //   this.loginService.onLogin(usernameValue);
 // }
+
 
 }

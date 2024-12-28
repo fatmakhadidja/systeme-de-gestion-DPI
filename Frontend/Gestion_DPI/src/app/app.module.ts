@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
-      BrowserAnimationsModule,  // Include this to enable animations
+      BrowserAnimationsModule,
       FormsModule,
       ReactiveFormsModule,
       MatFormFieldModule,

@@ -1,6 +1,6 @@
 @import url(../../styles.css);
 
-.container{
+.laborantin-container{
     display: flex;
     flex-direction: column; 
     gap: 50px;

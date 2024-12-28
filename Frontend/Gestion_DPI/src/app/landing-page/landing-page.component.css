@@ -54,12 +54,12 @@
 #accueil img {
     position: absolute; 
     right: 40px; 
-    top: 50%; 
-    transform: translateY(-50%); 
+    top: 50%;
+    transform: translateY(-50%);
     max-width: 40%; 
     height: auto; 
     z-index: 0; 
-    opacity: 0.9; 
+    opacity: 0.9;
 }
 
 
