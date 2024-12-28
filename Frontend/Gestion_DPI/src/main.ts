@@ -6,10 +6,13 @@ import { importProvidersFrom } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { provideRouter } from '@angular/router';
+import { routes } from '../src/app/app.routes';
 
 // Modify the bootstrapApplication to include BrowserAnimationsModule
 bootstrapApplication(AppComponent, {
   providers: [
+    provideRouter(routes),
     importProvidersFrom(
       BrowserAnimationsModule,  // Enable animations
       FormsModule,
