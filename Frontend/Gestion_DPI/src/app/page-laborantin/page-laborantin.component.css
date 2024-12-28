@@ -1,0 +1,240 @@
+@import url(../../styles.css);
+
+.laborantin-container{
+    display: flex;
+    flex-direction: column; 
+    gap: 50px;
+    margin: 50px;
+}
+h1{
+    text-align: center;
+    font-family: var(--font-family-title);
+    background: linear-gradient(to right, var(--black), var(--Aquamarine)); /* Gradient colors */
+    -webkit-background-clip: text; 
+    color: transparent;
+}
+.mat-mdc-form-field{
+    width: 100%;
+}
+.bilan{
+    display: flex;
+    flex-direction: column; 
+    gap: 20px;
+}
+h2{
+    font-family: var(--font-family-title);
+    color: var(--Port-gore);
+}
+.demo-table {
+    width: 100%;
+  }
+  
+  .mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+    font-family: var(--font-family-text);
+  }
+  
+  .mat-mdc-row:hover{
+    box-shadow: -4px -4px 5px rgba(0, 0, 0, 0.2), 4px 4px 10px rgba(0, 0, 0, 0.5);
+  }
+  table td:first-child {
+    border-left: 3px solid var(--Elm);
+  }
+  .mat-mdc-header-row{
+    color: var(--Elm);
+    font-family: var(--font-family-title);
+    font-weight: 700;
+  }
+  .demo-row-is-clicked {
+    font-weight: bold;
+  }
+  .above-table{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  button{
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-family: var(--font-family-text);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    color: var(--White);
+    img{
+        width: 10%;
+    }
+  }
+  #button-one{
+    background-color: var(--Niagara);
+  }
+    #button-one:active{
+        background-color: var(--Silver);
+    }
+    .check-icon{
+        width: 10%;
+    }
+
+    /*STYLE DE LA FENETRE*/
+
+.header-dialog {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+}
+
+.header-dialog h2 {
+    flex-grow: 1; 
+    text-align: center;
+    font-family: var(--font-family-title);
+    background: linear-gradient(to right, var(--black), var(--Aquamarine)); /* Gradient colors */
+    -webkit-background-clip: text; 
+    color: transparent;
+    font-weight: 700;
+}
+
+.close-icon button {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.close-icon img {
+    width: 50%; 
+    height: 50%; 
+}
+
+.content-title{
+    font-family: var(--font-family-title);
+    color: var(--Tundora);
+}
+.dialog-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.dialog-content button{
+    background-color: var(--Niagara);
+    color: var(--White);
+    font-family: var(--font-family-text);
+    align-self: center;
+    margin-top: 8px;
+    cursor: pointer;
+}
+.dialog-content h4{
+    font-family: var(--font-family-title);
+    color: var(--Tundora);
+    margin-top: 20px;
+}
+.add-params{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+    border: 1px solid var(--Port-gore);
+    border-radius: 5px;
+    padding: 10px;
+}
+  .add-params div , .add-params div select{
+    display: grid;
+    font-family: var(--font-family-text);
+    color: var(--Tundora);
+  }
+  .add-params div input, .add-params div select{
+    padding: 8px;
+    width: 100%;
+    border: 1px solid var(--Niagara);
+    border-radius: 5px;
+  }
+ 
+  .add-params  button {
+    margin-top: 15px;
+    background-color: var(--delete);
+    color: var(--White);
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .add-params button:hover {
+    background-color:var(--hover-delete) ;
+  }
+  .buttons{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+.buttons button{
+    cursor: pointer;
+    border-radius: 5px;
+}
+  .buttons button[type="reset"] {
+    background-color: var(--black);
+    color: var(--White); 
+}
+.buttons button[type="submit"] {
+    color: var(--black);
+}
+
+ .buttons .disabled-button {
+    background-color: var(--Silver);
+  }
+  
+ .buttons .enabled-button {
+   background-color: var(--Port-gore);
+  }
+  .enabled-button:active{
+    background-color: var(--Silver);
+}
+.param-choisir{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+.param-choisir select{
+  padding: 10px;
+}
+
+.param-choisir select option{
+  display: grid;
+    font-family: var(--font-family-text);
+    color: var(--Tundora);
+}
+  
+    @media (max-width:800px){
+        .above-table{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content:center;
+            gap: 20px;
+            width: 100%;
+          }
+          h2{
+            font-size: 18px;
+          }
+          .check-icon{
+            width: 20%;
+        }
+    }
+    @media (max-width:600px){
+        .add-params{
+            display: grid;
+        }
+        .add-params div input{
+            width:300px;
+        }
+        .add-params  button {
+            display: flex;      
+            justify-content: center;
+          }
+          
+    }
+    

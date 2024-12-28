@@ -10,8 +10,13 @@ import { OrdonnanceComponent } from "./ordonnance/ordonnance.component";
 @Component({
   selector: 'app-root',
   imports: [ConsultationHomeComponent, ResumeComponent, BilanBiologiqueComponent, BilanRadiologiqueComponent, OrdonnanceComponent],
+import { RouterOutlet,RouterLink, RouterLinkActive } from '@angular/router';
+import { CommonModule } from '@angular/common';
+@Component({
+  selector: 'app-root',
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = "Système de Gestion DPI - Amejay"

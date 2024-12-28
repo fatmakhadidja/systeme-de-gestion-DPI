@@ -106,9 +106,9 @@ WSGI_APPLICATION = 'TP_IGL.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'TPTEST2',
+        'NAME': 'test1',
         'USER': 'root',
-        'PASSWORD': 'meer@esi.28',
+        'PASSWORD': 'Izanmerde33=',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -162,10 +162,9 @@ USE_TZ = True
 AUTH_USER_MODEL = 'authentification.User'
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 

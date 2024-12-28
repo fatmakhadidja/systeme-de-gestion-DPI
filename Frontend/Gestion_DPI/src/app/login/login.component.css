@@ -102,6 +102,7 @@ p{
     width: 50%;
     margin-top: 20px;
     margin-left: 25%;
+    
 }
 form{
     width: 150%;
@@ -150,4 +151,21 @@ button:hover{
 input::placeholder{
     font-family: var(--font-family-text);
     font-size: 0.8rem;
+}
+
+
+@media (max-width : 600px) {
+    p{
+        font-size: 0.8rem;
+    }
+    
+    input{
+        width: 100%;
+        border: none;
+        padding: 2px;
+    }
+    label{
+        font-size: 0.8rem;
+    }
+    
 }

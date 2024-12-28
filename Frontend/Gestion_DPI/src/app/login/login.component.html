@@ -12,27 +12,28 @@
         <div id="bg-deco">
             <img src="../../assets/images/Amejay_Logo 1.svg" alt="logo">
         </div> 
-        <div id="image">
-             <img src="../../assets/images/Doctor.svg" alt="doctor"> 
-        </div>
-        
         <div id="card">
             <div id="head">
                 <h1>{{title}}</h1>
                 <p>{{text}}</p>    
             </div>
-            <form method="post" action="google.com">
+            <form>
                 <label>{{label1}}</label>
                 <div class="input">
                     <img src="../../assets/images/username.svg" alt="user icon">
-                    <input type="text" id="username" placeholder="{{ph1}}">
+
+                    <input type="email" id="email" #email placeholder="{{ph1}}"  name="{{name1}}" required>
                 </div>
                 <label>{{label2}}</label>
                 <div class="input">
                     <img src="../../assets/images/password.svg" alt="password icon">
-                    <input type="password" id="password" placeholder="{{ph2}}">
+                    <input type="password" id="password" #password placeholder="{{ph2}}" name="{{name2}}" required>
                 </div>
-                <button type="submit">{{button}}</button>
+                <!--<button (click)="onLogin(email.value)" type="submit">{{button}}</button>function to choose the next page according to the user-->
+                <button type="submit">{{button}}</button><!--function to choose the next page according to the user-->
             </form>
-        </div>  
+        </div> 
+        <div id="image">
+            <img src="../../assets/images/Secure login.svg" alt="user login"> 
+       </div> 
 </div>
