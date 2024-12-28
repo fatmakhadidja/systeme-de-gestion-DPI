@@ -11,9 +11,9 @@ import { LoginService } from '../login.service';
 export class LoginComponent {
 title = 'Connexion';
 text='Bienvenue à Amejay, votre portail vers une gestion médicale simplifiée et efficace !';
-label1 = `Nom d’Utilisateur`;
+label1 = `Email`;
 label2 = 'Votre mot de passe';
-ph1=`Votre nom d'utilisateur`;
+ph1=`Votre email`;
 ph2='Votre mot de passe';
 button='Se Connecter';
 
