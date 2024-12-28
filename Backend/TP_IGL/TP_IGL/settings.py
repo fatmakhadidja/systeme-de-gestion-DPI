@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
     'gestiondpi',
-    'authentification'
+    'authentification',
+    'creationdpi'
 ]
 
 
@@ -105,7 +106,7 @@ WSGI_APPLICATION = 'TP_IGL.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gestion_dpi',
+        'NAME': 'TPTEST2',
         'USER': 'root',
         'PASSWORD': 'meer@esi.28',
         'HOST': 'localhost',
@@ -121,7 +122,7 @@ REST_FRAMEWORK={
 
 }
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
@@ -158,7 +159,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+AUTH_USER_MODEL = 'authentification.User'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
@@ -167,6 +168,7 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
