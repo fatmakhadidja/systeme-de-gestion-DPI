@@ -1,0 +1,230 @@
+.ordonnance-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  width : 80%;
+  margin : auto;
+}
+
+h1 {
+  font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    padding: 10px 20px;
+    border: 3px solid #25a294;
+    border-radius: 5px;
+    display: inline-block;
+    width : 100%;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 10px;
+  width : 100%;
+}
+
+.input-field {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #3BD6CC;
+  border-radius: 5px;
+  width: 33%;
+  font-family: Nunito, sans-serif;
+}
+
+.prescription-table {
+  width: 100%;
+  overflow-x: auto;
+  font-family: Nunito, sans-serif;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+thead {
+  background-color: #00695c;
+  color: white;
+}
+
+.image-buttons-container {
+  display: flex;
+  justify-content: space-between; /* L'image à gauche et les boutons à droite */
+  align-items: center; /* Centre verticalement */
+  width: 100%;
+}
+
+@media (max-width : 700px) {
+  .image-buttons-container {
+    flex-direction: column;
+  }
+}
+
+.image-container {
+  flex: 0 0 auto; /* Garde l'image dans une taille fixe */
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column; /* Organisation verticale */
+  align-items: center; /* Aligne tout à droite */
+  gap: 20px; /* Espacement entre les groupes de boutons */
+}
+
+.action-buttons .btn-row {
+  display: flex; /* Les boutons "Annuler" et "Confirmer" sur la même ligne */
+  flex-direction: row;
+  gap: 10px; /* Espacement horizontal entre les boutons */
+  justify-content: flex-end; /* Aligne les boutons à droite */
+  width: 100%; /* Assure que la ligne prend la largeur du conteneur parent */
+}
+
+.action-buttons div {
+  display: flex;
+  flex-direction: column; /* Aligne les boutons à la verticale */
+  gap: 10px; /* Espacement entre les boutons dans chaque groupe */
+}
+
+
+
+.btn {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+
+.btn-add {
+  background-color: #242855;
+  color: white;
+    border: solid 1px white;
+    border-radius: 5px;
+    width: 100% ;
+}
+
+.btn-cancel {
+  background-color: black;
+    color: white;
+    border: solid 1px black;
+    border-radius: 5px;
+    width: 50%;
+}
+
+.btn-confirm {
+  background-color: #4ed6c4;
+    color: white;
+    border: solid 1px #4ed6c4;
+    border-radius: 5px;
+    width: 50%;
+}
+
+.btn-add:hover {
+  background-color: white;
+  color: #242855;
+  border: solid 1px #242855;
+}
+
+.btn-cancel:hover {
+  background-color: white;
+  color: black;
+  border: solid 1px black;
+}
+
+.btn-confirm:hover {
+  background-color: white;
+  color: #4ed6c4;
+  border: solid 1px #4ed6c4;
+}
+
+.image {
+  width: 100%; /* L'image occupe toute la largeur du conteneur */
+    height: auto; /* Maintient les proportions */
+    max-width: 250px; /* Limite maximale pour éviter qu'elle devienne trop grande */
+    object-fit: contain; /* Garde tout visible dans le conteneur */
+}
+
+@media (max-width: 768px) {
+  .input-fields {
+    flex-direction: column;
+  }
+
+  .input-field {
+    width: 100%;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+
+/* Modale */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content p {
+  font-size: 16px;
+  font-family: Nunito, sans-serif;
+  margin-bottom: 20px;
+}
+
+.modal-content button {
+  background-color: black;
+  color: white;
+  border: solid 1px black;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-family: Montserrat, sans-serif;
+  font-weight: 700;
+}
+
+.modal-content button:hover {
+  background-color: white;
+  color: black;
+  border: solid 1px black;
+}

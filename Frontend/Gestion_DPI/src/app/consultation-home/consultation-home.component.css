@@ -1,0 +1,172 @@
+/* Général */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Nunito, sans-serif;
+  overflow: hidden; /* Empêche le scroll */
+}
+
+/* Conteneur principal */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 100px); /* Enlève la hauteur du header */
+  text-align: center;
+  color: #218879;
+
+}
+
+h2 {
+  margin: 30px auto 30px auto;
+  font-size: 2rem;
+  font-weight : 700;
+  font-family: Montserrat, sans-serif;
+}
+
+/* Conteneur des boutons */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2vw;
+  margin-top: 20px;
+  width : 100%;
+}
+
+/* Boutons */
+.nav-button {
+  background-color: #242855;
+  color: white;
+  border: none;
+  padding: 20px;
+  width: 15vw;
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-family: Nunito, sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+@media (max-width: 800px) {
+  .save-container {
+    position : relative;
+    margin : auto;
+  }
+  h2 {
+    margin: 10px auto 10px auto;
+    font-size : 1rem;
+  }
+  .button-container {
+    width : 80%;
+  }
+
+  .nav-button {
+    height : 200px ;
+    width : 200px ;
+  }
+  .nav-button span {
+    display : none;
+  }
+  .nav-button {
+    height : 15vh;
+  }
+
+  .nav-button .img1, .nav-button .img2 {
+    margin: 10px;
+  }
+}
+
+.nav-button:hover {
+  background-color: #1d2145;
+  transform: scale(1.05);
+}
+
+.nav-button .img1 {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 15px;
+}
+
+.nav-button .img2 {
+  width: 80px;
+  height: 50px;
+  margin-bottom: 15px;
+}
+
+.nav-button span {
+  margin-top: 10px;
+}
+
+/* Image en bas à gauche */
+.image-container {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.image-container img {
+  width: 20vw;
+  height: auto;
+}
+
+
+/* Warning Message */
+.warning-message {
+  color: red;
+  margin-top: 10vh;
+  font-size: 1.2em;
+  font-family : Montserrat, sans-serif;
+  font-weight: 550;
+  width : 40%;
+}
+
+/* Save Button */
+.save-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.save-button {
+  background-color: #85E3DD;
+  color: #242855;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1em;
+  font-family: Montserrat, sans-serif;
+  font-weight : 700;
+  border-radius: 20px;
+  border : 1px solid #242855;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.save-button:hover {
+  background-color: white;
+  color : #218879;
+  border-color: #218879;
+  transform: scale(1.05);
+}
+
+@media (max-width: 550px) {
+  .nav-button {
+    height : 100px ;
+    width : 100px ;
+  }
+  .button-container {
+    width : 50%;
+  }
+  .warning-message {
+    width : 80%;
+  }
+}
+
