@@ -21,19 +21,20 @@ export class PageInfirmierComponent {
     this.soins = [];
   }
 
-  // Ajouter un nouveau soin vide
-  addSoin(): void {
-    this.soins.push({ description: '', observation: '' });
-  }
+  // Update dans la méthode "addSoin" pour ajouter un ID unique à chaque soin
+addSoin(): void {
+  this.soins.push({ description: '', observation: '' });
+}
+
+// Update la méthode "updateSoinData" pour s'assurer que les données sont mises à jour correctement
+updateSoinData(updatedSoin: { description: string; observation: string }, index: number): void {
+  this.soins[index].description = updatedSoin.description;
+  this.soins[index].observation = updatedSoin.observation;
+}
 
   // Supprimer un soin à un index donné
   deleteSoin(index: number): void {
     this.soins.splice(index, 1);
-  }
-
-  // Mettre à jour un soin à un index donné
-  updateSoinData(updatedSoin: { description: string; observation: string }, index: number): void {
-    this.soins[index] = updatedSoin;
   }
 
   // Annuler : Réinitialiser tout
@@ -45,11 +46,20 @@ export class PageInfirmierComponent {
 
   // Sauvegarder les soins
   save(): void {
+    if (this.soins.length === 0) {
+      alert('Aucun soin à enregistrer.');
+      return;
+    }
+  
     console.log('Patient sélectionné :', this.patientSelected);
     console.log('Soins à sauvegarder :', this.soins);
 
+    // alert('Patient sélectionné : ' + this.patientSelected);
+    // alert('Soins à sauvegarder : ' + JSON.stringify(this.soins));
+  
     alert('Les soins ont été enregistrés avec succès!');
     this.patientSelected = null;
     this.soins = [];
   }
+  
 }

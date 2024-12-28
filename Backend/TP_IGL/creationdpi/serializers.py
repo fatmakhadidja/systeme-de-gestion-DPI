@@ -154,8 +154,7 @@ class DPIDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DPI
-        fields = [
-            "nss", "nom_patient","prenom_patient","date_de_naissance","adresse","telephone","mutuelle","personne_a_contacter","nom_complet_medecin"]
+        fields = ["nss", "nom_patient","prenom_patient","date_de_naissance","adresse","telephone","mutuelle","personne_a_contacter","nom_complet_medecin"]
 
     def get_nom_complet_medecin(self, obj):
         """Retourne le nom complet du médecin (prénom + nom)."""

@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Nunito&display=swap');
 :root{
     /*COLORS*/
@@ -14,23 +13,21 @@
     --Aquamarine:#81FFF7;
     --Onahau:#C1FFFB;
     --black: #000000;
+    --delete : #f44336;
+    --hover-delete: #d32f2f;
     /*FONTS*/
     --font-family-title: 'Montserrat';
     --font-family-text: 'Nunito';
 }
+
 * {
   box-sizing: border-box;
-
-    margin: 0;
-    padding: 0;
-}
-
+  margin: 0;
+  padding: 0;
+  }
+  
 body {
   margin: 0;
   padding: 0;
-  background-color: rgba(33, 136, 121, 0.05);;
+  background-color: rgba(33, 136, 121, 0.05);
 }
-
-
-
-
