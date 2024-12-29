@@ -16,7 +16,7 @@ from django.shortcuts import get_object_or_404
 #         "antecedents": "string", 
 #         "autres_informations": "string"
 #     },
-#     
+    
 #           "ordonnance": {
 #             "date_prescription": "2025-05-30",
 #             "etat_ordonnance": true,

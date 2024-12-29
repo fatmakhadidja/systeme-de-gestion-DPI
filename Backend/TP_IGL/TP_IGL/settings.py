@@ -103,6 +103,7 @@ WSGI_APPLICATION = 'TP_IGL.wsgi.application'
 }
 
 '''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -112,6 +113,9 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
     }
+}
+DATABASES['default']['TEST'] = {
+    'NAME': 'test_igl_db',
 }
 REST_FRAMEWORK={
     'NON_FIELD_ERRORS_KEY':'error',
