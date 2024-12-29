@@ -124,9 +124,6 @@ class QRCodeSerializer(serializers.ModelSerializer):
             return obj.qr_code.url
         return None
 
-
-
-
 ###################################Affichage############################################################
 class DPIListSerializer(serializers.ModelSerializer):
     nss = serializers.CharField(source="patient.NSS")

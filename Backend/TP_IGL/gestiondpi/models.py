@@ -109,10 +109,10 @@ class Ordonnance(models.Model):
 
 class Consultation(models.Model):
     id_consultation = models.AutoField(primary_key=True)
-    dpi = models.ForeignKey('DPI', related_name="consultations", on_delete=models.CASCADE)
+    dpi = models.ForeignKey(DPI, related_name="consultations", on_delete=models.CASCADE)
     date_consult = models.DateField()
-    resume = models.OneToOneField('Resume', related_name="consultation", on_delete=models.CASCADE)
-    ordonnance = models.OneToOneField(Ordonnance, related_name="Consultation", on_delete=models.CASCADE)
+    resume = models.OneToOneField(Resume, related_name="consultation", on_delete=models.CASCADE)
+    ordonnance = models.OneToOneField(Ordonnance, related_name="consultation", on_delete=models.CASCADE)
     
     # Add bilanRadiologue and bilanBiologique, allowing them to be null
     bilan_radiologue = models.ForeignKey('BilanRadiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)
