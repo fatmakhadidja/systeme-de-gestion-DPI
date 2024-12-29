@@ -1,18 +1,31 @@
 import { Component } from '@angular/core';
-
+import { FormsModule } from '@angular/forms'; 
+import { LoginService } from '../login.service';
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  standalone: true,
+  standalone:true
 })
 export class LoginComponent {
 title = 'Connexion';
 text='Bienvenue à Amejay, votre portail vers une gestion médicale simplifiée et efficace !';
-label1 = `Nom d’Utilisateur`;
+label1 = `Email`;
 label2 = 'Votre mot de passe';
-ph1=`Votre nom d'utilisateur`;
+ph1=`Votre email`;
 ph2='Votre mot de passe';
 button='Se Connecter';
+
+name1='username';
+name2='password';
+
+
+constructor(private loginService: LoginService) { }
+
+// onLogin(usernameValue:string){
+//   this.loginService.onLogin(usernameValue);
+// }
+
+
 }

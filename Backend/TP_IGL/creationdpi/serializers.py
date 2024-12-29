@@ -16,8 +16,6 @@ from django.db import IntegrityError
 from django.urls import reverse
 
 
-
-
 ########################################Creation d DPI###########################################################
 class DPICreationSerializer(serializers.Serializer):
     nom_patient = serializers.CharField(max_length=100)
@@ -29,7 +27,7 @@ class DPICreationSerializer(serializers.Serializer):
     mutuelle = serializers.CharField(max_length=100)
     personne_a_contacter = serializers.CharField(max_length=100)
     nom_complet_medecin = serializers.CharField(max_length=200)  # Nom complet du médecin (prénom + nom ou nom + prénom)
-    antecedents = serializers.CharField(allow_blank=True, default="")
+
 
     def validate(self, data):
         nom_complet = data['nom_complet_medecin'].strip()
@@ -104,7 +102,7 @@ class DPICreationSerializer(serializers.Serializer):
         dpi = DPI.objects.create(
             patient=patient,
             medecin=medecin,
-            antecedents=validated_data.get("antecedents", "")
+
         )
 
         # Génération automatique du QR code
@@ -126,6 +124,12 @@ class QRCodeSerializer(serializers.ModelSerializer):
             return obj.qr_code.url
         return None
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 000c1882705e89e109b1d23bd1f8a4c760cc1fa9
 ###################################Affichage############################################################
 class DPIListSerializer(serializers.ModelSerializer):
     nss = serializers.CharField(source="patient.NSS")
@@ -153,11 +157,18 @@ class DPIDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DPI
+<<<<<<< HEAD
         fields = [
             "nss", "nom_patient","prenom_patient","date_de_naissance","adresse","telephone","mutuelle","personne_a_contacter","nom_complet_medecin"]
+=======
+        fields = ["nss", "nom_patient","prenom_patient","date_de_naissance","adresse","telephone","mutuelle","personne_a_contacter","nom_complet_medecin"]
+>>>>>>> 000c1882705e89e109b1d23bd1f8a4c760cc1fa9
 
     def get_nom_complet_medecin(self, obj):
         """Retourne le nom complet du médecin (prénom + nom)."""
         utilisateur = obj.medecin.utilisateur
         return f"{utilisateur.first_name} {utilisateur.last_name}"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 000c1882705e89e109b1d23bd1f8a4c760cc1fa9

@@ -4,7 +4,8 @@
 
 /* Page Title with Gradient */
 .page-title {
-    font-size: 2rem;
+    font-size: 1.7rem;
+    margin-top : 8px;
     text-align: center;
     font-weight: bold;
   }
@@ -34,14 +35,14 @@
   }
   
   .ajout-soins-titre {
-    font-size : 1.4rem;
+    font-size : 1.2rem;
     font-weight : 700 ;
     color : #4a4a4a;
     display: block;
     padding-top : 1rem;
   }
 
-  .soins-ajoutees-titre {
+  .soins-ajoutes-titre {
     color : #4a4a4a;
   }
 
@@ -50,7 +51,7 @@
     max-height: 300px;
   }
   
-  .liste-soins-ajoutees {
+  .liste-soins-ajoutes {
     max-height: 300px;
     overflow-y: auto; /* Scroll for added forms */
   }

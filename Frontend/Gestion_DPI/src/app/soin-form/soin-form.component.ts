@@ -10,11 +10,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class SoinFormComponent {
   @Input() index!: number; // Index du formulaire
+  @Input() description: string = ''; // Reçoit la description depuis le parent
+  @Input() observation: string = ''; // Reçoit l'observation depuis le parent
   @Output() delete = new EventEmitter<void>(); // Événement pour supprimer le formulaire
   @Output() soinDataChanged = new EventEmitter<{ description: string, observation: string }>();
 
-  description: string = '';
-  observation: string = '';
 
   // Méthode appelée lorsqu'un champ est modifié
   onInputChange(): void {

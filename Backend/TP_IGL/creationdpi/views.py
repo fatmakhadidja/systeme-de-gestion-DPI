@@ -1,10 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import DPICreationSerializer
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from .serializers import  DPICreationSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -24,7 +20,7 @@ from rest_framework.generics import RetrieveAPIView
 ###########################################CREATION DPI###########################################################"
 
 class DPICreationView(APIView):
-     def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         # Sérialisation et validation des données de la requête
         serializer = DPICreationSerializer(data=request.data)
         if serializer.is_valid():
@@ -50,6 +46,8 @@ class QRCodeView(APIView):
         serializer = QRCodeSerializer(dpi)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 
 ########################################RECHERCHE###########################################################################""
@@ -122,6 +120,25 @@ class QRCodeScanView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ############################################"AFFICHAGE####################################################
+
+class ConsultDPIView(APIView):
+    def get(self, request, utilisateur_id):
+        # Récupérer le patient associé à l'utilisateur
+        try:
+            patient = Patient.objects.get(utilisateur__id=utilisateur_id)
+        except Patient.DoesNotExist:
+            raise NotFound("Aucun patient trouvé pour cet utilisateur.")
+
+        # Récupérer le DPI du patient
+        try:
+            dpi = DPI.objects.get(patient=patient)
+        except DPI.DoesNotExist:
+            raise NotFound("Aucun DPI trouvé pour ce patient.")
+
+        # Sérialiser les données du DPI
+        serializer = DPIDetailSerializer(dpi)
+        return Response(serializer.data)
+
 class DPIListView(ListAPIView):
     queryset = DPI.objects.all()
     serializer_class = DPIListSerializer
