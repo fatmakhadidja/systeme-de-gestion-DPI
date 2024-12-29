@@ -124,12 +124,6 @@ class QRCodeSerializer(serializers.ModelSerializer):
             return obj.qr_code.url
         return None
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 000c1882705e89e109b1d23bd1f8a4c760cc1fa9
 ###################################Affichage############################################################
 class DPIListSerializer(serializers.ModelSerializer):
     nss = serializers.CharField(source="patient.NSS")
@@ -157,18 +151,9 @@ class DPIDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DPI
-<<<<<<< HEAD
-        fields = [
-            "nss", "nom_patient","prenom_patient","date_de_naissance","adresse","telephone","mutuelle","personne_a_contacter","nom_complet_medecin"]
-=======
         fields = ["nss", "nom_patient","prenom_patient","date_de_naissance","adresse","telephone","mutuelle","personne_a_contacter","nom_complet_medecin"]
->>>>>>> 000c1882705e89e109b1d23bd1f8a4c760cc1fa9
 
     def get_nom_complet_medecin(self, obj):
         """Retourne le nom complet du médecin (prénom + nom)."""
         utilisateur = obj.medecin.utilisateur
         return f"{utilisateur.first_name} {utilisateur.last_name}"
-<<<<<<< HEAD
-
-=======
->>>>>>> 000c1882705e89e109b1d23bd1f8a4c760cc1fa9
