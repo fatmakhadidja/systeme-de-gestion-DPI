@@ -80,6 +80,8 @@
     width: 20%;
     color: var(--White);
     font-family: var(--font-family-text);
+    text-align: center;
+    text-decoration: none;
     font-weight: 700;
     border: none;
     border-radius: 3px;
