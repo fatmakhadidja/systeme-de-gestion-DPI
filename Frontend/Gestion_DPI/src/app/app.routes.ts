@@ -10,6 +10,6 @@ export const routes: Routes = [
     { path: 'recherche-patient', component: RecherchePatientComponent },
     {path: 'creation-dpi', component: CreationDPIComponent},
     // { path: 'ConsultationDPI/consulter-dpi', component: ConsulterDpiComponent },
-    { path: '', redirectTo: '/recherche-patient', pathMatch: 'full' },
+    // { path: '', redirectTo: '/recherche-patient', pathMatch: 'full' },
     {path: 'ConsultationDPI/consulter-dpi/:id',component: ConsulterDpiComponent}
 ];

@@ -8,8 +8,10 @@
             <input type="text" placeholder="Search By NSS..." [(ngModel)]="searchValue"/>
             <button (click)="search()">Search</button>
         </div>
-        <input type="file" id="qrFile" (change)="onFileSelected($event)" />
-        <button class="qrcode" (click)="scanQRCode()">Scan me</button>
+        <div class="qrcode-search">
+            <input type="file" id="qrFile" (change)="onFileSelected($event)" />
+            <button class="qrcode" (click)="scanQRCode()">Scan me</button>
+        </div>
     </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
         <ng-container matColumnDef="NSS">

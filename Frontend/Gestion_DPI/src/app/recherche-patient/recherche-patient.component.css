@@ -39,6 +39,7 @@
     display: flex;
     align-items: center;
     margin-top: 10%;
+    justify-content: space-around;
   }
   .search-bar {
     display: flex;
@@ -106,7 +107,12 @@
     border: none;
     border-radius: 3px;
   }
-
+.qrcode-search{
+  display: flex;
+  align-items: center;
+   border: 2px solid var(--Port-gore);
+  border-radius: 3px;
+}
   @media (max-width:600px){
     .creation{
         float: top;
