@@ -133,13 +133,13 @@ REST_FRAMEWORK={
 
 """
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "mydjango_db",
-        "USER": "root",
-        "PASSWORD": "mysql2024",
-        "HOST": "localhost",
-        "PORT": "3306",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'TP_IGL',
+        'USER': 'fatma',
+        'PASSWORD': '30 may 05 30 may 05',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 REST_FRAMEWORK = {
