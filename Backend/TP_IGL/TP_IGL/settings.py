@@ -48,18 +48,21 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "rest_framework",
-    "corsheaders",
-    "rest_framework_simplejwt.token_blacklist",
-    "gestiondpi",
-    "authentification",
-    "creationdpi",
+
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
+    'gestiondpi',
+    'authentification',
+    'creationdpi',
+    'miseajourdpi',
+    'django_extensions'
 ]
 
 
@@ -111,9 +114,9 @@ WSGI_APPLICATION = "TP_IGL.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'IGL_DB',
+        'NAME': 'TP_IGL',
         'USER': 'fatma',
-        'PASSWORD': '30 may 05',
+        'PASSWORD': '30 may 05 30 may 05',
         'HOST': 'localhost',
         'PORT': '3306',
     }
