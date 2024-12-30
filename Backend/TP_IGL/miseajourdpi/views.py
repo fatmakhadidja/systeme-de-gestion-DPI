@@ -167,7 +167,8 @@ class GetConsultations(APIView):
                "num_consult": consultation.id_consultation,
                "date_consult": consultation.date_consult,
                "ordonnance": bool(consultation.ordonnance),
-               "prescription": bool(Prescription.objects.filter(ordonnance=consultation.ordonnance).exists()),
+               "bilan_biologique" : bool(consultation.bilan_biologique) ,
+               "bilan_radiologique": bool(consultation.bilan_radiologue),
                "resume": bool(consultation.resume),
             })
         return Response(data)
