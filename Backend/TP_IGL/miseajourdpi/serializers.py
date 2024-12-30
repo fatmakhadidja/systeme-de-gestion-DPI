@@ -103,38 +103,29 @@ class ConsultationSerializer(serializers.ModelSerializer):
             if ordonnance_serializer.is_valid(raise_exception=True):
                 ordonnance = ordonnance_serializer.save()
 
-            # Create Prescriptions if provided in ordonnance
-            prescription_data = ordonnance_data.get('prescription', [])
-            if prescription_data:
-                for prescription in prescription_data:
-                    prescription_serializer = PrescriptionSerializer(data=prescription)
-                    if prescription_serializer.is_valid(raise_exception=True):
-                        prescription_serializer.save(ordonnance=ordonnance)
+        # Create BilanBiologique if data is provided
+        bilan_biologique = None
+        if bilan_biologique_data:
+            bilan_biologique_serializer = BilanBiologiqueSerializer(data=bilan_biologique_data)
+            if bilan_biologique_serializer.is_valid(raise_exception=True):
+                bilan_biologique = bilan_biologique_serializer.save()
 
-        # Create the Consultation instance
+        # Create BilanRadiologique if data is provided
+        bilan_radiologue = None
+        if bilan_radiologue_data:
+            bilan_radiologue_serializer = BilanRadiologiqueSerializer(data=bilan_radiologue_data)
+            if bilan_radiologue_serializer.is_valid(raise_exception=True):
+                bilan_radiologue = bilan_radiologue_serializer.save()
+
+        # Create the Consultation instance and link bilan objects
         consultation = Consultation.objects.create(
             dpi=dpi,
             resume=resume,
             ordonnance=ordonnance,
             date_consult=date.today(),
+            bilan_biologique=bilan_biologique,
+            bilan_radiologue=bilan_radiologue
         )
-
-        # Create BilanBiologique if data is provided
-        if bilan_biologique_data:
-            bilan_biologique_serializer = BilanBiologiqueSerializer(data=bilan_biologique_data)
-            if bilan_biologique_serializer.is_valid(raise_exception=True):
-                bilan_biologique = bilan_biologique_serializer.save()
-                consultation.bilan_biologique = bilan_biologique
-
-        # Create BilanRadiologique if data is provided
-        if bilan_radiologue_data:
-            bilan_radiologue_serializer = BilanRadiologiqueSerializer(data=bilan_radiologue_data)
-            if bilan_radiologue_serializer.is_valid(raise_exception=True):
-                bilan_radiologue = bilan_radiologue_serializer.save()
-                consultation.bilan_radiologue = bilan_radiologue
-
-        # Save the consultation after adding bilan objects
-        consultation.save()
 
         return consultation
 

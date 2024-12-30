@@ -34,7 +34,7 @@ from django.shortcuts import get_object_or_404
 #     "bilan_biologique": {
 #         "description": "string"
 #     },
-#     "bilan_radiologique": {
+#     "bilan_radiologue": {
 #         "description": "string",
 #         "type": "string"
 #     }
@@ -230,6 +230,8 @@ class GetResume(APIView):
             "autres_informations" :resume.autres_informations
         }
         return Response(data)    
+
+
 
 # the data sent from the SGPH will be in the format 
 # {
