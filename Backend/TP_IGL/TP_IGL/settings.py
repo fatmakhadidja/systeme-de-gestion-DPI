@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'gestiondpi',
     'authentification',
-    'creationdpi'
+    'creationdpi',
+    'miseajourdpi',
+    'django_extensions'
 ]
 
 
@@ -107,9 +109,9 @@ WSGI_APPLICATION = 'TP_IGL.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'IGL_DB',
+        'NAME': 'TP_IGL',
         'USER': 'fatma',
-        'PASSWORD': '30 may 05',
+        'PASSWORD': '30 may 05 30 may 05',
         'HOST': 'localhost',
         'PORT': '3306',
     }
