@@ -1,15 +1,17 @@
 // src/app/app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; 
-import { AppRoutingModule } from './app-routing.module';
 
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule
   ],
+ 
   providers: [],
   bootstrap: [],
 })
@@ -24,6 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 bootstrapApplication(AppComponent, {
   providers: [
+
     importProvidersFrom(
       BrowserAnimationsModule,
       FormsModule,

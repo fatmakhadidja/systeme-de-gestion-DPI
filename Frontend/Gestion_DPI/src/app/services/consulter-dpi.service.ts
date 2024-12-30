@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import exp from 'constants';
 import { Observable,of } from 'rxjs';
-//import { HttpClient } from '@angular/common/http';
+//import { provideHttpClient, HttpClient, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 export interface ListConsultation {
   date: string;
@@ -23,6 +24,14 @@ export interface ListMeds {
     Date:String;
     Description:string;
     Observation:string;
+  }
+
+  export interface ConsultationData {
+    num_consult: number;
+    date_consult: string;
+    ordonnance: boolean;
+    prescription: boolean;
+    resume: boolean;
   }
 
 @Injectable({
@@ -80,13 +89,30 @@ export class ConsulterDpiService {
   ];
   private valeurBio =  { Pression_arterielle: '120/80', Glycemie: '1.2 g/L', Niveau_cholesterol: '200 mg/dL' };
 
-  //private apiUrl = 'http://localhost:8000/api/list-consultations/';
-  constructor() { }
-
-  getListConsultation():Observable<ListConsultation[]>{
-    return of(this.ELEMENT_DATA);
-    //return  this.http.get<ListConsultation[]>(this.apiUrl);
-  }
+  private apiUrl = 'http://127.0.0.1:8000/api/miseajourdpi/getConsultations/';
+  private soinsurl = 'http://127.0.0.1:8000/api/miseajourdpi/getSoins/';
+  //constructor(private http: HttpClient) { }
+/*
+  getListConsultation(dpi: number):Observable<any>{
+    const params = new HttpParams().set('dpi', dpi.toString());
+    return  this.http.get<any>(this.apiUrl, { params });
+  }*/
+   /* getListConsultation(dpi: number): Observable<ListConsultation[]> {
+      const params = new HttpParams().set('dpi', dpi.toString());
+      return this.http.get<ConsultationData[]>(this.apiUrl, { params }).pipe(
+        map((data: ConsultationData[]) => 
+          data.map(consultation => ({
+            NConsultation: consultation.num_consult,        // num_consult -> NConsultation
+            date: consultation.date_consult,                // date_consult -> date
+            Ordo: consultation.ordonnance ? 'oui' : 'non',  // ordonnance -> Ordo (oui/non)
+            Bilan_bio: 'non',                              // Utiliser vos propres données pour Bilan_bio
+            Bilan_rad: 'non',                              // Utiliser vos propres données pour Bilan_rad
+            Resume: consultation.resume ? 'oui' : 'non'    // resume -> Resume (oui/non)
+          }))
+        )
+      );
+    }*/
+    
   getListMeds():Observable<ListMeds[]>{
      return of(this.ELEMENT_DATA_med);
   }
