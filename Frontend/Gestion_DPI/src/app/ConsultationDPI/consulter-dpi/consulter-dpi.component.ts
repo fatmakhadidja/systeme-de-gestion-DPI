@@ -45,16 +45,16 @@ export class ConsulterDpiComponent implements OnInit{
 */
     ngOnInit(): void {
       const dpi = 1; // Remplacer par le DPI du patient
-       /* this.consulterDpiService.getListConsultation(dpi).subscribe(data => {
+        this.consulterDpiService.getListConsultation(dpi).subscribe(data => {
         this.dataSource = data;
       }, error => {
         console.error('Erreur lors de la récupération des consultations:', error);
-      });*/
-      const params = new HttpParams().set('dpi', dpi.toString());
+      });
+      /*const params = new HttpParams().set('dpi', dpi.toString());
       this.http.get('http://127.0.0.1:8000/api/miseajourdpi/getConsultations/', {params}).subscribe({
         next: data => console.log(data),
         error: err => console.error(err)
-      });
+      });*/
       this.consulterDpiService.getListSoins().subscribe(data => {
         this.dataSource2 = data;
       });

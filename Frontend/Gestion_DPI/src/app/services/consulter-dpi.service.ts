@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import exp from 'constants';
 import { Observable,of } from 'rxjs';
-//import { provideHttpClient, HttpClient, HttpParams } from '@angular/common/http';
+import { provideHttpClient, HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 export interface ListConsultation {
@@ -91,14 +91,15 @@ export class ConsulterDpiService {
 
   private apiUrl = 'http://127.0.0.1:8000/api/miseajourdpi/getConsultations/';
   private soinsurl = 'http://127.0.0.1:8000/api/miseajourdpi/getSoins/';
-  //constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 /*
   getListConsultation(dpi: number):Observable<any>{
     const params = new HttpParams().set('dpi', dpi.toString());
     return  this.http.get<any>(this.apiUrl, { params });
   }*/
-   /* getListConsultation(dpi: number): Observable<ListConsultation[]> {
-      const params = new HttpParams().set('dpi', dpi.toString());
+   getListConsultation(dpi: number): Observable<ListConsultation[]> {
+      const params = new HttpParams().set('dpi', dpi);
+      console.log("hi");
       return this.http.get<ConsultationData[]>(this.apiUrl, { params }).pipe(
         map((data: ConsultationData[]) => 
           data.map(consultation => ({
@@ -111,7 +112,7 @@ export class ConsulterDpiService {
           }))
         )
       );
-    }*/
+    }
     
   getListMeds():Observable<ListMeds[]>{
      return of(this.ELEMENT_DATA_med);
