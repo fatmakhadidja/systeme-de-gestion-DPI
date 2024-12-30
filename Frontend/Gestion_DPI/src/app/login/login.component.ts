@@ -12,20 +12,28 @@ export class LoginComponent {
 title = 'Connexion';
 text='Bienvenue à Amejay, votre portail vers une gestion médicale simplifiée et efficace !';
 label1 = `Email`;
-label2 = 'Votre mot de passe';
+label2 = 'Mot de passe';
 ph1=`Votre email`;
 ph2='Votre mot de passe';
 button='Se Connecter';
-
-name1='username';
+name1='email';
 name2='password';
 
+email = '';
+password = '';
 
 constructor(private loginService: LoginService) { }
 
-// onLogin(usernameValue:string){
-//   this.loginService.onLogin(usernameValue);
-// }
-
-
+onSubmit(): void{
+  this.loginService.login(this.email, this.password).subscribe({
+    next: (response) => {
+      console.log('Login successful:', response);
+      this.loginService.handleLoginSuccess(response);
+    },
+    error: (err) => {
+      console.error('Login failed:', err);
+      alert('Login failed. Please check your email and password.');
+    },
+  });
+}
 }
