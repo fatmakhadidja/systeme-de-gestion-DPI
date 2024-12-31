@@ -40,13 +40,14 @@ export class BilanRadiologiqueComponent {
     this.consultationService.updateConsultation('bilan_radiologique', this.bilanRadiologique);
     this.modalMessage = 'Bilan radiologique enregistré !';
     this.showModal = true ;
+    this.router.navigate(['/creation-consult']);
     }
   }
   }
   }
 
   navigateToConsultation() {
-    this.router.navigate(['/consultation-home']); // Remplacez par la route correcte
+    this.router.navigate(['/creation-consult']);
   }
 
   closeModal() {

@@ -6,6 +6,7 @@ import { Consultation } from '../models/consultation.model';
 })
 export class ConsultationService {
   private consultation: Consultation = {
+    nss: '2222222', // constant for now, needed from amira
     resume: {
       diagnostic: '',
       symptomes: '',
@@ -13,20 +14,7 @@ export class ConsultationService {
       autres_informations: '',
     },
     ordonnance: {
-      date_prescription: '',
-      etat_ordonnance: false,
-      prescriptions: [
-        {
-          dose: '500mg',
-          duree: '7 days',
-          medicament: {
-            nom: 'Paracetamol',
-            description: 'Pain reliever and fever reducer',
-            prix: 5,
-            quantite: 10,
-          },
-        },
-      ],
+      prescription: [],
     },
     bilan_biologique: {
       description: '',
@@ -37,14 +25,11 @@ export class ConsultationService {
     },
   };
 
-  getConsultation() {
+  getConsultation(): Consultation {
     return this.consultation;
   }
 
-  updateConsultation<K extends keyof Consultation>(
-    section: K,
-    data: Consultation[K]
-  ): void {
-    this.consultation[section] = data;
+  updateConsultation<T extends keyof Consultation>(key: T, value: Consultation[T]): void {
+    this.consultation[key] = value;
   }
 }

@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     'authentification',
     'creationdpi',
     'miseajourdpi',
-    'django_extensions'
+    'django_extensions',
 ]
 
 
@@ -74,6 +74,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",  # Angular frontend URL
 ]
 
 ROOT_URLCONF = "TP_IGL.urls"

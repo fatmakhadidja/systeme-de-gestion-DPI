@@ -30,9 +30,9 @@ handleLoginSuccess(response: any): void {
     }if (role === 'patient') {
       this.router.navigate(['']);
     }else if (role === 'medecin') {
-      this.router.navigate(['/recherche-patient']);
+      this.router.navigate(['/creation-consult']); //recherche-patient
     } else if (role === 'infirmier') {
-      this.router.navigate(['']);
+      this.router.navigate(['/soins-infirmiers']);
     } else if (role === 'pharmacien'){
       this.router.navigate(['']);
     }else if (role === 'laborantin'){
