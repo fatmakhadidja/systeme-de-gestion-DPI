@@ -2,14 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
 from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Resume
+from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Patient
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 
 # the expected format of the info from the frontend
 # {
-#     "dpi": 1,  // or patient_id - they are the same since created simultaneously
+#     "nss": "1111111",  // or patient_id - they are the same since created simultaneously
 #     "resume": {
 #         "diagnostic": "string", 
 #         "symptomes": "string", 
@@ -35,6 +35,12 @@ from django.shortcuts import get_object_or_404
 # }
 class AjouterConsultation(APIView):
     def post(self, request):
+
+        nss=request.data.pop('nss', None)
+        patient = Patient.objects.get(NSS=nss)
+        dpi = DPI.objects.get(patient=patient)
+        request.data['dpi'] =dpi.id_dpi
+        
         # Serialize the data from the frontend to create a new consultation
         serializer = ConsultationSerializer(data=request.data)  
         

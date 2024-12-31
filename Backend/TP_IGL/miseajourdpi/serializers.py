@@ -50,6 +50,9 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
 
         return ordonnance
 
+    
+
+
 
 class BilanRadiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
