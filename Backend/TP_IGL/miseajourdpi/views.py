@@ -35,12 +35,13 @@ from django.shortcuts import get_object_or_404
 # }
 class AjouterConsultation(APIView):
     def post(self, request):
-
+        
+        # Get dpi_id based on the nss provided
         nss=request.data.pop('nss', None)
         patient = Patient.objects.get(NSS=nss)
         dpi = DPI.objects.get(patient=patient)
         request.data['dpi'] =dpi.id_dpi
-        
+
         # Serialize the data from the frontend to create a new consultation
         serializer = ConsultationSerializer(data=request.data)  
         
