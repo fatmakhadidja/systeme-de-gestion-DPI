@@ -18,8 +18,7 @@ from django.shortcuts import get_object_or_404
 #     },
     
 #           "ordonnance": {
-#             "date_prescription": "2025-05-30",
-#             "etat_ordonnance": false,
+#  
 #             "prescription": [{
 #                 "dose": "string",
 #                 "duree": "string",
