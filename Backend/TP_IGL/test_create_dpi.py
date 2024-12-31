@@ -25,12 +25,12 @@ try:
     )
 
     # Remplir les champs du formulaire
-    driver.find_element(By.ID, "nom").send_keys("bouchoucha")
-    driver.find_element(By.ID, "prenom").send_keys("anis")
-    driver.find_element(By.ID, "nss").send_keys("325941556")
-    driver.find_element(By.ID, "ddn").send_keys("2003-01-01")
+    driver.find_element(By.ID, "nom").send_keys("guitoune")
+    driver.find_element(By.ID, "prenom").send_keys("yacine")
+    driver.find_element(By.ID, "nss").send_keys("3259849")
+    driver.find_element(By.ID, "ddn").send_keys("01-01-2004")
     driver.find_element(By.ID, "adresse").send_keys("123 rue Example")
-    driver.find_element(By.ID, "num_tel").send_keys("0102030405")
+    driver.find_element(By.ID, "num_tel").send_keys("0540049472")
     driver.find_element(By.ID, "mutuelle").send_keys("Mutuelle A")
     driver.find_element(By.ID, "medecin").send_keys("yacine zaouche")
     driver.find_element(By.ID, "contact").send_keys("Contact A")
