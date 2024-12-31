@@ -50,6 +50,9 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
 
         return ordonnance
 
+    
+
+
 
 class BilanRadiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
@@ -157,8 +160,9 @@ class SoinSerializer(serializers.ModelSerializer):
 #     }
 # ]   
 class PatientSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(source='utilisateur.first_name')  # Get first_name from the User model
-    last_name = serializers.CharField(source='utilisateur.last_name')    # Get last_name from the User model
+    first_name = serializers.CharField(source='utilisateur.first_name')  
+    last_name = serializers.CharField(source='utilisateur.last_name')    
+
 
     class Meta:
         model = Patient
