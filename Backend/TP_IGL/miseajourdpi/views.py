@@ -2,39 +2,33 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
 from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI
+from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Resume
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 
 # the expected format of the info from the frontend
 # {
-#     "dpi": 1, 
+#     "dpi": 1,  // or patient_id - they are the same since created simultaneously
 #     "resume": {
 #         "diagnostic": "string", 
 #         "symptomes": "string", 
 #         "antecedents": "string", 
 #         "autres_informations": "string"
-#     },
-    
-#           "ordonnance": {
-#             "date_prescription": "2025-05-30",
-#             "etat_ordonnance": true,
-#             "prescription": [{
+#     },  
+#           "ordonnance": { 
+#             "prescription": [
+#              {
 #                 "dose": "string",
 #                 "duree": "string",
-#                 "medicament": {
-#                 "nom": "string",
-#                 "description": "string",
-#                 "prix": 10,
-#                 "quantite": 5
-#           }],
-#         }
-#     },
+#                 "medicament": "string"
+#               }
+#                 ]
+#         },
 #     "bilan_biologique": {
 #         "description": "string"
 #     },
-#     "bilan_radiologique": {
+#     "bilan_radiologue": {
 #         "description": "string",
 #         "type": "string"
 #     }
@@ -145,11 +139,12 @@ class GetSoins(APIView):
 #-------------------------------------------------------------------------------------------  
 # the data sent to the front end will be in this format (list of JSON data):
 # [
-#     {
-#         "num_consult": 1,
-#         "date_consult": "2024-12-22",
+# {
+#         "id_consult": 1,
+#         "date_consult": "2024-12-31",
 #         "ordonnance": true,
-#         "prescription": true,
+#         "bilan_biologique": true,
+#         "bilan_radiologique": true,
 #         "resume": true
 #     }
 # ]
@@ -164,10 +159,11 @@ class GetConsultations(APIView):
         consultations = Consultation.objects.filter(dpi=dpi)
         for consultation in consultations:
             data.append({
-               "num_consult": consultation.id_consultation,
+                "id_consult" :consultation.id_consultation,
                "date_consult": consultation.date_consult,
                "ordonnance": bool(consultation.ordonnance),
-               "prescription": bool(Prescription.objects.filter(ordonnance=consultation.ordonnance).exists()),
+               "bilan_biologique" : bool(consultation.bilan_biologique) ,
+               "bilan_radiologique": bool(consultation.bilan_radiologue),
                "resume": bool(consultation.resume),
             })
         return Response(data)
@@ -183,7 +179,8 @@ class GetConsultations(APIView):
 #     },
 # ]
 # the data sent from the front will be i the format 
-# {"id_consult" :  1}
+# {"id_dpi" :  1,
+# "date_consultation" : "2024-12-31" }
 class GetOrdonnance(APIView):
     def get(self,request):
         id_consult = request.data['id_consult']
@@ -191,13 +188,13 @@ class GetOrdonnance(APIView):
         if id_consult is None:
             return Response({"error": "id_consult parameter is required"}, status=400)
         
-        consultation = Consultation.objects.get(id_consultation=id_consult)
+        consultation=Consultation.objects.filter(id_consult=id_consult).first()
         ordonnance = consultation.ordonnance
         prescriptions = Prescription.objects.filter(ordonnance=ordonnance)
         for prescription in prescriptions :
             data.append(
                 {
-                    "medicament" : prescription.medicament.nom,
+                    "medicament" : prescription.medicament,
                     "dose" : prescription.dose,
                     "duree" : prescription.duree
                 }
@@ -217,10 +214,11 @@ class GetOrdonnance(APIView):
 class GetResume(APIView):
     def get(self,request):
         id_consult = request.data['id_consult']
-        data ={}
+        data = []
         if id_consult is None:
             return Response({"error": "id_consult parameter is required"}, status=400)
-        consultation = Consultation.objects.get(id_consultation=id_consult) 
+        
+        consultation=Consultation.objects.filter(id_consult=id_consult).first()
         resume = consultation.resume
         data = {
             "diagnostic" : resume.diagnostic,
@@ -229,6 +227,8 @@ class GetResume(APIView):
             "autres_informations" :resume.autres_informations
         }
         return Response(data)    
+
+
 
 # the data sent from the SGPH will be in the format 
 # {

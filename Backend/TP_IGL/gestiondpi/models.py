@@ -91,13 +91,6 @@ class Resume(models.Model):
         return "Résumé"
  
 
-class Medicament(models.Model):
-    id_medicament= models.AutoField(primary_key=True)
-    nom = models.CharField(max_length=100)
-    description = models.TextField()
-    prix = models.DecimalField(max_digits=10, decimal_places=2)
-    quantite = models.PositiveIntegerField()
-
 
 
     
@@ -127,7 +120,7 @@ class Prescription(models.Model):
     ordonnance = models.ForeignKey(Ordonnance, related_name="prescriptions", on_delete=models.CASCADE)
     dose = models.CharField(max_length=50)
     duree = models.CharField(max_length=50)
-    medicament = models.OneToOneField(Medicament, related_name="prescription", on_delete=models.CASCADE,default=1)    
+    medicament = models.CharField(max_length=100,default='Default Value') 
 
 '''class BilanBiologique(models.Model):
     id_bilanbiologique = models.AutoField(primary_key=True)

@@ -48,7 +48,6 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -129,8 +128,6 @@ REST_FRAMEWORK={
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
-
-
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
