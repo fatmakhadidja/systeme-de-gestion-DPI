@@ -13,6 +13,8 @@ from pyzbar.pyzbar import decode
 from PIL import Image
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import RetrieveAPIView
+from rest_framework.exceptions import NotFound
+
 
 
 
