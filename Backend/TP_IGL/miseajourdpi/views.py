@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 
 # the expected format of the info from the frontend
 # {
-#     "dpi": 1, 
+#     "dpi": 1,  // or patient_id - they are the same since created simultaneously
 #     "resume": {
 #         "diagnostic": "string", 
 #         "symptomes": "string", 
@@ -19,7 +19,7 @@ from django.shortcuts import get_object_or_404
     
 #           "ordonnance": {
 #             "date_prescription": "2025-05-30",
-#             "etat_ordonnance": true,
+#             "etat_ordonnance": false,
 #             "prescription": [{
 #                 "dose": "string",
 #                 "duree": "string",

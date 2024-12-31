@@ -43,11 +43,15 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ordonnance
-        fields = ['date_prescription', 'etat_ordonnance', 'prescription']
+        fields = ['prescription']  # Exclude 'date_prescription'
 
     def create(self, validated_data):
-        # Extract prescription data from validated_data
+        
         prescription_data = validated_data.pop('prescription', [])
+
+        # Set the value for date_prescription explicitly
+        validated_data['date_prescription'] = date.today()  
+        validated_data['etat_ordonnance'] = False
 
         # Create the Ordonnance instance
         ordonnance = Ordonnance.objects.create(**validated_data)
@@ -59,6 +63,7 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
                 prescription_serializer.save(ordonnance=ordonnance)
 
         return ordonnance
+
     
 
 
