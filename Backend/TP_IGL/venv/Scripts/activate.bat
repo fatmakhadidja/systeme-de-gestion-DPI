@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=D:\TpIGL\systeme-de-gestion-DPI\Backend\TP_IGL\venv
+set VIRTUAL_ENV=C:\Users\IMN\OneDrive\Documents\GitHub\systeme-de-gestion-DPI\Backend\TP_IGL\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
