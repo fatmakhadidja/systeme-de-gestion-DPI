@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
-from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
+from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer,PatientSerializer
 from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Patient
 from rest_framework import status
 from django.shortcuts import get_object_or_404
@@ -102,22 +102,28 @@ class RemplirSoin(APIView):
 # }   
 class GetPatients(APIView):
     def get(self, request):
-        # Get first_name and last_name from query parameters
-        first_name = request.data['medecin_first_name']
-        last_name = request.data['medecin_last_name']
-        
-        if not first_name or not last_name:
-            return Response({"error": "first_name and last_name are required"}, status=400)
-        
-        # Search for Medecin using both first_name and last_name
-        try:
-            medecin = Medecin.objects.get(utilisateur__first_name=first_name, utilisateur__last_name=last_name)
-        except Medecin.DoesNotExist:
-            return Response({"error": "Medecin not found"}, status=404)
-        
-        dpis = DPI.objects.filter(medecin=medecin)  # Get all patients
-        serializer =DPISerializer(dpis, many=True)  # Serialize the queryset
+
+
+        patients = Patient.objects.all()
+        serializer =PatientSerializer(patients, many=True)  # Serialize the queryset
         return Response(serializer.data)  # Return serialized data in the response
+     
+        # # Get first_name and last_name from query parameters
+        # first_name = request.data['medecin_first_name']
+        # last_name = request.data['medecin_last_name']
+        
+        # if not first_name or not last_name:
+        #     return Response({"error": "first_name and last_name are required"}, status=400)
+        
+        # # Search for Medecin using both first_name and last_name
+        # try:
+        #     medecin = Medecin.objects.get(utilisateur__first_name=first_name, utilisateur__last_name=last_name)
+        # except Medecin.DoesNotExist:
+        #     return Response({"error": "Medecin not found"}, status=404)
+        
+        # dpis = DPI.objects.filter(medecin=medecin)  # Get all patients
+        # serializer =DPISerializer(dpis, many=True)  # Serialize the queryset
+        # return Response(serializer.data)  # Return serialized data in the response
 
 
 #-------------------------------------------------------------------------------------------  
