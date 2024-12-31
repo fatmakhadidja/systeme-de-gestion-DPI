@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import exp from 'constants';
 import { Observable,of } from 'rxjs';
-import { provideHttpClient, HttpClient, HttpParams } from '@angular/common/http';
+import {  HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 export interface ListConsultation {
@@ -14,9 +14,9 @@ export interface ListConsultation {
 }
 
 export interface ListMeds {
-  Medicament : string ;
-  Dose : string ;
-  Duree : string ;
+  medicament : string ;
+  dose : string ;
+  duree : string ;
   
   }
 
@@ -25,12 +25,17 @@ export interface ListMeds {
     Description:string;
     Observation:string;
   }
-
+  export interface SoinsData{
+    description:string;
+    date_soin: string;
+    observation: string ;
+  }
   export interface ConsultationData {
     num_consult: number;
     date_consult: string;
     ordonnance: boolean;
-    prescription: boolean;
+    bilan_biologique: boolean;
+    bilan_radiologique: boolean;
     resume: boolean;
   }
 
@@ -48,35 +53,9 @@ export class ConsulterDpiService {
     { NConsultation: 5, date: '21/12/2024', Ordo: 'non', Bilan_bio: 'non',Bilan_rad:'non', Resume: 'non' },
   ];
 
- private  soins: ListSoins[] = [
-  {
-    Date: "2024-12-21",
-    Description: "Consultation médicale ",
-    Observation: "Rien à signaler"
-  },
-  {
-    Date: "2024-12-20",
-    Description: "Suivi post-opératoire",
-    Observation: "Guérison satisfaisante"
-  },
-  {
-    Date: "2024-12-19",
-    Description: "Vaccination antigrippale",
-    Observation: "Pas d'effets secondaires"
-  },
-  {
-    Date: "2024-12-18",
-    Description: "Prise de sang",
-    Observation: "Résultats normaux"
-  },
-  {
-    Date: "2024-12-17",
-    Description: "Radiographie pulmonaire ",
-    Observation: "Aucune anomalie détectée"
-  }
-];
+ 
 
-  private ELEMENT_DATA_med : ListMeds[] = [
+ /* private ELEMENT_DATA_med : ListMeds[] = [
     {
       Medicament: 'Paracétamol',Dose: '500mg',Duree: '3 fois par jour pendant 5 jours'
     },
@@ -86,11 +65,14 @@ export class ConsulterDpiService {
     {
       Medicament: 'Amoxicilline',Dose: '250mg', Duree: '3 fois par jour pendant 7 jours'
     }
-  ];
+  ];*/
   private valeurBio =  { Pression_arterielle: '120/80', Glycemie: '1.2 g/L', Niveau_cholesterol: '200 mg/dL' };
-
+  
   private apiUrl = 'http://127.0.0.1:8000/api/miseajourdpi/getConsultations/';
   private soinsurl = 'http://127.0.0.1:8000/api/miseajourdpi/getSoins/';
+  private resumesurl = 'http://127.0.0.1:8000/api/miseajourdpi/getResume/';
+  private ordourl = 'http://127.0.0.1:8000/api/miseajourdpi/getOrdonnance/';
+
   constructor(private http: HttpClient) { }
 /*
   getListConsultation(dpi: number):Observable<any>{
@@ -106,22 +88,47 @@ export class ConsulterDpiService {
             NConsultation: consultation.num_consult,        // num_consult -> NConsultation
             date: consultation.date_consult,                // date_consult -> date
             Ordo: consultation.ordonnance ? 'oui' : 'non',  // ordonnance -> Ordo (oui/non)
-            Bilan_bio: 'non',                              // Utiliser vos propres données pour Bilan_bio
-            Bilan_rad: 'non',                              // Utiliser vos propres données pour Bilan_rad
+            Bilan_bio: consultation.bilan_biologique ? 'oui' : 'non',                             // Utiliser vos propres données pour Bilan_bio
+            Bilan_rad: consultation.bilan_radiologique ? 'oui' : 'non',                              // Utiliser vos propres données pour Bilan_rad
             Resume: consultation.resume ? 'oui' : 'non'    // resume -> Resume (oui/non)
           }))
         )
       );
+      
     }
+
+    getResume(id_consult: number): Observable<any> {
+      const params = new HttpParams().set('id_consult', id_consult);
+      return this.http.get<any>(this.resumesurl, { params });
+    } 
     
-  getListMeds():Observable<ListMeds[]>{
-     return of(this.ELEMENT_DATA_med);
+    
+  getListMeds(id_consult: number):Observable<ListMeds[]>{
+    const params = new HttpParams().set('id_consult', id_consult);
+      return this.http.get<ListMeds[]>(this.ordourl, { params }).pipe(
+        map((data: ListMeds[]) => 
+          data.map(med => ({
+            medicament: med.medicament,       
+            dose: med.dose,               
+            duree: med.duree ,  
+          }))
+        )
+      );
   }
   getValeurBio():Observable<{ Pression_arterielle: string; Glycemie: string; Niveau_cholesterol: string }>{
     return of(this.valeurBio);
   }
-  getListSoins():Observable<ListSoins[]>{
-    return of(this.soins);
+  getListSoins(dpi: number):Observable<ListSoins[]>{
+      const params = new HttpParams().set('dpi', dpi);
+      return this.http.get<SoinsData[]>(this.soinsurl, { params }).pipe(
+        map((data: SoinsData[]) => 
+          data.map(soin => ({
+            Description: soin.description,       
+            Date: soin.date_soin,               
+            Observation: soin.observation ,  
+          }))
+        )
+      );
   }
-   
+ 
 }

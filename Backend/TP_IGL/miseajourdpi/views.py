@@ -130,7 +130,8 @@ class GetPatients(APIView):
 # {"dpi" :  1}
 class GetSoins(APIView):
     def get(self,request):
-        dpi = request.data['dpi']
+        #dpi = request.data['dpi']
+        dpi = request.GET.get('dpi')
         data = []
         if dpi is None:
             return Response({"error": "dpi parameter is required"}, status=400)
@@ -154,7 +155,8 @@ class GetSoins(APIView):
 # {"dpi" :  1}
 class GetConsultations(APIView):
     def get(self, request):
-        dpi = request.data['dpi']
+       # dpi = request.data['dpi']
+        dpi = request.GET.get('dpi')
         data = []
         if dpi is None:
             return Response({"error": "dpi parameter is required"}, status=400)
@@ -164,7 +166,8 @@ class GetConsultations(APIView):
                "num_consult": consultation.id_consultation,
                "date_consult": consultation.date_consult,
                "ordonnance": bool(consultation.ordonnance),
-               "prescription": bool(Prescription.objects.filter(ordonnance=consultation.ordonnance).exists()),
+               "bilan_biologique" : bool(consultation.bilan_biologique) ,
+               "bilan_radiologique": bool(consultation.bilan_radiologue),
                "resume": bool(consultation.resume),
             })
         return Response(data)
@@ -183,7 +186,8 @@ class GetConsultations(APIView):
 # {"id_consult" :  1}
 class GetOrdonnance(APIView):
     def get(self,request):
-        id_consult = request.data['id_consult']
+        #id_consult = request.data['id_consult']
+        id_consult = request.GET.get('id_consult')
         data = []
         if id_consult is None:
             return Response({"error": "id_consult parameter is required"}, status=400)
@@ -213,7 +217,8 @@ class GetOrdonnance(APIView):
 # {"id_consult" :  1}
 class GetResume(APIView):
     def get(self,request):
-        id_consult = request.data['id_consult']
+        #id_consult = request.data['id_consult']
+        id_consult = request.GET.get('id_consult')
         data ={}
         if id_consult is None:
             return Response({"error": "id_consult parameter is required"}, status=400)

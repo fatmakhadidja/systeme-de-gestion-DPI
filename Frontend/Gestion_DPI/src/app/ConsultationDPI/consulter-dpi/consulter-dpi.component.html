@@ -71,7 +71,7 @@
       <ng-container matColumnDef="Ordo">
          <th mat-header-cell *matHeaderCellDef class="coloneconsult"> Ordonnance </th>
          <td mat-cell *matCellDef="let element">
-           <img *ngIf="element.Ordo === 'oui'" src="../../../assets/images/mingcute_paper-line.svg" class="imgcolore" alt="" (click)="openOrdonnance()">
+           <img *ngIf="element.Ordo === 'oui'" src="../../../assets/images/mingcute_paper-line.svg" class="imgcolore" alt="" (click)="openOrdonnance(element.NConsultation)">
            <img *ngIf="element.Ordo === 'non'" src="../../../assets/images/mingcute_paper-line_gris.svg" class="imggris" alt="">
          </td>
        </ng-container>
@@ -93,7 +93,7 @@
       <ng-container matColumnDef="Resume" class="resume">
          <th mat-header-cell *matHeaderCellDef class="coloneconsult">Résumé</th>
          <td mat-cell *matCellDef="let element">
-            <img *ngIf="element.Resume === 'oui'" src="../../../assets/images/mingcute_paper-line.svg" class="imgcolore" alt="" (click)="openResume()">
+            <img *ngIf="element.Resume === 'oui'" src="../../../assets/images/mingcute_paper-line.svg" class="imgcolore" alt="" (click)="openResume(element.NConsultation)">
             <img *ngIf="element.Resume === 'non'" src="../../../assets/images/mingcute_paper-line_gris.svg" class="imggris" alt="">
           </td>
        </ng-container>

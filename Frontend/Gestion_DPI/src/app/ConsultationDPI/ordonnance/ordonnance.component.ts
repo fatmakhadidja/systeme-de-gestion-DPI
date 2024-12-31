@@ -1,9 +1,9 @@
 import { Component , OnInit } from '@angular/core';
-//import { MAT_DIALOG_DATA,MatDialog } from '@angular/material/dialog';
-//import { Inject } from '@angular/core';
+import { MAT_DIALOG_DATA,MatDialog,MatDialogRef, } from '@angular/material/dialog';
+import { Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogContent , MatDialogActions, MatDialogClose , MatDialogTitle, MatDialogContainer  } from '@angular/material/dialog';
-import {MatTableModule} from '@angular/material/table';
+import {MatTableModule } from '@angular/material/table';
 import { ListMeds , ConsulterDpiService } from '../../services/consulter-dpi.service';
 /*
 export interface meds {
@@ -40,11 +40,18 @@ export class OrdonnanceComponent implements OnInit{
 
   dataSource : ListMeds[]=[];
   displayedColumns: string[] = [ 'Medicament','Dose', 'Duree'];
-    constructor( private consulterDpiService : ConsulterDpiService ){} ;
+    constructor(
+       public dialogRef: MatDialogRef<OrdonnanceComponent>,
+       @Inject(MAT_DIALOG_DATA) public data: any, // Injected data
+       private consulterDpiService: ConsulterDpiService // Service for API calls
+     ) {}
     
     ngOnInit(): void {
-      this.consulterDpiService.getListMeds().subscribe((data) => {
-        this.dataSource = data ; // Filtrer les éléments qui ont "Ordo" ou "Bilans" égaux à 'oui'
+      const id_consult = this.data.id_consult; 
+      this.consulterDpiService.getListMeds(id_consult).subscribe((data) => {
+        console.log("dataordo",data);
+
+        this.dataSource = data ; 
       });
     }
 

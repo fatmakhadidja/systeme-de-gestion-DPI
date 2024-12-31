@@ -20,8 +20,7 @@ import { HttpClient , HttpParams } from '@angular/common/http';
   standalone: true
 })
 export class ConsulterDpiComponent implements OnInit{
- // items = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
-  //data = 12 ;
+
   antecedent = "bla bla bla ";
   displayedColumns: string[] = [ 'NConsultation','date', 'Ordo', 'Bilan_bio','Bilan_rad','Resume'];
   dataSource : ListConsultation[] = [];
@@ -29,7 +28,7 @@ export class ConsulterDpiComponent implements OnInit{
   dataSource2 : ListSoins[] = [];
  
 
-  constructor(public dialog : MatDialog , private consulterDpiService : ConsulterDpiService , private http : HttpClient){} ;
+  constructor(public dialog : MatDialog , private consulterDpiService : ConsulterDpiService ){} ;
   /*
   ngOnInit(): void {
     const dpi = 1 ;
@@ -50,28 +49,43 @@ export class ConsulterDpiComponent implements OnInit{
       }, error => {
         console.error('Erreur lors de la récupération des consultations:', error);
       });
+      
       /*const params = new HttpParams().set('dpi', dpi.toString());
       this.http.get('http://127.0.0.1:8000/api/miseajourdpi/getConsultations/', {params}).subscribe({
         next: data => console.log(data),
         error: err => console.error(err)
       });*/
-      this.consulterDpiService.getListSoins().subscribe(data => {
+      this.consulterDpiService.getListSoins(dpi).subscribe(data => {
         this.dataSource2 = data;
+      }, error => {
+        console.error('Erreur lors de la récupération des soins:', error);
       });
     }
 
 
 
-  openOrdonnance(): void {
+  openOrdonnance(idConsult: number): void {
     this.dialog.open(OrdonnanceComponent, {
       width: '85%',
       height:'90%',
+      data: { id_consult: idConsult }
     });
   }
-  openResume(): void {
-    this.dialog.open(ResumeComponent, {
+  openResume(idConsult: number): void {
+    console.log("idConsult",idConsult)
+    const dialogRef = this.dialog.open(ResumeComponent, {
       width: '85%',
-      height:'90%',
+      height: '90%',
+      data: { id_consult: idConsult } // Pass the ID to the modal
+    });
+  
+    // Handle data received when the modal is closed
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Data received from modal:', result);
+      } else {
+        console.log('Modal closed without data.');
+      }
     });
   }
   openBilanBio(): void {
