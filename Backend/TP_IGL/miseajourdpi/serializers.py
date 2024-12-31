@@ -84,14 +84,13 @@ class ConsultationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Consultation
-        fields = ['dpi', 'resume', 'ordonnance', 'bilan_biologique', 'bilan_radiologique']
-
+        fields = ['dpi', 'resume', 'ordonnance', 'bilan_biologique', 'bilan_radiologue']
     def create(self, validated_data):
         dpi = validated_data.pop('dpi')
         resume_data = validated_data.pop('resume')
         ordonnance_data = validated_data.pop('ordonnance', None)
         bilan_biologique_data = validated_data.pop('bilan_biologique', None)
-        bilan_radiologique_data = validated_data.pop('bilan_radiologique', None)
+        bilan_radiologue_data = validated_data.pop('bilan_radiologue', None)
 
         # Create the Resume instance
         resume = Resume.objects.create(**resume_data)
@@ -127,16 +126,18 @@ class ConsultationSerializer(serializers.ModelSerializer):
                 consultation.bilan_biologique = bilan_biologique
 
         # Create BilanRadiologique if data is provided
-        if bilan_radiologique_data:
-            bilan_radiologique_serializer = BilanRadiologiqueSerializer(data=bilan_radiologique_data)
-            if bilan_radiologique_serializer.is_valid(raise_exception=True):
-                bilan_radiologique = bilan_radiologique_serializer.save()
-                consultation.bilan_radiologique = bilan_radiologique
+        if bilan_radiologue_data:
+            bilan_radiologue_serializer = BilanRadiologiqueSerializer(data=bilan_radiologue_data)
+            if bilan_radiologue_serializer.is_valid(raise_exception=True):
+                bilan_radiologue = bilan_radiologue_serializer.save()
+                consultation.bilan_radiologue = bilan_radiologue
 
         # Save the consultation after adding bilan objects
         consultation.save()
 
         return consultation
+
+
 
 
 # Serializer for Soin model
