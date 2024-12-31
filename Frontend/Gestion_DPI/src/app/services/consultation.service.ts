@@ -19,7 +19,7 @@ export class ConsultationService {
     bilan_biologique: {
       description: '',
     },
-    bilan_radiologique: {
+    bilan_radiologue: {
       description: '',
       type: '',
     },

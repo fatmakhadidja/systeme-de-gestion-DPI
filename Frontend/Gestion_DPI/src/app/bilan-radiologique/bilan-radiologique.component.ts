@@ -19,7 +19,7 @@ export class BilanRadiologiqueComponent {
   modalMessage: string = '';
 
   constructor(private consultationService: ConsultationService, private router: Router) {
-    this.bilanRadiologique = this.consultationService.getConsultation().bilan_radiologique;
+    this.bilanRadiologique = this.consultationService.getConsultation().bilan_radiologue;
   }
 
   saveBilanRadiologique() {
@@ -37,7 +37,7 @@ export class BilanRadiologiqueComponent {
       this.showModal = true ;
     } else {
 
-    this.consultationService.updateConsultation('bilan_radiologique', this.bilanRadiologique);
+    this.consultationService.updateConsultation('bilan_radiologue', this.bilanRadiologique);
     this.modalMessage = 'Bilan radiologique enregistré !';
     this.showModal = true ;
     this.router.navigate(['/creation-consult']);

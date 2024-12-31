@@ -29,5 +29,5 @@ export interface Consultation {
   resume: Resume;
   ordonnance : Ordonnance;
   bilan_biologique: BilanBiologique;
-  bilan_radiologique: BilanRadiologique;
+  bilan_radiologue: BilanRadiologique;
 }
