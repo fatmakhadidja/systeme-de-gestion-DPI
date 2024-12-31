@@ -157,6 +157,7 @@ class GetConsultations(APIView):
         consultations = Consultation.objects.filter(dpi=dpi)
         for consultation in consultations:
             data.append({
+                "id_consult" :consultation.id_consultation,
                "date_consult": consultation.date_consult,
                "ordonnance": bool(consultation.ordonnance),
                "bilan_biologique" : bool(consultation.bilan_biologique) ,
@@ -180,14 +181,12 @@ class GetConsultations(APIView):
 # "date_consultation" : "2024-12-31" }
 class GetOrdonnance(APIView):
     def get(self,request):
-        id_dpi = request.data['id_dpi']
-        date_consult = request.data['date_consultation']
+        id_consult = request.data['id_consult']
         data = []
-        if id_dpi is None:
-            return Response({"error": "id_dpi parameter is required"}, status=400)
+        if id_consult is None:
+            return Response({"error": "id_consult parameter is required"}, status=400)
         
-        dpi = DPI.objects.get(id_dpi=id_dpi)
-        consultation=Consultation.objects.filter(dpi=dpi,date_consult=date_consult).first()
+        consultation=Consultation.objects.filter(id_consult=id_consult).first()
         ordonnance = consultation.ordonnance
         prescriptions = Prescription.objects.filter(ordonnance=ordonnance)
         for prescription in prescriptions :
@@ -212,14 +211,12 @@ class GetOrdonnance(APIView):
 # {"id_consult" :  1}
 class GetResume(APIView):
     def get(self,request):
-        id_dpi = request.data['id_dpi']
-        date_consult = request.data['date_consultation']
+        id_consult = request.data['id_consult']
         data = []
-        if id_dpi is None:
-            return Response({"error": "id_dpi parameter is required"}, status=400)
+        if id_consult is None:
+            return Response({"error": "id_consult parameter is required"}, status=400)
         
-        dpi = DPI.objects.get(id_dpi=id_dpi)
-        consultation=Consultation.objects.filter(dpi=dpi,date_consult=date_consult).first()
+        consultation=Consultation.objects.filter(id_consult=id_consult).first()
         resume = consultation.resume
         data = {
             "diagnostic" : resume.diagnostic,
