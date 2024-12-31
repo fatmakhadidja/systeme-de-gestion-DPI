@@ -8,6 +8,8 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from django.contrib.auth import get_user_model
 
 
+
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=68, min_length=6, write_only=True)
     password2 = serializers.CharField(max_length=68, min_length=6, write_only=True)
@@ -39,7 +41,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         role = validated_data.pop('role')
-        specialite = validated_data.pop('specialite', None)  
+        specialite = validated_data.pop('specialite', None)  # Get specialite if available
         user = User.objects.create_user(
             email=validated_data['email'],
             first_name=validated_data.get('first_name'),
@@ -98,3 +100,6 @@ class LoginSerializer(serializers.ModelSerializer):
             "refresh_token": str(tokens.get('refresh')),
             'id': id,
         }
+
+
+
