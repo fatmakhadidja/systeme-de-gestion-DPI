@@ -163,6 +163,7 @@ class PatientSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='utilisateur.first_name')  
     last_name = serializers.CharField(source='utilisateur.last_name')    
 
+
     class Meta:
         model = Patient
         fields = ['id_patient', 'first_name', 'last_name']   

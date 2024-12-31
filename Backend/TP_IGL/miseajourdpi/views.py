@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 
 # the expected format of the info from the frontend
 # {
-#     "nss": "1111111",  // or patient_id - they are the same since created simultaneously
+#     "nss": "1111111",  
 #     "resume": {
 #         "diagnostic": "string", 
 #         "symptomes": "string", 
@@ -192,8 +192,7 @@ class GetConsultations(APIView):
 #     },
 # ]
 # the data sent from the front will be i the format 
-# {"id_dpi" :  1,
-# "date_consultation" : "2024-12-31" }
+#{"id_consult" :1}
 class GetOrdonnance(APIView):
     def get(self,request):
         id_consult = request.data['id_consult']
@@ -201,7 +200,7 @@ class GetOrdonnance(APIView):
         if id_consult is None:
             return Response({"error": "id_consult parameter is required"}, status=400)
         
-        consultation=Consultation.objects.filter(id_consult=id_consult).first()
+        consultation=Consultation.objects.filter(id_consultation=id_consult).first()
         ordonnance = consultation.ordonnance
         prescriptions = Prescription.objects.filter(ordonnance=ordonnance)
         for prescription in prescriptions :
