@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
 from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI
+from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Resume
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
@@ -15,21 +15,16 @@ from django.shortcuts import get_object_or_404
 #         "symptomes": "string", 
 #         "antecedents": "string", 
 #         "autres_informations": "string"
-#     },
-    
-#           "ordonnance": {
-#  
-#             "prescription": [{
+#     },  
+#           "ordonnance": { 
+#             "prescription": [
+#              {
 #                 "dose": "string",
 #                 "duree": "string",
-#                 "medicament": {
-#                 "nom": "string",
-#                 "description": "string",
-#                 "prix": 10,
-#                 "quantite": 5
-#           }],
-#         }
-#     },
+#                 "medicament": "string"
+#               }
+#                 ]
+#         },
 #     "bilan_biologique": {
 #         "description": "string"
 #     },
@@ -145,7 +140,6 @@ class GetSoins(APIView):
 # the data sent to the front end will be in this format (list of JSON data):
 # [
 #     {
-#         "num_consult": 1,
 #         "date_consult": "2024-12-22",
 #         "ordonnance": true,
 #         "prescription": true,
@@ -163,7 +157,6 @@ class GetConsultations(APIView):
         consultations = Consultation.objects.filter(dpi=dpi)
         for consultation in consultations:
             data.append({
-               "num_consult": consultation.id_consultation,
                "date_consult": consultation.date_consult,
                "ordonnance": bool(consultation.ordonnance),
                "bilan_biologique" : bool(consultation.bilan_biologique) ,
@@ -183,21 +176,24 @@ class GetConsultations(APIView):
 #     },
 # ]
 # the data sent from the front will be i the format 
-# {"id_consult" :  1}
+# {"id_dpi" :  1,
+# "date_consultation" : "2024-12-31" }
 class GetOrdonnance(APIView):
     def get(self,request):
-        id_consult = request.data['id_consult']
+        id_dpi = request.data['id_dpi']
+        date_consult = request.data['date_consultation']
         data = []
-        if id_consult is None:
-            return Response({"error": "id_consult parameter is required"}, status=400)
+        if id_dpi is None:
+            return Response({"error": "id_dpi parameter is required"}, status=400)
         
-        consultation = Consultation.objects.get(id_consultation=id_consult)
+        dpi = DPI.objects.get(id_dpi=id_dpi)
+        consultation=Consultation.objects.filter(dpi=dpi,date_consult=date_consult).first()
         ordonnance = consultation.ordonnance
         prescriptions = Prescription.objects.filter(ordonnance=ordonnance)
         for prescription in prescriptions :
             data.append(
                 {
-                    "medicament" : prescription.medicament.nom,
+                    "medicament" : prescription.medicament,
                     "dose" : prescription.dose,
                     "duree" : prescription.duree
                 }
@@ -216,11 +212,14 @@ class GetOrdonnance(APIView):
 # {"id_consult" :  1}
 class GetResume(APIView):
     def get(self,request):
-        id_consult = request.data['id_consult']
-        data ={}
-        if id_consult is None:
-            return Response({"error": "id_consult parameter is required"}, status=400)
-        consultation = Consultation.objects.get(id_consultation=id_consult) 
+        id_dpi = request.data['id_dpi']
+        date_consult = request.data['date_consultation']
+        data = []
+        if id_dpi is None:
+            return Response({"error": "id_dpi parameter is required"}, status=400)
+        
+        dpi = DPI.objects.get(id_dpi=id_dpi)
+        consultation=Consultation.objects.filter(dpi=dpi,date_consult=date_consult).first()
         resume = consultation.resume
         data = {
             "diagnostic" : resume.diagnostic,

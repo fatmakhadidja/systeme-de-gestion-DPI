@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from gestiondpi.models import Consultation, DPI, Resume, Ordonnance, Prescription, Medicament,Soin,Patient,Infirmier
+from gestiondpi.models import Consultation, DPI, Resume, Ordonnance, Prescription,Soin,Patient,Infirmier
 from gestiondpi.models import BilanRadiologique, BilanBiologique
 from datetime import date
 
@@ -10,29 +10,15 @@ class ResumeSerializer(serializers.ModelSerializer):
         fields = ['diagnostic', 'symptomes', 'antecedents', 'autres_informations']
 
 
-class MedicamentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Medicament
-        fields = ['nom', 'description', 'prix', 'quantite']
-
-
-
 class PrescriptionSerializer(serializers.ModelSerializer):
-    medicament = MedicamentSerializer()
 
     class Meta : 
         model =Prescription
         fields = ['dose','duree','medicament']
 
-    def create(self, validated_data):
-        # Extract the medicament data
-        medicament_data = validated_data.pop('medicament')
-
-        # Create the Medicament instance
-        medicament = Medicament.objects.create(**medicament_data)
-
+    def create(self, validated_data):       
         # Create the Prescription instance and associate the medicament
-        prescription = Prescription.objects.create(medicament=medicament, **validated_data)
+        prescription = Prescription.objects.create(**validated_data)
 
         return prescription    
   
@@ -64,9 +50,6 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
 
         return ordonnance
 
-    
-
-
 
 class BilanRadiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
@@ -77,6 +60,8 @@ class BilanBiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanBiologique
         fields = ['description']
+
+
 
 class ConsultationSerializer(serializers.ModelSerializer):
     dpi = serializers.PrimaryKeyRelatedField(queryset=DPI.objects.all())
