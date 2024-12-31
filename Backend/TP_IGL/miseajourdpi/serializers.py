@@ -15,7 +15,11 @@ class PrescriptionSerializer(serializers.ModelSerializer):
     class Meta : 
         model =Prescription
         fields = ['dose','duree','medicament']
-
+        extra_kwargs = {
+            'dose': {'allow_blank': True},
+            'duree': {'allow_blank': True},
+            'medicament': {'allow_blank': True},
+        }
     def create(self, validated_data):       
         # Create the Prescription instance and associate the medicament
         prescription = Prescription.objects.create(**validated_data)
@@ -30,7 +34,7 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ordonnance
         fields = ['prescription']  # Exclude 'date_prescription'
-
+        
     def create(self, validated_data):
         
         prescription_data = validated_data.pop('prescription', [])
@@ -58,12 +62,18 @@ class BilanRadiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanRadiologique
         fields = ['description', 'type']
+        extra_kwargs = {
+            'description': {'allow_blank': True},
+            'type': {'allow_blank': True},
+        }
 
 class BilanBiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanBiologique
         fields = ['description']
-
+        extra_kwargs = {
+            'description': {'allow_blank': True},
+        }
 
 
 class ConsultationSerializer(serializers.ModelSerializer):
@@ -80,47 +90,66 @@ class ConsultationSerializer(serializers.ModelSerializer):
         fields = ['dpi', 'resume', 'ordonnance', 'bilan_biologique', 'bilan_radiologue']
 
     def create(self, validated_data):
-        dpi = validated_data.pop('dpi')
-        resume_data = validated_data.pop('resume')
-        ordonnance_data = validated_data.pop('ordonnance', None)
-        bilan_biologique_data = validated_data.pop('bilan_biologique', None)
-        bilan_radiologue_data = validated_data.pop('bilan_radiologue', None)
+     dpi = validated_data.pop('dpi')
+     resume_data = validated_data.pop('resume')
+     ordonnance_data = validated_data.pop('ordonnance', None)
+     bilan_biologique_data = validated_data.pop('bilan_biologique', None)
+     bilan_radiologue_data = validated_data.pop('bilan_radiologue', None)
 
-        # Create the Resume instance
-        resume = Resume.objects.create(**resume_data)
+    # Create the Resume instance
+     resume = Resume.objects.create(**resume_data)
 
-        # Create the Ordonnance instance if data is provided
-        ordonnance = None
-        if ordonnance_data:
-            ordonnance_serializer = OrdonnanceSerializer(data=ordonnance_data)
+    # Create the Ordonnance instance if data is provided and valid
+     ordonnance = None
+     if ordonnance_data and ordonnance_data.get('prescription'):
+        # Check if prescriptions are not empty strings
+        prescription_data = ordonnance_data['prescription']
+        valid_prescriptions = [
+            pres for pres in prescription_data
+            if all(pres.get(field) for field in ['dose', 'duree', 'medicament'])
+        ]
+
+        if valid_prescriptions:  # Proceed only if there are valid prescriptions
+            ordonnance_serializer = OrdonnanceSerializer(data={'prescription': valid_prescriptions})
             if ordonnance_serializer.is_valid(raise_exception=True):
                 ordonnance = ordonnance_serializer.save()
 
-        # Create BilanBiologique if data is provided
-        bilan_biologique = None
-        if bilan_biologique_data:
-            bilan_biologique_serializer = BilanBiologiqueSerializer(data=bilan_biologique_data)
+    # Create BilanBiologique if data is provided and valid
+     bilan_biologique = None
+     if bilan_biologique_data:
+        valid_bilan_biologique = {
+            field: bilan_biologique_data.get(field)
+            for field in ['description'] if bilan_biologique_data.get(field)
+        }
+        if valid_bilan_biologique:  # Proceed only if the field is valid
+            bilan_biologique_serializer = BilanBiologiqueSerializer(data=valid_bilan_biologique)
             if bilan_biologique_serializer.is_valid(raise_exception=True):
                 bilan_biologique = bilan_biologique_serializer.save()
 
-        # Create BilanRadiologique if data is provided
-        bilan_radiologue = None
-        if bilan_radiologue_data:
-            bilan_radiologue_serializer = BilanRadiologiqueSerializer(data=bilan_radiologue_data)
+    # Create BilanRadiologique if data is provided and valid
+     bilan_radiologue = None
+     if bilan_radiologue_data:
+        valid_bilan_radiologue = {
+            field: bilan_radiologue_data.get(field)
+            for field in ['description', 'type'] if bilan_radiologue_data.get(field)
+        }
+        if valid_bilan_radiologue:  # Proceed only if the fields are valid
+            bilan_radiologue_serializer = BilanRadiologiqueSerializer(data=valid_bilan_radiologue)
             if bilan_radiologue_serializer.is_valid(raise_exception=True):
                 bilan_radiologue = bilan_radiologue_serializer.save()
 
-        # Create the Consultation instance and link bilan objects
+    # Create the Consultation instance and link bilan objects
         consultation = Consultation.objects.create(
-            dpi=dpi,
-            resume=resume,
-            ordonnance=ordonnance,
-            date_consult=date.today(),
-            bilan_biologique=bilan_biologique,
-            bilan_radiologue=bilan_radiologue
-        )
+        dpi=dpi,
+        resume=resume,
+        ordonnance=ordonnance,
+        date_consult=date.today(),
+        bilan_biologique=bilan_biologique,
+        bilan_radiologue=bilan_radiologue
+    )
 
-        return consultation
+     return consultation
+
 
 
 # Serializer for Soin model
