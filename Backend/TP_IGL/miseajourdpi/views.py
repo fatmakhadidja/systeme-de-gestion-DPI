@@ -139,10 +139,12 @@ class GetSoins(APIView):
 #-------------------------------------------------------------------------------------------  
 # the data sent to the front end will be in this format (list of JSON data):
 # [
-#     {
-#         "date_consult": "2024-12-22",
+# {
+#         "id_consult": 1,
+#         "date_consult": "2024-12-31",
 #         "ordonnance": true,
-#         "prescription": true,
+#         "bilan_biologique": true,
+#         "bilan_radiologique": true,
 #         "resume": true
 #     }
 # ]
