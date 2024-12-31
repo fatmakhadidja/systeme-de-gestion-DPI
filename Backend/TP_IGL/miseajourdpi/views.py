@@ -31,7 +31,7 @@ from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Ordonna
 #     "bilan_biologique": {
 #         "description": "string"
 #     },
-#     "bilan_radiologique": {
+#     "bilan_radiologue": {
 #         "description": "string",
 #         "type": "string"
 #     }
