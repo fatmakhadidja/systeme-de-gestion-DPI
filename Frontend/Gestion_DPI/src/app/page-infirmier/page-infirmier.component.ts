@@ -54,9 +54,6 @@ updateSoinData(updatedSoin: { description: string; observation: string }, index:
     console.log('Patient sélectionné :', this.patientSelected);
     console.log('Soins à sauvegarder :', this.soins);
 
-    // alert('Patient sélectionné : ' + this.patientSelected);
-    // alert('Soins à sauvegarder : ' + JSON.stringify(this.soins));
-  
     alert('Les soins ont été enregistrés avec succès!');
     this.patientSelected = null;
     this.soins = [];

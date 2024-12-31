@@ -107,9 +107,10 @@ class Consultation(models.Model):
     resume = models.OneToOneField(Resume, related_name="consultation", on_delete=models.CASCADE)
     ordonnance = models.OneToOneField(Ordonnance, related_name="consultation", on_delete=models.CASCADE)
     
-    # Add bilanRadiologue and bilanBiologique, allowing them to be null
+    # Add bilanRadiologue, bilanBiologique and ordonnance, allowing them to be null
     bilan_radiologue = models.ForeignKey('BilanRadiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)
     bilan_biologique = models.ForeignKey('BilanBiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)
+    ordonnance = models.OneToOneField(Ordonnance, related_name="consultation", on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
