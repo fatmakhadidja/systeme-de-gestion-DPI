@@ -80,12 +80,11 @@ class ConsultationSerializer(serializers.ModelSerializer):
     
     # Use the Bilan serializers
     bilan_biologique = BilanBiologiqueSerializer(required=False)
-    bilan_radiologue = BilanRadiologiqueSerializer(required=False)
+    bilan_radiologique = BilanRadiologiqueSerializer(required=False)
 
     class Meta:
         model = Consultation
         fields = ['dpi', 'resume', 'ordonnance', 'bilan_biologique', 'bilan_radiologue']
-
     def create(self, validated_data):
         dpi = validated_data.pop('dpi')
         resume_data = validated_data.pop('resume')
@@ -137,6 +136,8 @@ class ConsultationSerializer(serializers.ModelSerializer):
         consultation.save()
 
         return consultation
+
+
 
 
 # Serializer for Soin model

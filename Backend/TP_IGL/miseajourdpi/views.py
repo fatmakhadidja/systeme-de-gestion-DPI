@@ -34,7 +34,7 @@ from django.shortcuts import get_object_or_404
 #     "bilan_biologique": {
 #         "description": "string"
 #     },
-#     "bilan_radiologique": {
+#     "bilan_radiologue": {
 #         "description": "string",
 #         "type": "string"
 #     }
