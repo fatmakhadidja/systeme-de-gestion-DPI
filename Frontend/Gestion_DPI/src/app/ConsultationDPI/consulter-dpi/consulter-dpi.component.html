@@ -61,7 +61,7 @@
 
       <ng-container matColumnDef="NConsultation" >
         <th mat-header-cell *matHeaderCellDef class="coloneconsult"> N° Consultation </th>
-        <td mat-cell *matCellDef="let element"> {{element.NConsultation}} </td>
+        <td mat-cell *matCellDef="let element; let i = index"> {{getConsultationNumber(i)}} </td>
       </ng-container>
 
       <ng-container matColumnDef="date" >
@@ -101,6 +101,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+</div>
+<div class="ajoutercnsult" *ngIf="showButton">
+   <button>Ajouter Consultation</button>
 </div>
 <div id="soins" class="tabConsult2">
    <h2>Vos Soins infirmiers</h2>

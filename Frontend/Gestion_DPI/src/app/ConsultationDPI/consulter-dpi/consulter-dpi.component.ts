@@ -26,7 +26,7 @@ export class ConsulterDpiComponent implements OnInit{
   dataSource : ListConsultation[] = [];
   displayedColumns2: string[] = ['Date','Description','Observation'];
   dataSource2 : ListSoins[] = [];
- 
+  showButton = false ;
 
   constructor(public dialog : MatDialog , private consulterDpiService : ConsulterDpiService ){} ;
   /*
@@ -42,6 +42,9 @@ export class ConsulterDpiComponent implements OnInit{
     });
   }
 */
+getConsultationNumber(index: number): number {
+  return index + 1; // Incrémentation à partir de 1
+}
     ngOnInit(): void {
       const dpi = 1; // Remplacer par le DPI du patient
         this.consulterDpiService.getListConsultation(dpi).subscribe(data => {

@@ -72,6 +72,7 @@ export class ConsulterDpiService {
   private soinsurl = 'http://127.0.0.1:8000/api/miseajourdpi/getSoins/';
   private resumesurl = 'http://127.0.0.1:8000/api/miseajourdpi/getResume/';
   private ordourl = 'http://127.0.0.1:8000/api/miseajourdpi/getOrdonnance/';
+  private bilanbiourl = 'http://127.0.0.1:8000/api/biology'
 
   constructor(private http: HttpClient) { }
 /*
@@ -117,6 +118,9 @@ export class ConsulterDpiService {
   }
   getValeurBio():Observable<{ Pression_arterielle: string; Glycemie: string; Niveau_cholesterol: string }>{
     return of(this.valeurBio);
+  }
+  getBilanBiologiquesByDPI(dpiId: number): Observable<any> {
+    return this.http.get(`${this.bilanbiourl}/dpi/${dpiId}/bilans-biologiques/`);
   }
   getListSoins(dpi: number):Observable<ListSoins[]>{
       const params = new HttpParams().set('dpi', dpi);

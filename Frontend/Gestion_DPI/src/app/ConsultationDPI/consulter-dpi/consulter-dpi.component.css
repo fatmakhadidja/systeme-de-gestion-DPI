@@ -222,17 +222,33 @@ td, th {
 }
 .imgcolore:hover{
    fill: #218879;
-   /*background-color:#C1FFFB33 ;
-
-   filter: brightness(0) saturate(100%) invert(90%) sepia(20%) saturate(500%) hue-rotate(190deg) ;*/
    filter: brightness(0) saturate(100%) invert(50%) sepia(30%) saturate(300%) hue-rotate(140deg);
 }
 .imggris{
     position: relative;
     left: 1%;
 }
-/*.custom-dialog .mat-dialog-container {   background-color: rgba(33, 136, 121, 0.05); }/* Remplacez par la couleur de votre choix */ 
+.ajoutercnsult{
 
+  position: relative;
+  text-align: right;
+  margin-right: 3%;
+}
+.ajoutercnsult button{
+  background-color: #242855;
+  color: white;
+  border-radius: 1.5rem;
+  padding: 1% 1%;
+  width: 15%;
+  border: 0.01rem solid #242855;
+  outline: none;
+  cursor: pointer;
+}
+.ajoutercnsult button:hover{
+  background-color: white;
+  color: #1E90FF;
+  border: 0.01rem solid #1E90FF;
+}
 .custom-dialog{
   border-radius: 20px;
   background-color: white;
