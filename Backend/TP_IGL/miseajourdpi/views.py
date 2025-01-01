@@ -2,8 +2,9 @@ from datetime import date
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
+
 from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer,PatientSerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Patient
+from gestiondpi.models import Infirmier, Soin,Consultation,Prescription,Medecin,DPI,Patient, User
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 
@@ -62,9 +63,8 @@ class AjouterConsultation(APIView):
 # the expected format of the info from the frontend
 # {
 #   "patient": 1,  //ID 
-#   "infirmier": 2,  //ID
-#   "description": "Administered medication to the patient.",  
-#   "date_soin": "2023-12-21",  
+#   "user": 2,  //ID to 
+#   "description": "Administered medication to the patient.",   
 #   "observation": "Patient showed positive reaction to the medication."  
 # }
 class RemplirSoin(APIView):
@@ -74,6 +74,10 @@ class RemplirSoin(APIView):
         if 'patient' in data:  # If id_patient is provided by the frontend
             data['dpi'] = data.pop('patient')  # Rename id_patient to dpi (since it's the field expected by the serializer)
         data['date_soin']=date.today().strftime('%Y-%m-%d')
+        id_user=data.pop('user')
+        user_infirmier = User.objects.get(id=id_user)
+        infirmier = Infirmier.objects.get(utilisateur = user_infirmier)
+        data['infirmier']=infirmier.id_infirmier
         # Use the updated data to validate the request
         serializer = SoinSerializer(data=data)
 
@@ -85,7 +89,6 @@ class RemplirSoin(APIView):
             return Response(soin_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 #-------------------------------------------------------------------------------------------  
 # the data sent to the front end will be in this format (list of JSON data):

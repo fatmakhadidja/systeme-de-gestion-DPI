@@ -16,23 +16,24 @@ login(email: string, password:string):Observable<any>{
 }
 
 handleLoginSuccess(response: any): void {
-    const  {role, id, full_name}= response;
+    const { role, id, full_name, access_token, refresh_token } = response;
 
     // Store tokens if needed
-    localStorage.setItem('fullname', response.full_name);
-    localStorage.setItem('id', response.id);
-    localStorage.setItem('access_token', response.access_token);
-    localStorage.setItem('refresh_token', response.refresh_token);
+    localStorage.setItem('fullname', full_name);
+    localStorage.setItem('id', id.toString());
+    localStorage.setItem('access_token', access_token);
+    localStorage.setItem('refresh_token', refresh_token);
 
     // Navigate based on the user's role
     if (role === 'admin') {
       this.router.navigate(['/creation-dpi']);
     }if (role === 'patient') {
-      this.router.navigate(['']);
+      this.router.navigate(['/consulter-dpi', id]);
     }else if (role === 'medecin') {
-      this.router.navigate(['/creation-consult']); //recherche-patient
+      this.router.navigate(['/recherche-patient']);
     } else if (role === 'infirmier') {
-      this.router.navigate(['/soins-infirmiers']);
+      // Pass the infirmier_id as a query parameter
+      this.router.navigate(['/soins-infirmiers'], { queryParams: { id } });
     } else if (role === 'pharmacien'){
       this.router.navigate(['']);
     }else if (role === 'laborantin'){

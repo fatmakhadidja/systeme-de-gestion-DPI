@@ -7,6 +7,7 @@ import { Soin } from '../models/soin.model';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-page-infirmier',
@@ -15,12 +16,20 @@ import { of } from 'rxjs';
   styleUrls: ['./page-infirmier.component.css']
 })
 export class PageInfirmierComponent {
+  userId: number | null = null; // ID de l'infirmier récupéré des query params
   patientSelected: number | null = null; // ID du patient sélectionné
   soins: Soin[] = []; // Liste des soins à enregistrer
-  infirmierId: number = 1; // ID constant de l'infirmier
   apiUrl: string = 'http://127.0.0.1:8000/api/miseajourdpi/remplirSoin/';
 
-  constructor(private http: HttpClient) {}
+  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    // Get the `id` query parameter directly
+    this.route.queryParams.subscribe(params => {
+      this.userId = +params['id'] || null;
+      console.log('Infirmier ID:', this.userId);
+    });
+  }
 
   // Méthode appelée lorsque le patient est sélectionné
   onPatientSelected(patientId: number): void {
@@ -62,7 +71,7 @@ export class PageInfirmierComponent {
     this.soins.forEach((soin, index) => {
       const soinData = {
         patient: this.patientSelected,
-        infirmier: this.infirmierId,
+        user: this.userId, // send user id to backend so it can fetch infirmier id
         description: soin.description,
         observation: soin.observation
       };
