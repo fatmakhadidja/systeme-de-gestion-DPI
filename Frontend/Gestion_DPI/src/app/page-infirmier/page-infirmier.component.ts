@@ -19,6 +19,10 @@ export class PageInfirmierComponent {
   userId: number | null = null; // ID de l'infirmier récupéré des query params
   patientSelected: number | null = null; // ID du patient sélectionné
   soins: Soin[] = []; // Liste des soins à enregistrer
+
+  showModal: boolean = false;
+  modalMessage: string = '';
+
   apiUrl: string = 'http://127.0.0.1:8000/api/miseajourdpi/remplirSoin/';
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {}
@@ -27,7 +31,7 @@ export class PageInfirmierComponent {
     // Get the `id` query parameter directly
     this.route.queryParams.subscribe(params => {
       this.userId = +params['id'] || null;
-      console.log('Infirmier ID:', this.userId);
+      console.log('User ID:', this.userId);
     });
   }
 
@@ -53,17 +57,20 @@ export class PageInfirmierComponent {
   cancel(): void {
     this.patientSelected = null;
     this.soins = [];
-    alert('Soins annulés!');
+    this.modalMessage = 'Soins annulés!';
+    this.showModal = true;
   }
 
   save(): void {
     if (this.soins.length === 0) {
-      alert('Aucun soin à enregistrer.');
+      this.modalMessage = 'Aucun soin à enregistrer.';
+      this.showModal = true;
       return;
     }
 
     if (!this.patientSelected) {
-      alert('Veuillez sélectionner un patient avant de sauvegarder.');
+      this.modalMessage = 'Veuillez sélectionner un patient avant de sauvegarder.';
+      this.showModal = true;
       return;
     }
 
@@ -89,8 +96,13 @@ export class PageInfirmierComponent {
         });
     });
 
-    alert('Les soins ont été enregistrés avec succès!');
+    this.modalMessage = 'Les soins ont été enregistrés avec succès!',
+    this.showModal = true ; 
     this.patientSelected = null;
     this.soins = [];
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }
