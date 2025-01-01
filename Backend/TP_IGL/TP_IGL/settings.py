@@ -48,7 +48,6 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,7 +61,7 @@ INSTALLED_APPS = [
     'authentification',
     'creationdpi',
     'miseajourdpi',
-    'django_extensions'
+    'django_extensions',
 ]
 
 
@@ -134,13 +133,13 @@ REST_FRAMEWORK={
 
 """
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "mydjango_db",
-        "USER": "root",
-        "PASSWORD": "mysql2024",
-        "HOST": "localhost",
-        "PORT": "3306",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'TP_IGL',
+        'USER': 'fatma',
+        'PASSWORD': '30 may 05 30 may 05',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 REST_FRAMEWORK = {
