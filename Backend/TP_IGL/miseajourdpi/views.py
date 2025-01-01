@@ -1,3 +1,4 @@
+from datetime import date
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
@@ -72,7 +73,7 @@ class RemplirSoin(APIView):
         data = request.data.copy()
         if 'patient' in data:  # If id_patient is provided by the frontend
             data['dpi'] = data.pop('patient')  # Rename id_patient to dpi (since it's the field expected by the serializer)
-
+        data['date_soin']=date.today().strftime('%Y-%m-%d')
         # Use the updated data to validate the request
         serializer = SoinSerializer(data=data)
 

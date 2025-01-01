@@ -4,6 +4,9 @@ import { HeaderComponent } from '../header-component/header.component';
 import { PatientSelectionComponent } from '../patient-selection/patient-selection.component';
 import { SoinFormComponent } from '../soin-form/soin-form.component';
 import { Soin } from '../models/soin.model';
+import { HttpClient } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-page-infirmier',
@@ -14,6 +17,10 @@ import { Soin } from '../models/soin.model';
 export class PageInfirmierComponent {
   patientSelected: number | null = null; // ID du patient sélectionné
   soins: Soin[] = []; // Liste des soins à enregistrer
+  infirmierId: number = 1; // ID constant de l'infirmier
+  apiUrl: string = 'http://127.0.0.1:8000/api/miseajourdpi/remplirSoin/';
+
+  constructor(private http: HttpClient) {}
 
   // Méthode appelée lorsque le patient est sélectionné
   onPatientSelected(patientId: number): void {
@@ -21,42 +28,60 @@ export class PageInfirmierComponent {
     this.soins = [];
   }
 
-  // Update dans la méthode "addSoin" pour ajouter un ID unique à chaque soin
-addSoin(): void {
-  this.soins.push({ description: '', observation: '' });
-}
+  addSoin(): void {
+    this.soins.push({ description: '', observation: '' });
+  }
 
-// Update la méthode "updateSoinData" pour s'assurer que les données sont mises à jour correctement
-updateSoinData(updatedSoin: { description: string; observation: string }, index: number): void {
-  this.soins[index].description = updatedSoin.description;
-  this.soins[index].observation = updatedSoin.observation;
-}
+  updateSoinData(updatedSoin: { description: string; observation: string }, index: number): void {
+    this.soins[index].description = updatedSoin.description;
+    this.soins[index].observation = updatedSoin.observation;
+  }
 
-  // Supprimer un soin à un index donné
   deleteSoin(index: number): void {
     this.soins.splice(index, 1);
   }
 
-  // Annuler : Réinitialiser tout
   cancel(): void {
     this.patientSelected = null;
     this.soins = [];
     alert('Soins annulés!');
   }
 
-  // Sauvegarder les soins
   save(): void {
     if (this.soins.length === 0) {
       alert('Aucun soin à enregistrer.');
       return;
     }
-  
-    console.log('Patient sélectionné :', this.patientSelected);
-    console.log('Soins à sauvegarder :', this.soins);
+
+    if (!this.patientSelected) {
+      alert('Veuillez sélectionner un patient avant de sauvegarder.');
+      return;
+    }
+
+    // Save each soin one by one
+    this.soins.forEach((soin, index) => {
+      const soinData = {
+        patient: this.patientSelected,
+        infirmier: this.infirmierId,
+        description: soin.description,
+        observation: soin.observation
+      };
+
+      this.http.post(this.apiUrl, soinData)
+        .pipe(
+          catchError(error => {
+            console.error(`Erreur lors de l’enregistrement du soin ${index + 1}:`, error);
+            alert(`Erreur lors de l’enregistrement du soin ${index + 1}`);
+            return of(null); // Return an observable to allow the loop to continue
+          })
+        )
+        .subscribe(response => {
+          console.log(`Soin ${index + 1} enregistré avec succès:`, response);
+        });
+    });
 
     alert('Les soins ont été enregistrés avec succès!');
     this.patientSelected = null;
     this.soins = [];
   }
-  
 }
