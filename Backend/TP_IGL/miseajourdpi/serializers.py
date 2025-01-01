@@ -1,5 +1,15 @@
 from rest_framework import serializers
-from gestiondpi.models import Consultation, DPI, Resume, Ordonnance, Prescription, Medicament,Soin,Patient,Infirmier
+from gestiondpi.models import (
+    Consultation,
+    DPI,
+    Resume,
+    Ordonnance,
+    Prescription,
+    Medicament,
+    Soin,
+    Patient,
+    Infirmier,
+)
 from gestiondpi.models import BilanRadiologique, BilanBiologique
 from datetime import date
 
@@ -7,35 +17,36 @@ from datetime import date
 class ResumeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resume
-        fields = ['diagnostic', 'symptomes', 'antecedents', 'autres_informations']
+        fields = ["diagnostic", "symptomes", "antecedents", "autres_informations"]
 
 
 class MedicamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medicament
-        fields = ['nom', 'description', 'prix', 'quantite']
-
+        fields = ["nom", "description", "prix", "quantite"]
 
 
 class PrescriptionSerializer(serializers.ModelSerializer):
     medicament = MedicamentSerializer()
 
-    class Meta : 
-        model =Prescription
-        fields = ['dose','duree','medicament']
+    class Meta:
+        model = Prescription
+        fields = ["dose", "duree", "medicament"]
 
     def create(self, validated_data):
         # Extract the medicament data
-        medicament_data = validated_data.pop('medicament')
+        medicament_data = validated_data.pop("medicament")
 
         # Create the Medicament instance
         medicament = Medicament.objects.create(**medicament_data)
 
         # Create the Prescription instance and associate the medicament
-        prescription = Prescription.objects.create(medicament=medicament, **validated_data)
+        prescription = Prescription.objects.create(
+            medicament=medicament, **validated_data
+        )
 
-        return prescription    
-  
+        return prescription
+
 
 class OrdonnanceSerializer(serializers.ModelSerializer):
     # Include the PrescriptionSerializer to handle the nested prescriptions
@@ -43,11 +54,11 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ordonnance
-        fields = ['date_prescription', 'etat_ordonnance', 'prescription']
+        fields = ["date_prescription", "etat_ordonnance", "prescription"]
 
     def create(self, validated_data):
         # Extract prescription data from validated_data
-        prescription_data = validated_data.pop('prescription', [])
+        prescription_data = validated_data.pop("prescription", [])
 
         # Create the Ordonnance instance
         ordonnance = Ordonnance.objects.create(**validated_data)
@@ -59,38 +70,39 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
                 prescription_serializer.save(ordonnance=ordonnance)
 
         return ordonnance
-    
-
 
 
 class BilanRadiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanRadiologique
-        fields = ['description', 'type']
+        fields = ["description", "type"]
+
 
 class BilanBiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanBiologique
-        fields = ['description']
+        fields = ["description"]
+
 
 class ConsultationSerializer(serializers.ModelSerializer):
     dpi = serializers.PrimaryKeyRelatedField(queryset=DPI.objects.all())
     resume = ResumeSerializer(required=True)
     ordonnance = OrdonnanceSerializer(required=False)
-    
+
     # Use the Bilan serializers
     bilan_biologique = BilanBiologiqueSerializer(required=False)
-    bilan_radiologique = BilanRadiologiqueSerializer(required=False)
+    bilan_radiologue = BilanRadiologiqueSerializer(required=False)
 
     class Meta:
         model = Consultation
-        fields = ['dpi', 'resume', 'ordonnance', 'bilan_biologique', 'bilan_radiologue']
+        fields = ["dpi", "resume", "ordonnance", "bilan_biologique", "bilan_radiologue"]
+
     def create(self, validated_data):
-        dpi = validated_data.pop('dpi')
-        resume_data = validated_data.pop('resume')
-        ordonnance_data = validated_data.pop('ordonnance', None)
-        bilan_biologique_data = validated_data.pop('bilan_biologique', None)
-        bilan_radiologue_data = validated_data.pop('bilan_radiologue', None)
+        dpi = validated_data.pop("dpi")
+        resume_data = validated_data.pop("resume")
+        ordonnance_data = validated_data.pop("ordonnance", None)
+        bilan_biologique_data = validated_data.pop("bilan_biologique", None)
+        bilan_radiologue_data = validated_data.pop("bilan_radiologue", None)
 
         # Create the Resume instance
         resume = Resume.objects.create(**resume_data)
@@ -103,7 +115,7 @@ class ConsultationSerializer(serializers.ModelSerializer):
                 ordonnance = ordonnance_serializer.save()
 
             # Create Prescriptions if provided in ordonnance
-            prescription_data = ordonnance_data.get('prescription', [])
+            prescription_data = ordonnance_data.get("prescription", [])
             if prescription_data:
                 for prescription in prescription_data:
                     prescription_serializer = PrescriptionSerializer(data=prescription)
@@ -120,14 +132,18 @@ class ConsultationSerializer(serializers.ModelSerializer):
 
         # Create BilanBiologique if data is provided
         if bilan_biologique_data:
-            bilan_biologique_serializer = BilanBiologiqueSerializer(data=bilan_biologique_data)
+            bilan_biologique_serializer = BilanBiologiqueSerializer(
+                data=bilan_biologique_data
+            )
             if bilan_biologique_serializer.is_valid(raise_exception=True):
                 bilan_biologique = bilan_biologique_serializer.save()
                 consultation.bilan_biologique = bilan_biologique
 
         # Create BilanRadiologique if data is provided
         if bilan_radiologue_data:
-            bilan_radiologue_serializer = BilanRadiologiqueSerializer(data=bilan_radiologue_data)
+            bilan_radiologue_serializer = BilanRadiologiqueSerializer(
+                data=bilan_radiologue_data
+            )
             if bilan_radiologue_serializer.is_valid(raise_exception=True):
                 bilan_radiologue = bilan_radiologue_serializer.save()
                 consultation.bilan_radiologue = bilan_radiologue
@@ -138,30 +154,35 @@ class ConsultationSerializer(serializers.ModelSerializer):
         return consultation
 
 
-
-
 # Serializer for Soin model
 class SoinSerializer(serializers.ModelSerializer):
-    dpi = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), required=False)  # Removed required=True for dpi
-    infirmier = serializers.PrimaryKeyRelatedField(queryset=Infirmier.objects.all())  # Reference Infirmier by ID
+    dpi = serializers.PrimaryKeyRelatedField(
+        queryset=Patient.objects.all(), required=False
+    )  # Removed required=True for dpi
+    infirmier = serializers.PrimaryKeyRelatedField(
+        queryset=Infirmier.objects.all()
+    )  # Reference Infirmier by ID
 
     class Meta:
         model = Soin
-        fields = ['dpi', 'infirmier', 'description', 'date_soin', 'observation']
+        fields = ["dpi", "infirmier", "description", "date_soin", "observation"]
 
     def create(self, validated_data):
         # Extract patient_id (from frontend)
-        patient_id = validated_data.pop('dpi')  # This will be the id_patient
+        patient_id = validated_data.pop("dpi")  # This will be the id_patient
 
         # Find the corresponding DPI object based on the patient_id
         try:
-            dpi = DPI.objects.get(patient=patient_id)  # the DPI has a ForeignKey to the Patient model
+            dpi = DPI.objects.get(
+                patient=patient_id
+            )  # the DPI has a ForeignKey to the Patient model
         except DPI.DoesNotExist:
-            raise serializers.ValidationError("DPI for the given patient does not exist.")
+            raise serializers.ValidationError(
+                "DPI for the given patient does not exist."
+            )
 
-        # Extract infirmier reference 
-        infirmier = validated_data.pop('infirmier')
-       
+        # Extract infirmier reference
+        infirmier = validated_data.pop("infirmier")
 
         # Create and return the Soin instance
         soin = Soin.objects.create(dpi=dpi, infirmier=infirmier, **validated_data)
@@ -175,18 +196,23 @@ class SoinSerializer(serializers.ModelSerializer):
 #         "first_name": "Lokman",
 #         "last_name": "Djerfi"
 #     }
-# ]   
+# ]
 class PatientSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(source='utilisateur.first_name')  # Get first_name from the User model
-    last_name = serializers.CharField(source='utilisateur.last_name')    # Get last_name from the User model
+    first_name = serializers.CharField(
+        source="utilisateur.first_name"
+    )  # Get first_name from the User model
+    last_name = serializers.CharField(
+        source="utilisateur.last_name"
+    )  # Get last_name from the User model
 
     class Meta:
         model = Patient
-        fields = ['id_patient', 'first_name', 'last_name']   
+        fields = ["id_patient", "first_name", "last_name"]
+
 
 class DPISerializer(serializers.ModelSerializer):
     patient = PatientSerializer()
 
-    class Meta : 
+    class Meta:
         model = DPI
-        fields=['patient']        
+        fields = ["patient"]

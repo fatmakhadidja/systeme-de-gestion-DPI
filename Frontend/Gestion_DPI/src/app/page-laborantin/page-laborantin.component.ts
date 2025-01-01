@@ -8,6 +8,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButtonModule} from '@angular/material/button';
 import {OnInit } from '@angular/core';
+import { LaborantinService } from '../laborantin.service';
 import { Chart,CategoryScale,BarController, LinearScale, BarElement, Title, Tooltip, Legend} from 'chart.js';
 import {
   MAT_DIALOG_DATA,
@@ -19,16 +20,12 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
-interface Patient {
-  nom: string;
-  prenom: string;
+
+interface Patient{
+  nom:string,
+  prenom: string,
 }
 
-export interface Resultats {
-  date:string;
-  description: string;
-  rempli:boolean;
-}
 
 @Component({
   selector: 'app-page-laborantin',
@@ -47,37 +44,42 @@ export interface Resultats {
 })
 
 
-export class PageLaborantinComponent{
-  patientControl = new FormControl<Patient | null>(null, Validators.required);
-  selectFormControl = new FormControl('', Validators.required);
-  patientSelecione: Patient | null = null;
-  patients: Patient[] = [
-    {nom: 'Boussaid', prenom: 'Meriem'},
-    {nom: 'Bouderbala', prenom: 'Amira'},
-    {nom: 'Agale', prenom: 'Imene'},
-    {nom: 'Mendjel', prenom: 'Chahrazed'},
-    {nom: 'Djerfi', prenom: 'Fatima'},
-    {nom: 'Marouane', prenom: 'Meriem'},
-  ];
-
+export class PageLaborantinComponent implements OnInit{
+  patients: Patient[] = [];
+  patientControl = new FormControl(null, Validators.required);
+  patientSelecione: Patient | null =  null;
   displayedColumns: string[] = ['date', 'description', 'resultat',];
-  dataSource : Resultats[] =([
-    { date: '12/2/2025', description: 'Hydrogen',  rempli:true },
-    { date: '12/2/2025', description: 'Helium', rempli:false},
-    { date: '12/2/2025', description: 'Lithium', rempli:true},
-    { date: '12/2/2025', description: 'Beryllium', rempli:false},
-    { date: '12/2/2025', description: 'Boron',  rempli:true},
-    { date: '12/2/2025', description: 'Carbon',  rempli:false},
-    { date: '12/2/2025', description: 'Nitrogen', rempli:true},
-    { date: '12/2/2025', description: 'Oxygen',  rempli:false},
-    { date: '12/2/2025', description: 'Fluorine', rempli:false},
-    { date: '12/2/2025', description: 'Neon', rempli:false},
-  ]);
-  clickedRows = new Set<Resultats>();
-  trackByPatient(index: number, patient: Patient): string {
+  dataSource : any[] =[];
+
+  constructor(private laborantinService: LaborantinService){}
+
+  ngOnInit(): void {
+    this.fetchPatients();
+  }
+  fetchPatients(): void {
+    this.laborantinService.getPatientList().subscribe({
+      next: (data) => {
+        this.patients = data.map((item: any) => ({
+          nom: item.utilisateur.last_name,
+          prenom: item.utilisateur.first_name,
+        }));
+      },
+      error: (err) => console.error('Error fetching patients:', err),
+    });
+  }
+  loadPatientData(): void {
+    this.patientSelecione = this.patientControl.value;
+  }
+
+  clickedRows = new Set<any>();
+  trackByPatient(index: number, patient: any): string {
     return `${patient.nom}-${patient.prenom}`; 
   }
-//AFFICHER LES FENETRES
+
+  
+
+
+// //AFFICHER LES FENETRES
 
   readonly dialog = inject(MatDialog);
 
