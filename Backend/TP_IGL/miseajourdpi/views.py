@@ -95,11 +95,7 @@ class RemplirSoin(APIView):
 #         "last_name": "Djerfi"
 #     }
 # ] 
-
-#  the data sent from the front wiil be in the format 
-# {"medecin_first_name" :  "Nadine",
-# "medecin_last_name": "Bousdjira"
-# }   
+  
 class GetPatients(APIView):
     def get(self, request):
 
@@ -140,7 +136,7 @@ class GetPatients(APIView):
 # {"dpi" :  1}
 class GetSoins(APIView):
     def get(self,request):
-        dpi = request.data['dpi']
+        dpi = request.data.get('dpi')
         data = []
         if dpi is None:
             return Response({"error": "dpi parameter is required"}, status=400)
@@ -165,7 +161,7 @@ class GetSoins(APIView):
 # {"dpi" :  1}
 class GetConsultations(APIView):
     def get(self, request):
-        dpi = request.data['dpi']
+        dpi = request.data.get('dpi')
         data = []
         if dpi is None:
             return Response({"error": "dpi parameter is required"}, status=400)
@@ -195,7 +191,7 @@ class GetConsultations(APIView):
 #{"id_consult" :1}
 class GetOrdonnance(APIView):
     def get(self,request):
-        id_consult = request.data['id_consult']
+        id_consult = request.data.get('id_consult')
         data = []
         if id_consult is None:
             return Response({"error": "id_consult parameter is required"}, status=400)
@@ -225,12 +221,12 @@ class GetOrdonnance(APIView):
 # {"id_consult" :  1}
 class GetResume(APIView):
     def get(self,request):
-        id_consult = request.data['id_consult']
+        id_consult = request.data.get('id_consult')
         data = []
         if id_consult is None:
             return Response({"error": "id_consult parameter is required"}, status=400)
         
-        consultation=Consultation.objects.filter(id_consult=id_consult).first()
+        consultation=Consultation.objects.filter(id_consultation=id_consult).first()
         resume = consultation.resume
         data = {
             "diagnostic" : resume.diagnostic,
