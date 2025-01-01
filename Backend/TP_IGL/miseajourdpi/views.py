@@ -1,11 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status,request
-from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer,PatientSerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Patient
+from rest_framework import status
+from .serializers import ConsultationSerializer,SoinSerializer,PatientSerializer
+from gestiondpi.models import Soin,Consultation,Prescription,DPI,Patient,Infirmier
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from datetime import date
+from authentification.models import User
 
 
 # the expected format of the info from the frontend
@@ -62,7 +63,7 @@ class AjouterConsultation(APIView):
 # the expected format of the info from the frontend
 # {
 #   "patient": 1,  //ID 
-#   "infirmier": 2,  //ID
+#   "user": 2,  //ID to search infirmier
 #   "description": "Administered medication to the patient.",   
 #   "observation": "Patient showed positive reaction to the medication."  
 # }
@@ -73,6 +74,10 @@ class RemplirSoin(APIView):
         if 'patient' in data:  # If id_patient is provided by the frontend
             data['dpi'] = data.pop('patient')  # Rename id_patient to dpi (since it's the field expected by the serializer)
         data['date_soin']=date.today().strftime('%Y-%m-%d')
+        id_user=data.pop('user')
+        user_infirmier = User.objects.get(id=id_user)
+        infirmier = Infirmier.objects.get(utilisateur = user_infirmier)
+        data['infirmier']=infirmier.id_infirmier
         # Use the updated data to validate the request
         serializer = SoinSerializer(data=data)
 
