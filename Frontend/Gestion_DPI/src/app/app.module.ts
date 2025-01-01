@@ -2,12 +2,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
 
 @NgModule({
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
+    FormsModule, 
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [],
