@@ -57,8 +57,6 @@ INSTALLED_APPS = [
     "gestiondpi",
     "authentification",
     "creationdpi",
-    "miseajourdpi",
-    "django_extensions",
 ]
 
 
@@ -105,37 +103,16 @@ WSGI_APPLICATION = "TP_IGL.wsgi.application"
 }
 
 """
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "mydjango_db",
+        "NAME": "test1",
         "USER": "root",
-        "PASSWORD": "mysql2024",
+        "PASSWORD": "Izanmerde33=",
         "HOST": "localhost",
         "PORT": "3306",
     }
 }
-REST_FRAMEWORK = {
-    "NON_FIELD_ERRORS_KEY": "error",
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-}
-
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'TP_IGL',
-        'USER': 'fatma',
-        'PASSWORD': '30 may 05 30 may 05',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
-"""
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEY": "error",
     "DEFAULT_AUTHENTICATION_CLASSES": (
