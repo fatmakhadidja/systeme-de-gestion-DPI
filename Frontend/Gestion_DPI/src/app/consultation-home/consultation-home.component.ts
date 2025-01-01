@@ -14,7 +14,10 @@ import { Router } from '@angular/router';
 })
 export class ConsultationHomeComponent {
   consultation: Consultation;
-  showWarning: boolean = false;
+  
+  showModal: boolean = false;
+  modalMessage: string = '';
+  showWarning = false ;
 
   constructor(
     private consultationService: ConsultationService,
@@ -41,7 +44,7 @@ export class ConsultationHomeComponent {
   handleSave() {
     if (!this.isResumeValid()) {
       // Show warning if the résumé is invalid
-      this.showWarning = true;
+      this.showWarning = true ;
     } else {
       // Hide the warning and proceed with saving
     this.showWarning = false;
@@ -52,12 +55,14 @@ export class ConsultationHomeComponent {
     
     this.consultationApiService.ajouterConsultation(consultation).subscribe({
       next: () => {
-        alert('Consultation enregistrée avec succès.');
+        this.modalMessage = 'Consultation enregistrée avec succès.';
+        this.showModal = true;
         this.router.navigate(['/recherche-patient']); // Redirect to the desired page after saving
       },
       error: (error) => {
         console.error('Erreur lors de l\'enregistrement de la consultation :', error);
-        alert('Une erreur s\'est produite. Veuillez réessayer.');
+        this.modalMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
+        this.showModal = true;
       },
     });     
     }
@@ -77,5 +82,9 @@ export class ConsultationHomeComponent {
 
   handleButton4() {
     this.router.navigate(['/ordonnance']);
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }

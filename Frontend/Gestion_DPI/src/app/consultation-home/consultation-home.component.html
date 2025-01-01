@@ -36,3 +36,11 @@
 <div class="image-container">
   <img src="assets/doctors.svg" alt="Doctor and Patient" />
 </div>
+
+<!-- Modale -->
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <p>{{ modalMessage }}</p>
+    <button (click)="closeModal()">Fermer</button>
+  </div>
+</div>
