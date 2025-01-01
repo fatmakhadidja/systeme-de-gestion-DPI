@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'gestiondpi',
     'authentification',
-    'creationdpi'
+    'creationdpi',
+    'miseajourdpi',
+    'django_extensions',
 ]
 
 
@@ -120,6 +122,24 @@ REST_FRAMEWORK={
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 
+
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'TP_IGL',
+        'USER': 'fatma',
+        'PASSWORD': '30 may 05 30 may 05',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+REST_FRAMEWORK = {
+    "NON_FIELD_ERRORS_KEY": "error",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
