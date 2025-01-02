@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'creationdpi',
     'miseajourdpi',
     'django_extensions',
+    'rest_framework_swagger',
 ]
 
 
@@ -148,7 +149,16 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
 }
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'GesdtionDPI',  # The title of API
+    'DESCRIPTION': 'Detailed description of your API',  # Description of the API
+    'VERSION': '1.0.0',  # API version
+    'SERVE_INCLUDE_SCHEMA': False,  # This option is set to False if you do not want to expose the schema as an endpoint
+}
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
