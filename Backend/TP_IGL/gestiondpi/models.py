@@ -5,6 +5,7 @@ import uuid
 from io import BytesIO
 from django.core.files.base import ContentFile
 
+
 class Patient(models.Model):
     id_patient = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -21,21 +22,26 @@ class Medecin(models.Model):
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)
     specialite = models.CharField(max_length=100)
 
+
 class Infirmier(models.Model):
-        id_infirmier = models.AutoField(primary_key=True)
-        utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)
+    id_infirmier = models.AutoField(primary_key=True)
+    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)
+
 
 class Laborantin(models.Model):
-    id_laborantin= models.AutoField(primary_key=True)
+    id_laborantin = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)
+
 
 class Radiologue(models.Model):
     id_radiologue = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)
 
+
 class Admin(models.Model):
     id_admin = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)
+
 
 class PharmacienHospitalier(models.Model):
     id_pharmacienHospitalier = models.AutoField(primary_key=True)
@@ -45,12 +51,13 @@ class PharmacienHospitalier(models.Model):
         ordonnance.etat_ordonnance = True
         ordonnance.save()
 
+
 class DPI(models.Model):
     id_dpi = models.AutoField(primary_key=True)
     patient = models.OneToOneField('Patient', on_delete=models.CASCADE, default=1)
     medecin = models.ForeignKey('Medecin', related_name="medcin", on_delete=models.CASCADE, default=1)
     antecedents = models.TextField(blank=True)
-    qr_code = models.ImageField(upload_to='qrcodes/', unique=True ) # don t set default here 
+    qr_code = models.ImageField(upload_to='qrcodes/', unique=True)  # don t set default here
 
     def save(self, *args, **kwargs):
         # Génère le QR code avant de sauvegarder
@@ -81,6 +88,8 @@ class DPI(models.Model):
 
         # Enregistre l'image générée dans le champ qr_code
         self.qr_code.save(unique_filename, ContentFile(buffer.getvalue()), save=False)
+
+
 class Resume(models.Model):
     diagnostic = models.TextField(blank=True, null=True)
     symptomes = models.TextField(blank=True, null=True)
@@ -89,16 +98,21 @@ class Resume(models.Model):
 
     def __str__(self):
         return "Résumé"
- 
 
 
+class Medicament(models.Model):
+    id_medicament = models.AutoField(primary_key=True)
+    nom = models.CharField(max_length=100)
+    description = models.TextField()
+    prix = models.DecimalField(max_digits=10, decimal_places=2)
+    quantite = models.PositiveIntegerField()
 
-    
+
 class Ordonnance(models.Model):
     id_ordonnance = models.AutoField(primary_key=True)
     date_prescription = models.DateField()
     etat_ordonnance = models.BooleanField(default=False)
-    
+
 
 class Consultation(models.Model):
     id_consultation = models.AutoField(primary_key=True)
@@ -106,22 +120,24 @@ class Consultation(models.Model):
     date_consult = models.DateField()
     resume = models.OneToOneField(Resume, related_name="consultation", on_delete=models.CASCADE)
     ordonnance = models.OneToOneField(Ordonnance, related_name="consultation", on_delete=models.CASCADE)
-    
-    # Add bilanRadiologue, bilanBiologique and ordonnance, allowing them to be null
-    bilan_radiologue = models.ForeignKey('BilanRadiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)
-    bilan_biologique = models.ForeignKey('BilanBiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)
-    ordonnance = models.OneToOneField(Ordonnance, related_name="consultation", on_delete=models.CASCADE,null=True)
+
+    # Add bilanRadiologue and bilanBiologique, allowing them to be null
+    bilan_radiologue = models.ForeignKey('BilanRadiologique', related_name="consultations", on_delete=models.SET_NULL,
+                                         null=True, blank=True)
+    bilan_biologique = models.ForeignKey('BilanBiologique', related_name="consultations", on_delete=models.SET_NULL,
+                                         null=True, blank=True)
 
     def __str__(self):
         return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
-    
-    
+
+
 class Prescription(models.Model):
     id_prescription = models.AutoField(primary_key=True)
     ordonnance = models.ForeignKey(Ordonnance, related_name="prescriptions", on_delete=models.CASCADE)
     dose = models.CharField(max_length=50)
     duree = models.CharField(max_length=50)
-    medicament = models.CharField(max_length=100,default='Default Value') 
+    medicament = models.OneToOneField(Medicament, related_name="prescription", on_delete=models.CASCADE, default=1)
+
 
 '''class BilanBiologique(models.Model):
     id_bilanbiologique = models.AutoField(primary_key=True)
@@ -141,8 +157,8 @@ class ParametreBioMesure(models.Model):
     bilan_biologique = models.ForeignKey('BilanBiologique', on_delete=models.CASCADE, related_name="parametre_bio_mesures")
     valeur_mesuree = models.CharField(max_length=100)
     date_mesure = models.DateField()'''
-  
-  
+
+
 class BilanBiologique(models.Model):
     id_bilanbiologique = models.AutoField(primary_key=True)
     description = models.TextField(default="")
@@ -150,10 +166,12 @@ class BilanBiologique(models.Model):
     parametres_bio_mesures = models.ManyToManyField('ParametreBioMesure', related_name="bilans_biologiques")
     laborantin = models.ForeignKey('Laborantin', related_name="bilanbiologiques", on_delete=models.CASCADE, null=True)
 
+
 class ParametreBioMesure(models.Model):
     id_parametrebiomesure = models.AutoField(primary_key=True)
     # Linking to a single BilanBiologique
-    bilan_biologique = models.ForeignKey('BilanBiologique', on_delete=models.CASCADE, related_name="parametre_bio_mesures")
+    bilan_biologique = models.ForeignKey('BilanBiologique', on_delete=models.CASCADE,
+                                         related_name="parametre_bio_mesures")
     nom = models.CharField(max_length=100)
     unite_mesure = models.CharField(max_length=20)
     valeur_normale = models.CharField(max_length=100)
@@ -163,22 +181,22 @@ class ParametreBioMesure(models.Model):
     # This ensures each ParametreBioMesure is only linked to one BilanBiologique
     '''class Meta:
         unique_together = ('bilan_biologique', 'nom')  # Prevents a BilanBiologique from being linked to the same ParametreBioMesure twice'''
-  
-    
-    
-    
+
 
 class BilanRadiologique(models.Model):
     id_bilanradiologique = models.AutoField(primary_key=True)
     description = models.TextField(default="")
     type = models.TextField(default="")
     compte_rendu = models.TextField()
-    radiologue = models.ForeignKey('Radiologue', related_name="bilanradiologiques", on_delete=models.CASCADE,null=True,)
+    radiologue = models.ForeignKey('Radiologue', related_name="bilanradiologiques", on_delete=models.CASCADE,
+                                   null=True, )
+
 
 class RadiologyImage(models.Model):
     id_image = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to="radiologies/")
     bilan_radiologique = models.ForeignKey(BilanRadiologique, related_name="images", on_delete=models.CASCADE)
+
 
 class Soin(models.Model):
     id_soin = models.AutoField(primary_key=True)

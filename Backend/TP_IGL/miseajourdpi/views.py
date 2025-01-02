@@ -1,49 +1,43 @@
-from datetime import date
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status,request
-
-from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer,PatientSerializer
-from gestiondpi.models import Infirmier, Soin,Consultation,Prescription,Medecin,DPI,Patient, User
-from rest_framework import status
-from django.shortcuts import get_object_or_404
-
+from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
+from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI,Ordonnance
 
 # the expected format of the info from the frontend
 # {
-#     "nss": "1111111",  
-# #     "resume": {
+#     "dpi": 1, 
+#     "resume": {
 #         "diagnostic": "string", 
 #         "symptomes": "string", 
 #         "antecedents": "string", 
 #         "autres_informations": "string"
-#     },  
-#           "ordonnance": { 
-#             "prescription": [
-#              {
+#     },
+#     
+#           "ordonnance": {
+#             "date_prescription": "2025-05-30",
+#             "etat_ordonnance": true,
+#             "prescription": [{
 #                 "dose": "string",
 #                 "duree": "string",
-#                 "medicament": "string"
-#               }
-#                 ]
-#         },
+#                 "medicament": {
+#                 "nom": "string",
+#                 "description": "string",
+#                 "prix": 10,
+#                 "quantite": 5
+#           }],
+#         }
+#     },
 #     "bilan_biologique": {
 #         "description": "string"
 #     },
-#     "bilan_radiologue": {
+#     "bilan_radiologique": {
 #         "description": "string",
 #         "type": "string"
 #     }
 # }
 class AjouterConsultation(APIView):
     def post(self, request):
-        
-        # Get dpi_id based on the nss provided
-        nss = request.data.pop('nss', None)
-        patient = Patient.objects.get(NSS=nss)
-        dpi = DPI.objects.get(patient=patient)
-        request.data['dpi'] =dpi.id_dpi
-
         # Serialize the data from the frontend to create a new consultation
         serializer = ConsultationSerializer(data=request.data)  
         
@@ -63,8 +57,9 @@ class AjouterConsultation(APIView):
 # the expected format of the info from the frontend
 # {
 #   "patient": 1,  //ID 
-#   "user": 2,  //ID to 
-#   "description": "Administered medication to the patient.",   
+#   "infirmier": 2,  //ID
+#   "description": "Administered medication to the patient.",  
+#   "date_soin": "2023-12-21",  
 #   "observation": "Patient showed positive reaction to the medication."  
 # }
 class RemplirSoin(APIView):
@@ -73,11 +68,7 @@ class RemplirSoin(APIView):
         data = request.data.copy()
         if 'patient' in data:  # If id_patient is provided by the frontend
             data['dpi'] = data.pop('patient')  # Rename id_patient to dpi (since it's the field expected by the serializer)
-        data['date_soin']=date.today().strftime('%Y-%m-%d')
-        id_user=data.pop('user')
-        user_infirmier = User.objects.get(id=id_user)
-        infirmier = Infirmier.objects.get(utilisateur = user_infirmier)
-        data['infirmier']=infirmier.id_infirmier
+
         # Use the updated data to validate the request
         serializer = SoinSerializer(data=data)
 
@@ -89,6 +80,7 @@ class RemplirSoin(APIView):
             return Response(soin_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 #-------------------------------------------------------------------------------------------  
 # the data sent to the front end will be in this format (list of JSON data):
@@ -106,28 +98,22 @@ class RemplirSoin(APIView):
 # }   
 class GetPatients(APIView):
     def get(self, request):
-
-
-        patients = Patient.objects.all()
-        serializer =PatientSerializer(patients, many=True)  # Serialize the queryset
+        # Get first_name and last_name from query parameters
+        first_name = request.data['medecin_first_name']
+        last_name = request.data['medecin_last_name']
+        
+        if not first_name or not last_name:
+            return Response({"error": "first_name and last_name are required"}, status=400)
+        
+        # Search for Medecin using both first_name and last_name
+        try:
+            medecin = Medecin.objects.get(utilisateur__first_name=first_name, utilisateur__last_name=last_name)
+        except Medecin.DoesNotExist:
+            return Response({"error": "Medecin not found"}, status=404)
+        
+        dpis = DPI.objects.filter(medecin=medecin)  # Get all patients
+        serializer =DPISerializer(dpis, many=True)  # Serialize the queryset
         return Response(serializer.data)  # Return serialized data in the response
-     
-        # # Get first_name and last_name from query parameters
-        # first_name = request.data['medecin_first_name']
-        # last_name = request.data['medecin_last_name']
-        
-        # if not first_name or not last_name:
-        #     return Response({"error": "first_name and last_name are required"}, status=400)
-        
-        # # Search for Medecin using both first_name and last_name
-        # try:
-        #     medecin = Medecin.objects.get(utilisateur__first_name=first_name, utilisateur__last_name=last_name)
-        # except Medecin.DoesNotExist:
-        #     return Response({"error": "Medecin not found"}, status=404)
-        
-        # dpis = DPI.objects.filter(medecin=medecin)  # Get all patients
-        # serializer =DPISerializer(dpis, many=True)  # Serialize the queryset
-        # return Response(serializer.data)  # Return serialized data in the response
 
 
 #-------------------------------------------------------------------------------------------  
@@ -156,12 +142,11 @@ class GetSoins(APIView):
 #-------------------------------------------------------------------------------------------  
 # the data sent to the front end will be in this format (list of JSON data):
 # [
-# {
-#         "id_consult": 1,
-#         "date_consult": "2024-12-31",
+#     {
+#         "num_consult": 1,
+#         "date_consult": "2024-12-22",
 #         "ordonnance": true,
-#         "bilan_biologique": true,
-#         "bilan_radiologique": true,
+#         "prescription": true,
 #         "resume": true
 #     }
 # ]
@@ -176,11 +161,10 @@ class GetConsultations(APIView):
         consultations = Consultation.objects.filter(dpi=dpi)
         for consultation in consultations:
             data.append({
-                "id_consult" :consultation.id_consultation,
+               "num_consult": consultation.id_consultation,
                "date_consult": consultation.date_consult,
                "ordonnance": bool(consultation.ordonnance),
-               "bilan_biologique" : bool(consultation.bilan_biologique) ,
-               "bilan_radiologique": bool(consultation.bilan_radiologue),
+               "prescription": bool(Prescription.objects.filter(ordonnance=consultation.ordonnance).exists()),
                "resume": bool(consultation.resume),
             })
         return Response(data)
@@ -196,7 +180,7 @@ class GetConsultations(APIView):
 #     },
 # ]
 # the data sent from the front will be i the format 
-#{"id_consult" :1}
+# {"id_consult" :  1}
 class GetOrdonnance(APIView):
     def get(self,request):
         id_consult = request.data['id_consult']
@@ -204,13 +188,13 @@ class GetOrdonnance(APIView):
         if id_consult is None:
             return Response({"error": "id_consult parameter is required"}, status=400)
         
-        consultation=Consultation.objects.filter(id_consultation=id_consult).first()
+        consultation = Consultation.objects.get(id_consultation=id_consult)
         ordonnance = consultation.ordonnance
         prescriptions = Prescription.objects.filter(ordonnance=ordonnance)
         for prescription in prescriptions :
             data.append(
                 {
-                    "medicament" : prescription.medicament,
+                    "medicament" : prescription.medicament.nom,
                     "dose" : prescription.dose,
                     "duree" : prescription.duree
                 }
@@ -230,11 +214,10 @@ class GetOrdonnance(APIView):
 class GetResume(APIView):
     def get(self,request):
         id_consult = request.data['id_consult']
-        data = []
+        data ={}
         if id_consult is None:
             return Response({"error": "id_consult parameter is required"}, status=400)
-        
-        consultation=Consultation.objects.filter(id_consult=id_consult).first()
+        consultation = Consultation.objects.get(id_consultation=id_consult) 
         resume = consultation.resume
         data = {
             "diagnostic" : resume.diagnostic,
@@ -243,48 +226,3 @@ class GetResume(APIView):
             "autres_informations" :resume.autres_informations
         }
         return Response(data)    
-
-
-
-# the data sent from the SGPH will be in the format 
-# {
-# "valide" :  true/false,
-# "id_consult" : 1
-# }    
-
-
-class ValiderOrdonnance(APIView):
-    def post(self, request):
-        valide = request.data.get('valide')
-        id_consult = request.data.get('id_consult')
-        
-        if valide is None or id_consult is None:
-            return Response(
-                {"error": "Both 'valide' and 'id_consult' are required fields."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        try:
-            consultation = get_object_or_404(Consultation, id_consultation=id_consult)
-            ordonnance = consultation.ordonnance
-            
-            if valide is True:
-                ordonnance.etat_ordonnance = True
-                ordonnance.save()
-                return Response(
-                    {"message": "Ordonnance validated successfully."},
-                    status=status.HTTP_200_OK
-                )
-            else:
-                return Response(
-                    {"error": "Invalid value for 'valide'. Must be true."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-        except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
-

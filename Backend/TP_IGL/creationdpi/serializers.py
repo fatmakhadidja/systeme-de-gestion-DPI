@@ -1,3 +1,4 @@
+
 from rest_framework import serializers
 from gestiondpi.models import Patient, DPI, Medecin
 from authentification.models import User

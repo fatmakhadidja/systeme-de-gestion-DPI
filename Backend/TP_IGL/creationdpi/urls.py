@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import  SearchDPIByNSSView ,QRCodeScanView
+from creationdpi.views import  SearchDPIByNSSView ,QRCodeScanView
 
-from .views import DPICreationView ,QRCodeView , DPIListView ,DPIDetailView , ConsultDPIView
+from creationdpi.views import DPICreationView ,QRCodeView , DPIListView ,DPIDetailView , ConsultDPIView
 
 
 from django.conf import settings
