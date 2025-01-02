@@ -39,6 +39,7 @@
     display: flex;
     align-items: center;
     margin-top: 10%;
+    justify-content: space-around;
   }
   .search-bar {
     display: flex;
@@ -80,6 +81,8 @@
     width: 20%;
     color: var(--White);
     font-family: var(--font-family-text);
+    text-align: center;
+    text-decoration: none;
     font-weight: 700;
     border: none;
     border-radius: 3px;
@@ -104,7 +107,12 @@
     border: none;
     border-radius: 3px;
   }
-
+.qrcode-search{
+  display: flex;
+  align-items: center;
+   border: 2px solid var(--Port-gore);
+  border-radius: 3px;
+}
   @media (max-width:600px){
     .creation{
         float: top;

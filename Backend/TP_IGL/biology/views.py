@@ -26,21 +26,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from gestiondpi.models import BilanBiologique, ParametreBioMesure, Laborantin,DPI,Consultation
-from .serializers import BilanBiologiqueSerializer, ParametreBioMesureSerializer
+from .serializers import BilanBiologiqueSerializer, ParametreBioMesureSerializer,DPISerializer
 
 class StaticTableHelper:
     @staticmethod
     def get_static_table():
         return [
-            {'id': 1, 'nom': 'Glucose', 'unite_mesure': 'mg/dL', 'valeur_normale': '70-99'},
-            {'id': 2, 'nom': 'Cholesterol', 'unite_mesure': 'mg/dL', 'valeur_normale': '125-200'},
-            {'id': 3, 'nom': 'Blood Pressure', 'unite_mesure': 'mmHg', 'valeur_normale': '120/80'},
-            {'id': 4, 'nom': 'Body Temperature', 'unite_mesure': '°C', 'valeur_normale': '36.5-37.5'},
-            {'id': 5, 'nom': 'Heart Rate', 'unite_mesure': 'bpm', 'valeur_normale': '60-100'},
-            {'id': 6, 'nom': 'Oxygen Saturation', 'unite_mesure': '%', 'valeur_normale': '95-100'},
-            {'id': 7, 'nom': 'Weight', 'unite_mesure': 'kg', 'valeur_normale': '60-80'},
+             {'id': 1, 'nom': 'Pression_arterielle', 'unite_mesure': 'mmHg', 'valeur_normale': '120/80'},
+             {'id': 2, 'nom': 'Glycemie', 'unite_mesure': 'mg/dL', 'valeur_normale': '70-99'},
+             {'id': 3, 'nom': 'Niveau_cholesterol', 'unite_mesure': 'mg/dL', 'valeur_normale': '125-200'},
         ]
-''' test  {
+'''
+    Pression_arterielle : '', 
+    Glycemie: '',
+    Niveau_cholesterol: '',
+
+ test  {
   "bilan_id": 1,
   "laborantin_id": 1,
   "mesure": [
@@ -218,7 +219,7 @@ class Generergraph(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
-        
+      
 
 class GetBilanBiologiquesByDPI(APIView):
     def get(self, request, dpi_id):
@@ -239,10 +240,72 @@ class GetBilanBiologiquesByDPI(APIView):
                 )
 
             # Serialize and return the BilanBiologiques
-            serializer = BilanBiologiqueSerializer(bilan_biologiques, many=True)
+            #serializer = BilanBiologiqueSerializer(bilan_biologiques, many=True)
+            response_data = [
+                {
+                    "bilan": BilanBiologiqueSerializer(bilan).data,
+                    "consultation_id": Consultation.objects.filter(
+                        bilan_biologique=bilan
+                    ).values_list('id_consultation', flat=True).first()  # Assuming one consultation per bilan
+                }
+                for bilan in bilan_biologiques
+            ]
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+''' id_bilan , id_laboratain , tableau mesure  ''' 
+class GetBilanBiologiqueByConsultation(APIView):
+    def get(self, request, consultation_id):
+        try:
+            # Fetch the consultation by ID
+            consultation = Consultation.objects.filter(id_consultation=consultation_id).first()
+
+            if not consultation:
+                return Response(
+                    {'message': 'Consultation not found.'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            # Fetch associated biological bilan
+            bilan_biologique = consultation.bilan_biologique
+
+            # Prepare the response
+            response_data = {
+                "consultation_id": consultation_id,
+                "bilan_biologique": BilanBiologiqueSerializer(bilan_biologique).data if bilan_biologique else None,
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class GetDPIsWithBiologie(APIView):
+    def get(self, request):
+        try:
+            # Fetch all DPIs with at least one consultation linked to a biological bilan
+            dpis_with_biologique = DPI.objects.filter(
+                consultations__bilan_biologique__isnull=False
+            ).distinct()
+
+            # Check if any DPIs exist
+            if not dpis_with_biologique.exists():
+                return Response(
+                    {'message': 'No DPIs found with biological bilans.'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            # Serialize the DPIs
+            serializer = DPISerializer(dpis_with_biologique, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
                 

@@ -5,68 +5,137 @@ import { HeaderComponent } from '../../header-component/header.component';
 import {OrdonnanceComponent} from '../ordonnance/ordonnance.component';
 import { ResumeComponent } from '../resume/resume.component';
 import { MatDialog } from '@angular/material/dialog';
-import {ConsulterDpiService ,ListConsultation, ListSoins} from '../../services/consulter-dpi.service'
+import {ConsulterDpiService ,ListConsultation, ListSoins , DpiDetails} from '../../services/consulter-dpi.service'
 import { BilanBiologiqueComponent } from '../bilan-biologique/bilan-biologique.component';
 import { BilanRadiologiqueComponent } from '../bilan-radiologique/bilan-radiologique.component';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClient , HttpParams } from '@angular/common/http';
-//import { provideHttpClient } from '@angular/common/http';
+
+import { ActivatedRoute ,Router ,RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-consulter-dpi',
-  imports: [CommonModule,MatTableModule,OrdonnanceComponent,HeaderComponent,HttpClientModule],
+  imports: [CommonModule,MatTableModule,OrdonnanceComponent,HeaderComponent,RouterModule],
   templateUrl:'./consulter-dpi.component.html' ,
   styleUrl: './consulter-dpi.component.css',
   standalone: true
 })
 export class ConsulterDpiComponent implements OnInit{
 
-  antecedent = "bla bla bla ";
   displayedColumns: string[] = [ 'NConsultation','date', 'Ordo', 'Bilan_bio','Bilan_rad','Resume'];
   dataSource : ListConsultation[] = [];
   displayedColumns2: string[] = ['Date','Description','Observation'];
   dataSource2 : ListSoins[] = [];
-  showButton = false ;
-
-  constructor(public dialog : MatDialog , private consulterDpiService : ConsulterDpiService ){} ;
-  /*
-  ngOnInit(): void {
-    const dpi = 1 ;
-    this.consulterDpiService.getListConsultation(dpi).subscribe({ 
-      next: data => console.log(data),
-       error: err => console.error(err)
-    });
-
-    this.consulterDpiService.getListSoins().subscribe(data => {
-      this.dataSource2 = data;
+  showButton = true ;
+  dpiDetails: DpiDetails ={
+    nss: '',
+    nom_patient: '',
+    prenom_patient: '',
+    date_de_naissance: '', // You can use `Date` type if you need a Date object instead of string
+    adresse: '',
+    telephone: '',
+    mutuelle: '',
+    personne_a_contacter: '',
+    nom_complet_medecin: '',
+    id_dpi: '',
+  };
+  id!: string;
+  role: string | null = '';
+  currentUrl: string = '';
+  constructor(private router: Router,public dialog : MatDialog , private consulterDpiService : ConsulterDpiService ,private route: ActivatedRoute, ){} ;
+ 
+  getConsultationNumber(index: number): number {
+    return index + 1; // Incrémentation à partir de 1
+  }
+  getdpi():number{
+    return Number(this.dpiDetails?.id_dpi);
+  }
+   // Récupérer l'URL actuelle
+   getCurrentUrl(): void {
+    this.router.events.subscribe(() => {
+      this.currentUrl = this.router.url;
+      console.log('URL actuelle:', this.currentUrl); // Affiche l'URL dans la console
     });
   }
-*/
-getConsultationNumber(index: number): number {
-  return index + 1; // Incrémentation à partir de 1
-}
-    ngOnInit(): void {
-      const dpi = 1; // Remplacer par le DPI du patient
-        this.consulterDpiService.getListConsultation(dpi).subscribe(data => {
-        this.dataSource = data;
-      }, error => {
-        console.error('Erreur lors de la récupération des consultations:', error);
-      });
-      
-      /*const params = new HttpParams().set('dpi', dpi.toString());
-      this.http.get('http://127.0.0.1:8000/api/miseajourdpi/getConsultations/', {params}).subscribe({
-        next: data => console.log(data),
-        error: err => console.error(err)
-      });*/
-      this.consulterDpiService.getListSoins(dpi).subscribe(data => {
-        this.dataSource2 = data;
-      }, error => {
-        console.error('Erreur lors de la récupération des soins:', error);
-      });
+    
+ngOnInit(): void {
+  // Extract the 'id' parameter from the route
+  this.id = this.route.snapshot.paramMap.get('id')!;
+  console.log('Patient ID:', this.id);
+
+  // Appel pour récupérer les détails du DPI
+  this.consulterDpiService.getDpiDetails(this.id).subscribe((response: DpiDetails) => {
+    this.dpiDetails = response;
+    console.log("Détails du patient récupérés:", this.dpiDetails);
+    
+    // Appeler ici les autres fonctions après avoir récupéré dpiDetails
+    this.loadConsultations();
+    this.loadSoins();
+    this.getCurrentUrl();
+
+    // Écoutez les changements du fragment d'URL
+    this.route.fragment.subscribe(fragment => {
+      // Si un fragment est présent, effectuez le défilement vers l'élément correspondant
+      if (fragment) {
+        this.scrollToFragment(fragment);
+      }
+    });
+  });
+  
+ 
+  /*this.route.queryParams.subscribe(params => {
+    this.role = params['role'];
+    console.log('Role:', this.role);
+    if (this.role === 'patient') { // Exemple de condition pour le rôle
+      this.showButton = false; // Afficher le bouton si l'utilisateur est admin
+    } else {
+      this.showButton = true; // Sinon, ne pas afficher le bouton
     }
-
-
-
+  });*/
+  // Récupérer le rôle de l'utilisateur
+  this.role = this.route.snapshot.paramMap.get('role')!;
+  console.log('Role:', this.role);
+  if (this.role === 'patient') { // Exemple de condition pour le rôle
+    this.showButton = false; // Afficher le bouton si l'utilisateur est admin
+  } else {
+    this.showButton = true; // Sinon, ne pas afficher le bouton
+  }
+}
+ // Fonction pour faire défiler la page vers l'élément avec l'id donné
+ scrollToFragment(fragment: string): void {
+  const element = document.getElementById(fragment);
+  if (element) {
+    // Faites défiler la page vers l'élément
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+// la récupération du tableau des consultations 
+loadConsultations() {
+  const dpi = Number(this.dpiDetails?.id_dpi);
+  console.log("DPI de la consultation:", dpi);
+  
+  // Effectuer l'appel pour récupérer les consultations
+  this.consulterDpiService.getListConsultation(dpi).subscribe(data => {
+    this.dataSource = data;
+  }, error => {
+    console.error('Erreur lors de la récupération des consultations:', error);
+  });
+}
+// la récupération du tableau des soins infirmiers  
+loadSoins() {
+  const dpi = Number(this.dpiDetails?.id_dpi);
+  console.log("DPI des soins:", dpi);
+  
+  // Effectuer l'appel pour récupérer les soins
+  this.consulterDpiService.getListSoins(dpi).subscribe(data => {
+    this.dataSource2 = data;
+  }, error => {
+    console.error('Erreur lors de la récupération des soins:', error);
+  });
+}
+// navigation vers la page de l'ajout de la création du consultation 
+navigateToCreationDpi(): void {
+  this.router.navigate(['/ajouter-consult']);
+}
+// ouvrir la fenetre du résumé 
   openOrdonnance(idConsult: number): void {
     this.dialog.open(OrdonnanceComponent, {
       width: '85%',
@@ -79,10 +148,9 @@ getConsultationNumber(index: number): number {
     const dialogRef = this.dialog.open(ResumeComponent, {
       width: '85%',
       height: '90%',
-      data: { id_consult: idConsult } // Pass the ID to the modal
+      data: { id_consult: idConsult } // Passer ID de la consultation vers la fenetre ordonnance 
     });
   
-    // Handle data received when the modal is closed
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Data received from modal:', result);
@@ -91,16 +159,18 @@ getConsultationNumber(index: number): number {
       }
     });
   }
-  openBilanBio(): void {
+  openBilanBio(idConsult: number): void {
     this.dialog.open(BilanBiologiqueComponent, {
       width: '85%',
       height:'90%',
+      data: { id_consult: idConsult }
     });
   }
-  openBilanRad(): void {
+  openBilanRad(idConsult: number): void {
     this.dialog.open(BilanRadiologiqueComponent, {
       width: '85%',
       height:'90%',
+      data: { id_consult: idConsult }
     });
   }
 }

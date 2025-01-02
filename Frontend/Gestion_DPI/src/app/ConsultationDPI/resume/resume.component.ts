@@ -29,10 +29,9 @@ export class ResumeComponent {
     @Inject(MAT_DIALOG_DATA) public data: any, // Injected data
     private consulterDpiService: ConsulterDpiService // Service for API calls
   ) {}
-
+  // requete pour la récupération du résumé 
    ngOnInit(): void {
-   // const id_consult = 2;
-    const id_consult = this.data.id_consult; // Remplacer par le DPI du patient
+    const id_consult = this.data.id_consult; // par le DPI du patient
       this.consulterDpiService.getResume(id_consult).subscribe(data => {
        console.log(data);
        this.Antecedents = data.antecedents ;

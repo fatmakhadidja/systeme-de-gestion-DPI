@@ -133,9 +133,11 @@ class DPIListSerializer(serializers.ModelSerializer):
     nom_patient = serializers.CharField(source="patient.utilisateur.last_name")
     prenom_patient = serializers.CharField(source="patient.utilisateur.first_name")
     dpi_url = serializers.SerializerMethodField()
+    id = serializers.CharField(source="patient.utilisateur.id")
+
     class Meta:
         model = DPI
-        fields = ["nss", "nom_patient", "prenom_patient", "dpi_url"]
+        fields = ["nss", "nom_patient", "prenom_patient", "dpi_url", "id"]
 
     def get_dpi_url(self, obj):
         # Génère l'URL vers les détails du DPI
@@ -151,10 +153,20 @@ class DPIDetailSerializer(serializers.ModelSerializer):
     mutuelle = serializers.CharField(source="patient.mutuelle")
     personne_a_contacter = serializers.CharField(source="patient.personne_a_contacter")
     nom_complet_medecin = serializers.SerializerMethodField()
-
+    id_dpi = serializers.CharField(source="patient.id_patient")
     class Meta:
         model = DPI
-        fields = ["nss", "nom_patient","prenom_patient","date_de_naissance","adresse","telephone","mutuelle","personne_a_contacter","nom_complet_medecin"]
+        fields = [
+            "nss",
+            "nom_patient",
+            "prenom_patient",
+            "date_de_naissance",
+            "adresse",
+            "telephone",
+            "mutuelle",
+            "personne_a_contacter",
+            "nom_complet_medecin","id_dpi"
+        ]
 
     def get_nom_complet_medecin(self, obj):
         """Retourne le nom complet du médecin (prénom + nom)."""

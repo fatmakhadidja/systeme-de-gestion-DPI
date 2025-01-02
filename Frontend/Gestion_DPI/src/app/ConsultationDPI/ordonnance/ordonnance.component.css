@@ -1,12 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 
-
-/*.custom-dialog .mat-dialog-container {
-  border-radius: 20px !important; /* Add border-radius to the dialog container */
- /* background-color: #218879 !important; /* Ensure the dialog container background is white */
-/*}*/
-
 .containerordo {
   gap: 10%;
   position: relative;
@@ -42,7 +36,6 @@
 
   cursor: pointer;
 }
-/*.dialog{width: 100%;height: auto;}*/
 
 .icons{
   display: flex;

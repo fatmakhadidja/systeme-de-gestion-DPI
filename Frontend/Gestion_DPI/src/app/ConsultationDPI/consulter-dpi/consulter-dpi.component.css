@@ -40,15 +40,7 @@
   margin-left: 4%;
   justify-content: center; /* Center items on smaller screens */
 }
-/*
-.img {
-  width: 15%; 
-  height: 9rem; 
-  margin: 0 auto;
-  margin-top: 7%;
-  background-color: #fff;
-}
-*/
+
 .info {
   display: flex;
   flex-direction: column;
@@ -125,28 +117,7 @@
     color: white;
  }
 }
-/*
-.antecedentpage {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5%;
-}
 
-.antecedentpage h2 {
-  font-family: 'Nunito', sans-serif;
-  color: #218879;
-}
-
-.antecedentpage div {
-  border: #218879 solid 0.2rem;
-  border-radius: 2rem;
-  width: 80%;
-  height: 50%;
-}
-*/
 .tabConsult,.tabConsult2 {
   text-align: center;
   display: flex;
@@ -170,7 +141,7 @@
   font-size: 3rem;
 }
 
-/*.mat-elevation-z8 ng-container {}*/
+
 .tab{
     width: 100%; /* Ensure the table spans the container */
     border-spacing: 0; /* No extra spacing between cells */
@@ -254,11 +225,7 @@ td, th {
   background-color: white;
   z-index: 0;
 }
-/*.imgsoins{
-  position: relative ;
-  margin-left: 50%;
-  margin-bottom: 5%;
-}*/
+
 .imgsoins {
   display: flex;
   justify-content: flex-end; /* Aligne l'image à droite */
@@ -287,7 +254,7 @@ td, th {
 }
 .tabsoins th,
 .tabsoins td {
- /* Ajoute une bordure autour des cellules */
+ 
   padding: 0.5%; /* Ajoute de l'espace à l'intérieur des cellules */
   text-align: center; /* Aligne le texte à gauche */
   font-family: 'Nunito', sans-serif;
@@ -299,7 +266,7 @@ td, th {
 }
 
 .tabsoins td {
-  /*border: 1px solid #ddd;*/
+ 
   border: 1px solid #3BD6CC;
 }
 .imgConsult{
