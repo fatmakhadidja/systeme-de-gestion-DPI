@@ -43,7 +43,7 @@ export class ResumeComponent {
       this.consultationService.updateConsultation('resume', this.resume);
       this.modalMessage = 'Le résumé a été enregistré avec succès !';
       this.showModal = true ;
-      this.router.navigate(['/consultationHome']);
+      this.router.navigate(['/creation-consult']);
     }
   }
 
@@ -52,6 +52,6 @@ export class ResumeComponent {
   }
 
   cancel() {
-    this.router.navigate(['/consultationHome']);
+    this.router.navigate(['/creation-consult']);
   }
 }

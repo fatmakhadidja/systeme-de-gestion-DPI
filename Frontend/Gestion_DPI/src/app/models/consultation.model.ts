@@ -5,23 +5,14 @@ export interface Resume {
   autres_informations: string; // Not mandatory
 }
 
-export interface Medicament {
-  nom: string;
-  description: string; // Added field
-  prix: number; // Added field
-  quantite: number; // Added field
-}
-
 export interface Ordonnance {
-  date_prescription: string;
-  etat_ordonnance: boolean;
-  prescriptions : Prescription[] ;
+  prescription : Prescription[] ;
 }
 
 export interface Prescription {
   dose: string;
   duree: string;
-  medicament: Medicament; // Corrected to match structure
+  medicament: string; // Corrected to match structure
 }
 
 export interface BilanBiologique {
@@ -34,8 +25,9 @@ export interface BilanRadiologique {
 }
 
 export interface Consultation {
+  nss: string;
   resume: Resume;
   ordonnance : Ordonnance;
   bilan_biologique: BilanBiologique;
-  bilan_radiologique: BilanRadiologique;
+  bilan_radiologue: BilanRadiologique;
 }
