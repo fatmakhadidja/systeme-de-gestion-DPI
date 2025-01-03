@@ -109,7 +109,7 @@ WSGI_APPLICATION = 'TP_IGL.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'TP_django',
+        'NAME': 'TP_angular',
         'USER': 'root',
         'PASSWORD': 'enteresta',
         'HOST': 'localhost',

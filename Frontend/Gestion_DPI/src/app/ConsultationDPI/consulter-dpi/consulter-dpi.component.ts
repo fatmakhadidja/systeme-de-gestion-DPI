@@ -143,6 +143,7 @@ navigateToCreationDpi(): void {
       data: { id_consult: idConsult }
     });
   }
+  
   openResume(idConsult: number): void {
     console.log("idConsult",idConsult)
     const dialogRef = this.dialog.open(ResumeComponent, {

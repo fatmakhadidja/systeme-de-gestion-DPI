@@ -86,7 +86,8 @@ class GetPatients(APIView):
 # ]
 class GetSoins(APIView):
     def get(self, request):
-        dpi = request.data.get('dpi')
+        #dpi = request.data.get('dpi')
+        dpi = request.GET.get('dpi')
         if not dpi:
             return Response({"error": "dpi parameter is required"}, status=400)
 
