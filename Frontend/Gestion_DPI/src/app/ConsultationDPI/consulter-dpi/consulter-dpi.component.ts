@@ -13,7 +13,7 @@ import { ActivatedRoute ,Router ,RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-consulter-dpi',
-  imports: [CommonModule,MatTableModule,OrdonnanceComponent,HeaderComponent,RouterModule],
+  imports: [CommonModule,MatTableModule,HeaderComponent,RouterModule],
   templateUrl:'./consulter-dpi.component.html' ,
   styleUrl: './consulter-dpi.component.css',
   standalone: true
