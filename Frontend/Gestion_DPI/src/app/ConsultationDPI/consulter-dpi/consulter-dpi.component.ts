@@ -126,6 +126,7 @@ loadSoins() {
 navigateToCreationDpi(): void {
   this.router.navigate(['/creation-consult'], { queryParams: { nss: this.dpiDetails.nss } });
 }
+
 // ouvrir la fenetre du résumé 
   openOrdonnance(idConsult: number): void {
     this.dialog.open(OrdonnanceComponent, {

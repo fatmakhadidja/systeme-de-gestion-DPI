@@ -87,8 +87,7 @@ export class ConsulterDpiService {
             Resume: consultation.resume ? 'oui' : 'non'    // resume -> Resume (oui/non)
           }))
         )
-      );
-      
+      ); 
     }
 
     getResume(id_consult: number): Observable<any> {
