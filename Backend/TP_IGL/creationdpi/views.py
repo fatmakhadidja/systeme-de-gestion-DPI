@@ -1,21 +1,34 @@
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import DPICreationSerializer
+from .serializers import  DPICreationSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+<<<<<<< HEAD
 from gestiondpi.models import DPI, Patient
 from .serializers import QRCodeSerializer, DPIListSerializer, DPIDetailSerializer
+=======
+from gestiondpi.models import DPI ,Patient
+from .serializers import QRCodeSerializer , DPIListSerializer ,DPIDetailSerializer
+>>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 from rest_framework.parsers import MultiPartParser, FormParser
 from pyzbar.pyzbar import decode
 from PIL import Image
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import RetrieveAPIView
 
+<<<<<<< HEAD
 ###########################################CREATION DPI###########################################################"
 
+=======
+
+
+
+###########################################CREATION DPI###########################################################"
+>>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 
 class DPICreationView(APIView):
     def post(self, request, *args, **kwargs):
@@ -47,6 +60,11 @@ class QRCodeView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 ########################################RECHERCHE###########################################################################""
 
 
@@ -56,10 +74,14 @@ class SearchDPIByNSSView(APIView):
         nss = request.query_params.get("nss")
 
         if not nss:
+<<<<<<< HEAD
             return Response(
                 {"error": "NSS parameter is required."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+=======
+            return Response({"error": "NSS parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 
         try:
             # Récupérer le patient via le NSS
@@ -73,6 +95,7 @@ class SearchDPIByNSSView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         except Patient.DoesNotExist:
+<<<<<<< HEAD
             return Response(
                 {"error": "Patient with this NSS does not exist."},
                 status=status.HTTP_404_NOT_FOUND,
@@ -83,6 +106,12 @@ class SearchDPIByNSSView(APIView):
                 {"error": "DPI not found for this patient."},
                 status=status.HTTP_404_NOT_FOUND,
             )
+=======
+            return Response({"error": "Patient with this NSS does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+        except DPI.DoesNotExist:
+            return Response({"error": "DPI not found for this patient."}, status=status.HTTP_404_NOT_FOUND)
+>>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 
 
 class QRCodeScanView(APIView):
@@ -91,6 +120,7 @@ class QRCodeScanView(APIView):
 
     def post(self, request):
         # Obtenir le fichier image téléchargé
+<<<<<<< HEAD
         uploaded_file = request.FILES.get(
             "file"
         )  # 'file' est la clé pour l'image téléchargée
@@ -99,6 +129,12 @@ class QRCodeScanView(APIView):
             return Response(
                 {"error": "No file uploaded."}, status=status.HTTP_400_BAD_REQUEST
             )
+=======
+        uploaded_file = request.FILES.get("file")  # 'file' est la clé pour l'image téléchargée
+
+        if not uploaded_file:
+            return Response({"error": "No file uploaded."}, status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 
         try:
             # Ouvrir l'image téléchargée et décoder le QR code
@@ -107,10 +143,14 @@ class QRCodeScanView(APIView):
 
             # Vérifier si le QR code a été décodé avec succès
             if not decoded_objects:
+<<<<<<< HEAD
                 return Response(
                     {"error": "No QR code found in the image."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+=======
+                return Response({"error": "No QR code found in the image."}, status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 
             # Extraire le NSS des données décodées
             nss = decoded_objects[0].data.decode("utf-8")  # NSS décodé
@@ -125,6 +165,7 @@ class QRCodeScanView(APIView):
                 return Response(serializer.data, status=status.HTTP_200_OK)
 
             except Patient.DoesNotExist:
+<<<<<<< HEAD
                 return Response(
                     {"error": "Patient not found for this QR code."},
                     status=status.HTTP_404_NOT_FOUND,
@@ -144,6 +185,17 @@ class QRCodeScanView(APIView):
 ############################################"AFFICHAGE####################################################
 
 
+=======
+                return Response({"error": "Patient not found for this QR code."}, status=status.HTTP_404_NOT_FOUND)
+            except DPI.DoesNotExist:
+                return Response({"error": "DPI not found for this patient."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+############################################"AFFICHAGE####################################################
+
+>>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 class ConsultDPIView(APIView):
     def get(self, request, utilisateur_id):
         # Récupérer le patient associé à l'utilisateur
@@ -162,12 +214,18 @@ class ConsultDPIView(APIView):
         serializer = DPIDetailSerializer(dpi)
         return Response(serializer.data)
 
+<<<<<<< HEAD
 
 class DPIListView(ListAPIView):
     queryset = DPI.objects.all()
     serializer_class = DPIListSerializer
 
 
+=======
+class DPIListView(ListAPIView):
+    queryset = DPI.objects.all()
+    serializer_class = DPIListSerializer
+>>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 class DPIDetailView(RetrieveAPIView):
     queryset = DPI.objects.all()
     serializer_class = DPIDetailSerializer
