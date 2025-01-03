@@ -17,26 +17,14 @@ class Patient(models.Model):
     personne_a_contacter = models.CharField(max_length=100)  # Emergency contact
 
 # Represents a doctor with a specialty, linked to a User account
-    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
-    NSS = models.CharField(max_length=20, unique=True)  # Unique Social Security Number
-    date_de_naissance = models.DateField()  # Date of birth
-    adresse = models.TextField()  # Address
-    telephone = models.CharField(max_length=15)  # Phone number
-    mutuelle = models.CharField(max_length=100)  # Insurance provider
-    personne_a_contacter = models.CharField(max_length=100)  # Emergency contact
-
-# Represents a doctor with a specialty, linked to a User account
 class Medecin(models.Model):
     id_medecin = models.AutoField(primary_key=True)
-    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
-    specialite = models.CharField(max_length=100)  # Medical specialty
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
     specialite = models.CharField(max_length=100)  # Medical specialty
 
 # Represents a nurse, linked to a User account
 class Infirmier(models.Model):
     id_infirmier = models.AutoField(primary_key=True)
-    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
 # Represents a lab technician, linked to a User account
@@ -47,7 +35,6 @@ class Laborantin(models.Model):
 # Represents a radiologist, linked to a User account
 class Radiologue(models.Model):
     id_radiologue = models.AutoField(primary_key=True)
-    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
 # Represents an administrator, linked to a User account
