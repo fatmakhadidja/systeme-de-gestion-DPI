@@ -30,7 +30,7 @@ handleLoginSuccess(response: any): void {
     }if (role === 'patient') {
       this.router.navigate(['/consulter-dpi', id]);
     }else if (role === 'medecin') {
-      this.router.navigate(['/recherche-patient']);
+      this.router.navigate(['/creation-consult']);
     } else if (role === 'infirmier') {
       // Pass the infirmier_id as a query parameter
       this.router.navigate(['/soins-infirmiers'], { queryParams: { id } });
