@@ -26,8 +26,6 @@ SECRET_KEY = "django-insecure-!-4nj^&wxu%y+gvg#*j)t%svc-pj#rf(78xkvfg7ne4gz6mqg6
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-
 CORS_ALLOW_CREDENTIALS = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
@@ -48,28 +46,6 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-<<<<<<< HEAD
-
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'corsheaders',
-    'rest_framework_simplejwt.token_blacklist',
-    'gestiondpi',
-    'authentification',
-    'creationdpi',
-    'miseajourdpi',
-<<<<<<< HEAD
-    'django_extensions'
-=======
-    'django_extensions',
-    'rest_framework_swagger',
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
-=======
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -82,7 +58,9 @@ INSTALLED_APPS = [
     "gestiondpi",
     "authentification",
     "creationdpi",
->>>>>>> mary
+    "miseajourdpi",
+    "django_extensions",
+    "rest_framework_swagger",
 ]
 
 
@@ -139,6 +117,7 @@ WSGI_APPLICATION = "TP_IGL.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+<<<<<<< HEAD
         'NAME': 'TP_IGL',
         'USER': 'fatma',
         'PASSWORD': '30 may 05 30 may 05',
@@ -146,56 +125,10 @@ DATABASES = {
         'PORT': '3306',
 =======
 """
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "mydjango_db",
-        "USER": "root",
-        "PASSWORD": "mysql2024",
-        "HOST": "localhost",
-        "PORT": "3306",
->>>>>>> mary
-    }
-},
-'''
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'TP_IGL',
-        'USER': 'fatma',
-        'PASSWORD': '30 may 05 30 may 05',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
-<<<<<<< HEAD
-DATABASES['default']['TEST'] = {
-    'NAME': 'test_igl_db',
-}
-<<<<<<< HEAD
-REST_FRAMEWORK={
-    'NON_FIELD_ERRORS_KEY':'error',
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
-=======
-
-=======
->>>>>>> mary
-REST_FRAMEWORK = {
-    "NON_FIELD_ERRORS_KEY": "error",
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-<<<<<<< HEAD
-    #'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
+#'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
 
-"""
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -205,8 +138,6 @@ DATABASES = {
         "HOST": "localhost",
         "PORT": "3306",
     }
-=======
->>>>>>> mary
 }
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEY": "error",
@@ -262,10 +193,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 AUTH_USER_MODEL = "authentification.User"
 
-<<<<<<< HEAD
 
-=======
->>>>>>> mary
 STATIC_URL = "static/"
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),

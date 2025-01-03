@@ -10,6 +10,10 @@ urlpatterns =[
     path('getOrdonnance/',GetOrdonnance.as_view(),name='get_ordonnance'),
     path('getResume/',GetResume.as_view(),name='get_resume'),
     path('validerOrdonnance/',ValiderOrdonnance.as_view(),name='valider_ordonnance')
+<<<<<<< HEAD
 ]
 
 
+=======
+]
+>>>>>>> e46932016749790127e376879d64d413e26e6483

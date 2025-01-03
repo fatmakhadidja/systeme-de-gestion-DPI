@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from gestiondpi.models import (
 <<<<<<< HEAD
+<<<<<<< HEAD
     Consultation, DPI, Resume, Ordonnance, Prescription, Soin, Patient, Infirmier,
     BilanRadiologique, BilanBiologique
 )
@@ -17,6 +18,11 @@ from gestiondpi.models import (
 )
 from gestiondpi.models import BilanRadiologique, BilanBiologique
 >>>>>>> mary
+=======
+    Consultation, DPI, Resume, Ordonnance, Prescription, Soin, Patient, Infirmier,
+    BilanRadiologique, BilanBiologique
+)
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 from datetime import date
 
 
@@ -28,6 +34,7 @@ class ResumeSerializer(serializers.ModelSerializer):
         fields = ["diagnostic", "symptomes", "antecedents", "autres_informations"]
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 # -------------------------------------------------------------------------------------------
 # Serializer for the Prescription model
@@ -76,6 +83,26 @@ class PrescriptionSerializer(serializers.ModelSerializer):
 
 >>>>>>> mary
 
+=======
+# -------------------------------------------------------------------------------------------
+# Serializer for the Prescription model
+class PrescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Prescription
+        fields = ['dose', 'duree', 'medicament']
+        extra_kwargs = {
+            'dose': {'allow_blank': True},
+            'duree': {'allow_blank': True},
+            'medicament': {'allow_blank': True},
+        }
+
+    def create(self, validated_data):
+        # Create and return a Prescription instance
+        prescription = Prescription.objects.create(**validated_data)
+        return prescription
+
+
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 # -------------------------------------------------------------------------------------------
 # Serializer for the Ordonnance model
 class OrdonnanceSerializer(serializers.ModelSerializer):
@@ -83,6 +110,7 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ordonnance
+<<<<<<< HEAD
 <<<<<<< HEAD
         fields = ['prescription']
 
@@ -95,6 +123,16 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
         # Extract prescription data from validated_data
         prescription_data = validated_data.pop("prescription", [])
 >>>>>>> mary
+
+        # Set default values for Ordonnance
+        validated_data['date_prescription'] = date.today()
+        validated_data['etat_ordonnance'] = False
+=======
+        fields = ['prescription']
+
+    def create(self, validated_data):
+        prescription_data = validated_data.pop('prescription', [])
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 
         # Set default values for Ordonnance
         validated_data['date_prescription'] = date.today()
@@ -123,11 +161,15 @@ class BilanRadiologiqueSerializer(serializers.ModelSerializer):
             'description': {'allow_blank': True},
             'type': {'allow_blank': True},
         }
+<<<<<<< HEAD
 =======
         fields = ["description", "type"]
 
 >>>>>>> mary
 
+=======
+
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 
 # -------------------------------------------------------------------------------------------
 # Serializer for the BilanBiologique model
@@ -139,11 +181,15 @@ class BilanBiologiqueSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'description': {'allow_blank': True},
         }
+<<<<<<< HEAD
 =======
         fields = ["description"]
 
 >>>>>>> mary
 
+=======
+
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 
 # -------------------------------------------------------------------------------------------
 # Serializer for the Consultation model
@@ -152,10 +198,13 @@ class ConsultationSerializer(serializers.ModelSerializer):
     resume = ResumeSerializer(required=True)
     ordonnance = OrdonnanceSerializer(required=False)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
     # Use the Bilan serializers
 >>>>>>> mary
+=======
+>>>>>>> e46932016749790127e376879d64d413e26e6483
     bilan_biologique = BilanBiologiqueSerializer(required=False)
     bilan_radiologue = BilanRadiologiqueSerializer(required=False)
 
@@ -182,10 +231,14 @@ class ConsultationSerializer(serializers.ModelSerializer):
             ]
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e46932016749790127e376879d64d413e26e6483
             if valid_prescriptions:
                 ordonnance_serializer = OrdonnanceSerializer(data={'prescription': valid_prescriptions})
                 if ordonnance_serializer.is_valid(raise_exception=True):
                     ordonnance = ordonnance_serializer.save()
+<<<<<<< HEAD
 =======
             # Create Prescriptions if provided in ordonnance
             prescription_data = ordonnance_data.get("prescription", [])
@@ -195,6 +248,8 @@ class ConsultationSerializer(serializers.ModelSerializer):
                     if prescription_serializer.is_valid(raise_exception=True):
                         prescription_serializer.save(ordonnance=ordonnance)
 >>>>>>> mary
+=======
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 
         # Create BilanBiologique if data is valid
         bilan_biologique = None
@@ -231,6 +286,7 @@ class ConsultationSerializer(serializers.ModelSerializer):
         )
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         # Create BilanBiologique if data is provided
         if bilan_biologique_data:
@@ -254,12 +310,15 @@ class ConsultationSerializer(serializers.ModelSerializer):
         consultation.save()
 
 >>>>>>> mary
+=======
+>>>>>>> e46932016749790127e376879d64d413e26e6483
         return consultation
 
 
 # -------------------------------------------------------------------------------------------
 # Serializer for the Soin model
 class SoinSerializer(serializers.ModelSerializer):
+<<<<<<< HEAD
 <<<<<<< HEAD
     dpi = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), required=False)  # Reference Patient by ID
     infirmier = serializers.PrimaryKeyRelatedField(queryset=Infirmier.objects.all())
@@ -271,12 +330,17 @@ class SoinSerializer(serializers.ModelSerializer):
         queryset=Infirmier.objects.all()
     )  # Reference Infirmier by ID
 >>>>>>> mary
+=======
+    dpi = serializers.PrimaryKeyRelatedField(queryset=Patient.objects.all(), required=False)  # Reference Patient by ID
+    infirmier = serializers.PrimaryKeyRelatedField(queryset=Infirmier.objects.all())
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 
     class Meta:
         model = Soin
         fields = ["dpi", "infirmier", "description", "date_soin", "observation"]
 
     def create(self, validated_data):
+<<<<<<< HEAD
 <<<<<<< HEAD
         patient_id = validated_data.pop('dpi')
 =======
@@ -293,11 +357,19 @@ class SoinSerializer(serializers.ModelSerializer):
                 patient=patient_id
             )  # the DPI has a ForeignKey to the Patient model
 >>>>>>> mary
+=======
+        patient_id = validated_data.pop('dpi')
+
+        # Retrieve the corresponding DPI
+        try:
+            dpi = DPI.objects.get(patient=patient_id)
+>>>>>>> e46932016749790127e376879d64d413e26e6483
         except DPI.DoesNotExist:
             raise serializers.ValidationError(
                 "DPI for the given patient does not exist."
             )
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         # Create and return Soin instance
         soin = Soin.objects.create(dpi=dpi, **validated_data)
@@ -344,6 +416,23 @@ class PatientSerializer(serializers.ModelSerializer):
 
 >>>>>>> mary
 
+=======
+        # Create and return Soin instance
+        soin = Soin.objects.create(dpi=dpi, **validated_data)
+        return soin
+
+
+# -------------------------------------------------------------------------------------------
+# Serializer for the Patient model
+class PatientSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source='utilisateur.first_name')
+    last_name = serializers.CharField(source='utilisateur.last_name')
+
+    class Meta:
+        model = Patient
+        fields = ['id_patient', 'first_name', 'last_name']
+
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 
 # -------------------------------------------------------------------------------------------
 # Serializer for the DPI model
@@ -353,7 +442,11 @@ class DPISerializer(serializers.ModelSerializer):
     class Meta:
         model = DPI
 <<<<<<< HEAD
+<<<<<<< HEAD
         fields = ['patient']
 =======
         fields = ["patient"]
 >>>>>>> mary
+=======
+        fields = ['patient']
+>>>>>>> e46932016749790127e376879d64d413e26e6483

@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 <<<<<<< HEAD
+<<<<<<< HEAD
 from rest_framework import status,request
 from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
 from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI
@@ -13,6 +14,12 @@ from django.shortcuts import get_object_or_404
 from datetime import date
 >>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 
+=======
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+from datetime import date
+
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 from .serializers import ConsultationSerializer, SoinSerializer, PatientSerializer
 from gestiondpi.models import Soin, Consultation, Prescription, DPI, Patient, Infirmier
 from authentification.models import User
@@ -22,6 +29,7 @@ from authentification.models import User
 # AjouterConsultation: Handles adding a consultation with nested data structures.
 # Expected frontend data format:
 # {
+<<<<<<< HEAD
 <<<<<<< HEAD
 #     "dpi": 1, 
 #     "resume": {
@@ -53,12 +61,17 @@ from authentification.models import User
 #         "type": "string"
 #     }
 =======
+=======
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 #     "nss": "1111111",
 #     "resume": { "diagnostic": "string", "symptomes": "string", ... },
 #     "ordonnance": { "prescription": [{ "dose": "string", ... }] },
 #     "bilan_biologique": { "description": "string" },
 #     "bilan_radiologue": { "description": "string", "type": "string" }
+<<<<<<< HEAD
 >>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
+=======
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 # }
 class AjouterConsultation(APIView):
     def post(self, request):
@@ -127,7 +140,12 @@ class GetPatients(APIView):
 # ]
 class GetSoins(APIView):
     def get(self, request):
+<<<<<<< HEAD
         dpi = request.data.get('dpi')
+=======
+        #dpi = request.data.get('dpi')
+        dpi = request.GET.get('dpi')
+>>>>>>> e46932016749790127e376879d64d413e26e6483
         if not dpi:
             return Response({"error": "dpi parameter is required"}, status=400)
 
@@ -145,7 +163,12 @@ class GetSoins(APIView):
 # ]
 class GetConsultations(APIView):
     def get(self, request):
+<<<<<<< HEAD
         dpi = request.data.get('dpi')
+=======
+        #dpi = request.data.get('dpi')
+        dpi = request.GET.get('dpi')
+>>>>>>> e46932016749790127e376879d64d413e26e6483
         if not dpi:
             return Response({"error": "dpi parameter is required"}, status=400)
 
@@ -172,7 +195,12 @@ class GetConsultations(APIView):
 # ]
 class GetOrdonnance(APIView):
     def get(self, request):
+<<<<<<< HEAD
         id_consult = request.data.get('id_consult')
+=======
+       # id_consult = request.data.get('id_consult')
+        id_consult = request.GET.get('id_consult')
+>>>>>>> e46932016749790127e376879d64d413e26e6483
         if not id_consult:
             return Response({"error": "id_consult parameter is required"}, status=400)
 
@@ -200,7 +228,12 @@ class GetOrdonnance(APIView):
 # }
 class GetResume(APIView):
     def get(self, request):
+<<<<<<< HEAD
         id_consult = request.data.get('id_consult')
+=======
+        #id_consult = request.data.get('id_consult')
+        id_consult = request.GET.get('id_consult')
+>>>>>>> e46932016749790127e376879d64d413e26e6483
         if not id_consult:
             return Response({"error": "id_consult parameter is required"}, status=400)
 
@@ -213,6 +246,7 @@ class GetResume(APIView):
             "autres_informations": resume.autres_informations
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         return Response(data)    
 
 # the data sent from the SGPH will be in the format 
@@ -223,6 +257,8 @@ class GetResume(APIView):
 
 
 =======
+=======
+>>>>>>> e46932016749790127e376879d64d413e26e6483
         return Response(data)
 
 # -------------------------------------------------------------------------------------------
@@ -232,11 +268,15 @@ class GetResume(APIView):
 #     "valide": true/false,
 #     "id_consult": 1
 # }
+<<<<<<< HEAD
 >>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
+=======
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 class ValiderOrdonnance(APIView):
     def post(self, request):
         valide = request.data.get('valide')
         id_consult = request.data.get('id_consult')
+<<<<<<< HEAD
 <<<<<<< HEAD
         
         if valide is None or id_consult is None:
@@ -271,6 +311,8 @@ class ValiderOrdonnance(APIView):
 
 
 =======
+=======
+>>>>>>> e46932016749790127e376879d64d413e26e6483
 
         if valide is None or id_consult is None:
             return Response({"error": "Both 'valide' and 'id_consult' are required fields."}, status=400)
@@ -283,5 +325,9 @@ class ValiderOrdonnance(APIView):
             ordonnance.save()
             return Response({"message": "Ordonnance validated successfully."}, status=200)
 
+<<<<<<< HEAD
         return Response({"error": "Invalid value for 'valide'. Must be true."}, status=400)
 >>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
+=======
+        return Response({"error": "Invalid value for 'valide'. Must be true."}, status=400)
+>>>>>>> e46932016749790127e376879d64d413e26e6483
