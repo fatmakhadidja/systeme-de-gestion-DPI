@@ -54,7 +54,10 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'gestiondpi',
     'authentification',
-    'creationdpi'
+    'creationdpi',
+    'miseajourdpi',
+    'django_extensions',
+    'rest_framework_swagger',
 ]
 
 
@@ -103,6 +106,7 @@ WSGI_APPLICATION = 'TP_IGL.wsgi.application'
 }
 
 '''
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -112,15 +116,36 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
     }
+},
+'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'TP_IGL',
+        'USER': 'fatma',
+        'PASSWORD': '30 may 05 30 may 05',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
 }
-REST_FRAMEWORK={
-    'NON_FIELD_ERRORS_KEY':'error',
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+
+REST_FRAMEWORK = {
+    "NON_FIELD_ERRORS_KEY": "error",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    #'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
 }
+# SPECTACULAR_SETTINGS = {
+#     'TITLE': 'GesdtionDPI',  # The title of API
+#     'DESCRIPTION': 'Detailed description of your API',  # Description of the API
+#     'VERSION': '1.0.0',  # API version
+#     'SERVE_INCLUDE_SCHEMA': False,  # This option is set to False if you do not want to expose the schema as an endpoint
+# }
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
