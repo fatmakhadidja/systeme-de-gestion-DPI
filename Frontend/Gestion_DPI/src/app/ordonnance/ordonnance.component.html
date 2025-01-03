@@ -6,7 +6,7 @@
     <input
       type="text"
       placeholder="Nom"
-      [(ngModel)]="medicament.nom"
+      [(ngModel)]="prescription.medicament"
       class="input-field"
     />
     <input
@@ -33,11 +33,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="ordonnance.prescriptions.length === 0">
+        <tr *ngIf="ordonnance.prescription.length === 0">
           <td colspan="3">Aucune prescription ajoutée</td>
         </tr>
-        <tr *ngFor="let prescription of ordonnance.prescriptions">
-          <td>{{ prescription.medicament.nom }}</td>
+        <tr *ngFor="let prescription of ordonnance.prescription">
+          <td>{{ prescription.medicament }}</td>
           <td>{{ prescription.dose }}</td>
           <td>{{ prescription.duree }}</td>
         </tr>

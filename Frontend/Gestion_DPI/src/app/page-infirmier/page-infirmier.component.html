@@ -40,3 +40,11 @@
   <button class="btn-cancel" (click)="cancel()">Annuler</button>
   <button class="btn-save" (click)="save()">Enregistrer</button>
 </div>
+
+<!-- Modale -->
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <p>{{ modalMessage }}</p>
+    <button (click)="closeModal()">Fermer</button>
+  </div>
+</div>

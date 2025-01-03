@@ -27,7 +27,7 @@ export class BilanBiologiqueComponent {
   }
 
   navigateToConsultation() {
-    this.router.navigate(['/consultation-home']); // Remplacez par la route correcte
+    this.router.navigate(['/creation-consult']);
   }
 
   saveBilanBiologique() {
@@ -40,6 +40,7 @@ export class BilanBiologiqueComponent {
       this.consultationService.updateConsultation('bilan_biologique', this.bilanBiologique);
       this.modalMessage = 'Examen biologique enregistré avec succès !';
       this.showModal = true ;
+      this.router.navigate(['/creation-consult']);
     }
   }
 }
