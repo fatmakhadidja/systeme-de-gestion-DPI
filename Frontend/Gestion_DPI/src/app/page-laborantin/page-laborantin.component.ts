@@ -9,7 +9,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatButtonModule} from '@angular/material/button';
 import {OnInit } from '@angular/core';
 import { LaborantinService } from '../laborantin.service';
-import { Chart,CategoryScale,BarController, LinearScale, BarElement, Title, Tooltip, Legend} from 'chart.js';
+import { Chart,CategoryScale,BarController, LinearScale, BarElement, Title, Tooltip, Legend, UpdateModeEnum} from 'chart.js';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -19,13 +19,22 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import { ChangeDetectorRef } from '@angular/core';
+
 import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 
 interface Patient{
   nom:string,
   prenom: string,
+  id_dpi: number,
+  bilans: Bilan[],
 }
 
+interface Bilan{
+  blan_id:number,
+  description: string,
+  remplit: string,
+}
 
 @Component({
   selector: 'app-page-laborantin',
@@ -47,11 +56,11 @@ interface Patient{
 export class PageLaborantinComponent implements OnInit{
   patients: Patient[] = [];
   patientControl = new FormControl(null, Validators.required);
-  patientSelecione: Patient | null =  null;
-  displayedColumns: string[] = ['date', 'description', 'resultat',];
+  patientSelecione: any;
+  displayedColumns: string[] = ['description', 'resultat',];
   dataSource : any[] =[];
-
-  constructor(private laborantinService: LaborantinService){}
+selectedBilanId: number | null = null;
+  constructor(private laborantinService: LaborantinService,   private cdr: ChangeDetectorRef){}
 
   ngOnInit(): void {
     this.fetchPatients();
@@ -62,14 +71,39 @@ export class PageLaborantinComponent implements OnInit{
         this.patients = data.map((item: any) => ({
           nom: item.utilisateur.last_name,
           prenom: item.utilisateur.first_name,
-        }));
-      },
+          id_dpi: item.id_dpi,
+          bilans: [],
+        }
+      ));
+    },
       error: (err) => console.error('Error fetching patients:', err),
     });
   }
   loadPatientData(): void {
+    // Get the selected patient from the dropdown
     this.patientSelecione = this.patientControl.value;
+
+    if (this.patientSelecione) {
+      // Fetch bilans for the selected patient
+      this.laborantinService.getBilanList(this.patientSelecione.id_dpi).subscribe({
+        next: (data) => {
+          // Map bilans and set as dataSource
+          this.dataSource = data.map((item: any) => ({
+            description: item.bilan.description,
+            remplit: item.bilan.laborantin !== null,
+            bilan_id: item.bilan.id_bilanbiologique,
+          }));
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Error fetching bilans for patient', err),
+      });
+    } else {
+      // Clear dataSource if no patient is selected
+      this.dataSource = [];
+    }
   }
+
+
 
   clickedRows = new Set<any>();
   trackByPatient(index: number, patient: any): string {
@@ -83,19 +117,18 @@ export class PageLaborantinComponent implements OnInit{
 
   readonly dialog = inject(MatDialog);
 
-  openDialog_remplirResultat(): void {
+  openDialog_remplirResultat(row: any): void {
     const dialogRef = this.dialog.open(RemplirResultat, {
-      width: '80vw', 
-      height: 'auto',  
+      width: '80vw',
+      height: 'auto',
       maxWidth: '80vw',
-      data: {},
+      data: { bilan_id: row.bilan_id }, // Pass bilan_id here
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
   }
-
   
 }
 @Component({
@@ -120,27 +153,26 @@ export class PageLaborantinComponent implements OnInit{
 //REMPLIR RESULTATS
 export class RemplirResultat {
   readonly dialogRef = inject(MatDialogRef<RemplirResultat>);
-  // readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+  readonly data = inject(MAT_DIALOG_DATA);
 
-   params :string[] = ['Glycémie',
-    'Cholestérol total',
-    'HDL',
-   ' LDL ',
-    'Triglycérides',
-    'Créatinine',
-    'Urée',
-   ' Acide urique'
-   ]
+  params: { name: string; id: number }[] = [
+    { id: 1, name:'Pression_arterielle' },
+    { id: 2, name: 'Glycemie' },
+    { id: 3, name: 'Niveau_cholesterol' },
+  ];
+   divs: { id: number; parametre: string; valeur: string ; date: string}[] = [];
+   nextId = 1;
+   isDisable: boolean = true; 
 
-  onNoClick(): void {
+   constructor(private laborantinUpdate: LaborantinService){};
+  
+   onNoClick(): void {
     this.dialogRef.close();
   }
   readonly panelOpenState = signal(false);
-  divs: { id: number; parametre: string; valeur: string ; unite: string}[] = [];
-  nextId = 1;
 
   ajouter() {
-    this.divs.push({ id: this.nextId++, parametre: '', valeur: '', unite:''});
+    this.divs.push({ id: this.nextId++, parametre: '', valeur: '', date:''});
   }
 
   deleteDiv(id: number) {
@@ -158,11 +190,42 @@ export class RemplirResultat {
       console.log('The dialog was closed');
     });
   }
-  isDisable: boolean = true; 
  
   enregistrer() {
-    this.isDisable = false; 
-    
+    this.isDisable = false;
+    const mesures = this.divs.map(div => {
+      // Find the ID for the entered parameter name
+      const matchedParam = this.params.find(param => param.name === div.parametre);
+      if (!matchedParam) {
+        alert(`Paramètre "${div.parametre}" non valide`);
+        throw new Error(`Invalid paramètre: ${div.parametre}`);
+      }
+
+      return {
+        "id-mesure": matchedParam.id, // Send the ID of the parameter
+        "valeur_mesure": div.valeur,
+        "date_mesure": div.date,
+      };
+    });
+    const bilan_id = this.data.bilan_id;
+    const updateData = {
+      bilan_id: bilan_id, // Include the bilan_id passed from the parent
+      laborantin_id: 1,
+      mesure: mesures,
+    };
+
+    this.laborantinUpdate.postBilanResultat(updateData).subscribe({
+      next: response => {
+        console.log("L'ajout des paramètres a réussi", response);
+        alert(`L'ajout des paramètres a réussi`);
+        this.dialogRef.close(); // Close dialog after success
+      },
+      error: err => {
+        console.log("L'ajout des paramètres a échoué", err);
+          console.error("Failed to send data:", err.error); // Log the error body
+          alert(`Erreur: ${JSON.stringify(err.error)}`);
+      },
+    });
   }
 }
 

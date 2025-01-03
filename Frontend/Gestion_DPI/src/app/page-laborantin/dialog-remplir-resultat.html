@@ -11,12 +11,12 @@
   <h3 class="content-title">Ajout des valeurs mesurées lors de l’examen</h3>
   <button (click)="ajouter()"><img src="../../assets/images/Plus.svg" alt="plus">Ajouter un Paramètre </button>
   <h4>Résultats ajoutés :</h4>
-    <form action="" method="post">
+    <form >
       <div *ngFor="let div of divs; let i = index" class="add-params">
         <div>
           <label for="name-{{ div.id }}">Paramètre</label>
-          <select id="name-{{ div.id }}" [(ngModel)]="div.parametre" name = "param-{{ div.id }}"placeholder="Choisire un parametre">
-            <option *ngFor="let param of params" [value]="param">{{param}}</option>
+          <select id="name-{{ div.id }}" [(ngModel)]="div.parametre" name="param-{{ div.id }}" placeholder="Choisir un paramètre">
+            <option *ngFor="let param of params" [value]="param.name">{{ param.name }}</option>
           </select>
         </div>
         <div>
@@ -24,8 +24,8 @@
           <input id="value-{{ div.id }}" [(ngModel)]="div.valeur" placeholder="Valeur mesuré" name="valeur-{{ div.id }}">
         </div>
         <div>
-          <label for="value-{{ div.id }}">Unité</label>
-          <input id="value-{{ div.id }}" [(ngModel)]="div.unite" placeholder="Unité de mesure" name="unite-{{ div.id }}">
+          <label for="value-{{ div.id }}">Date</label>
+          <input id="value-{{ div.id }}" [(ngModel)]="div.date" placeholder="Date" name="date-{{ div.id }}" type="date">
         </div>
         <button (click)="deleteDiv(div.id)">Delete</button>
       </div>
