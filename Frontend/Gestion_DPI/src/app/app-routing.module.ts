@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'ordonnance', component: OrdonnanceComponent },
   { path: 'bilan-biologique', component: BilanBiologiqueComponent },
   { path: 'bilan-radiologique', component: BilanRadiologiqueComponent },
-  { path : 'creation-consult', component : ConsultationHomeComponent}
+  { path: 'creation-consult', component: ConsultationHomeComponent }
 ];
 
 @NgModule({

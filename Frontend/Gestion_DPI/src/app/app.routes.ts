@@ -23,11 +23,11 @@ export const routes: Routes = [
 
 
     {path: 'creation-dpi', component: CreationDPIComponent},
-    { path : 'creation-consult', component : ConsultationHomeComponent},
+    { path : 'creation-consult/:nss', component : ConsultationHomeComponent},
     { path : 'soins-infirmiers', component : PageInfirmierComponent},
     // { path: 'ConsultationDPI/consulter-dpi', component: ConsulterDpiComponent },
     // { path: '', redirectTo: '/recherche-patient', pathMatch: 'full' },
-    {path: 'ajouter-consult',component:ConsultationHomeComponent},
+    {path: 'creation-consult',component : ConsultationHomeComponent},
     {path: 'consulter-dpi/:id/:role',component: ConsulterDpiComponent},
     {path:'page-radiologue' , component: PageRadiologueComponent}
 ];

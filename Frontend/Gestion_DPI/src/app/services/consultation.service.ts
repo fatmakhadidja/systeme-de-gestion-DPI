@@ -6,7 +6,7 @@ import { Consultation } from '../models/consultation.model';
 })
 export class ConsultationService {
   private consultation: Consultation = {
-    nss: '2222222', // constant for now, needed from amira
+    nss: '',
     resume: {
       diagnostic: '',
       symptomes: '',
