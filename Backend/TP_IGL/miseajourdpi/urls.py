@@ -9,7 +9,7 @@ urlpatterns =[
     path('getConsultations/',GetConsultations.as_view(),name='get_consultations'),
     path('getOrdonnance/',GetOrdonnance.as_view(),name='get_ordonnance'),
     path('getResume/',GetResume.as_view(),name='get_resume'),
-    path('valider/ordonnance/',ValiderOrdonnance.as_view(),name='valider_ordonnance')
+    path('validerOrdonnance/',ValiderOrdonnance.as_view(),name='valider_ordonnance')
 ]
 
 
