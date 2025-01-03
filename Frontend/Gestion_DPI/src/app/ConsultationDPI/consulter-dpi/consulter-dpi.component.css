@@ -210,15 +210,18 @@ td, th {
   color: white;
   border-radius: 1.5rem;
   padding: 1% 1%;
-  width: 15%;
+  width: 20%;
   border: 0.01rem solid #242855;
   outline: none;
   cursor: pointer;
+  font-family: Montserrat, sans-serif;
+  font-size: 1em;
+  font-weight: 700;
 }
 .ajoutercnsult button:hover{
   background-color: white;
-  color: #1E90FF;
-  border: 0.01rem solid #1E90FF;
+  color: #242855;
+  border: 0.01rem solid #242855;
 }
 .custom-dialog{
   border-radius: 20px;
