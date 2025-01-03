@@ -115,13 +115,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
     }
-}
-REST_FRAMEWORK={
-    'NON_FIELD_ERRORS_KEY':'error',
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+},
 
 
 """
@@ -135,27 +129,28 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+"""
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEY": "error",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    #'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
-}
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'GesdtionDPI',  # The title of API
-    'DESCRIPTION': 'Detailed description of your API',  # Description of the API
-    'VERSION': '1.0.0',  # API version
-    'SERVE_INCLUDE_SCHEMA': False,  # This option is set to False if you do not want to expose the schema as an endpoint
-}
+},
+# SPECTACULAR_SETTINGS = {
+#     'TITLE': 'GesdtionDPI',  # The title of API
+#     'DESCRIPTION': 'Detailed description of your API',  # Description of the API
+#     'VERSION': '1.0.0',  # API version
+#     'SERVE_INCLUDE_SCHEMA': False,  # This option is set to False if you do not want to expose the schema as an endpoint
+# }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
-}
+},
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
