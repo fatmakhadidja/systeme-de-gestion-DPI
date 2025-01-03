@@ -5,13 +5,17 @@ import { ResumeComponent } from './resume/resume.component';
 import { OrdonnanceComponent } from './ordonnance/ordonnance.component';
 import { BilanBiologiqueComponent } from './bilan-biologique/bilan-biologique.component';
 import { BilanRadiologiqueComponent } from './bilan-radiologique/bilan-radiologique.component';
+import { PageRadiologueComponent } from './Radiologue/page-radiologue/page-radiologue.component';
+import { PageLaborantinComponent } from './page-laborantin/page-laborantin.component';
 
 const routes: Routes = [
   { path: 'resume', component: ResumeComponent },
   { path: 'ordonnance', component: OrdonnanceComponent },
   { path: 'bilan-biologique', component: BilanBiologiqueComponent },
   { path: 'bilan-radiologique', component: BilanRadiologiqueComponent },
-  { path: 'creation-consult', component: ConsultationHomeComponent }
+  { path: 'creation-consult', component: ConsultationHomeComponent },
+  {path:'page-radiologue' , component: PageRadiologueComponent},
+  {path:'page-laborantin' , component: PageLaborantinComponent}
 ];
 
 @NgModule({
