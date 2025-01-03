@@ -5,7 +5,9 @@ import uuid
 from io import BytesIO
 from django.core.files.base import ContentFile
 
+
 # Represents a patient with personal and medical details, linked to a User account
+
 class Patient(models.Model):
     id_patient = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
@@ -22,27 +24,34 @@ class Medecin(models.Model):
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
     specialite = models.CharField(max_length=100)  # Medical specialty
 
+
 # Represents a nurse, linked to a User account
 class Infirmier(models.Model):
     id_infirmier = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
+
 # Represents a lab technician, linked to a User account
 class Laborantin(models.Model):
     id_laborantin = models.AutoField(primary_key=True)
+
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
 # Represents a radiologist, linked to a User account
+
 class Radiologue(models.Model):
     id_radiologue = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
 # Represents an administrator, linked to a User account
+
 class Admin(models.Model):
     id_admin = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
+
 # Represents a hospital pharmacist with a method to validate prescriptions
+
 class PharmacienHospitalier(models.Model):
     id_pharmacienHospitalier = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
@@ -58,6 +67,7 @@ class DPI(models.Model):
     patient = models.OneToOneField('Patient', on_delete=models.CASCADE, default=1)  # Each patient has one DPI
     medecin = models.ForeignKey('Medecin', related_name="medcin", on_delete=models.CASCADE, default=1)  # Linked to a doctor
     qr_code = models.ImageField(upload_to='qrcodes/', unique=True)  # QR code for identification
+
 
     def save(self, *args, **kwargs):
         """Generates a QR code before saving the DPI."""
@@ -84,7 +94,9 @@ class DPI(models.Model):
         unique_filename = f"qrcodes/{nom_patient}_{prenom_patient}_{self.patient.NSS}_qrcode_{uuid.uuid4().hex}.png"
         self.qr_code.save(unique_filename, ContentFile(buffer.getvalue()), save=False)
 
+
 # Represents a summary of medical information
+
 class Resume(models.Model):
     diagnostic = models.TextField(blank=True, null=True)  # Diagnostic details
     symptomes = models.TextField(blank=True, null=True)  # Symptoms
@@ -94,11 +106,13 @@ class Resume(models.Model):
     def __str__(self):
         return "Résumé"
 
+
 # Represents a prescription document
 class Ordonnance(models.Model):
     id_ordonnance = models.AutoField(primary_key=True)
     date_prescription = models.DateField()  # Date of prescription
     etat_ordonnance = models.BooleanField(default=False)  # Validation status
+
 
 # Represents a medical consultation
 class Consultation(models.Model):
@@ -110,8 +124,10 @@ class Consultation(models.Model):
     bilan_radiologue = models.ForeignKey('BilanRadiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)  # Radiological report
     bilan_biologique = models.ForeignKey('BilanBiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)  # Biological report
 
+
     def __str__(self):
         return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
+
 
 # Represents a prescription within an ordonnance
 class Prescription(models.Model):
@@ -122,11 +138,13 @@ class Prescription(models.Model):
     medicament = models.CharField(max_length=100, default='Default Value')  # Medication name
 
 # Represents a biological analysis
+
 class BilanBiologique(models.Model):
     id_bilanbiologique = models.AutoField(primary_key=True)
     description = models.TextField(default="")  # Description of the analysis
     parametres_bio_mesures = models.ManyToManyField('ParametreBioMesure', related_name="bilans_biologiques")  # Biological parameters
     laborantin = models.ForeignKey('Laborantin', related_name="bilanbiologiques", on_delete=models.CASCADE, null=True)  # Linked to Laborantin
+
 
 # Represents a measured biological parameter
 class ParametreBioMesure(models.Model):
@@ -138,6 +156,7 @@ class ParametreBioMesure(models.Model):
     valeur_mesuree = models.CharField(max_length=100)  # Measured value
     date_mesure = models.DateField()  # Date of measurement
 
+
 # Represents a radiological analysis
 class BilanRadiologique(models.Model):
     id_bilanradiologique = models.AutoField(primary_key=True)
@@ -146,6 +165,7 @@ class BilanRadiologique(models.Model):
     compte_rendu = models.TextField()  # Report details
     radiologue = models.ForeignKey('Radiologue', related_name="bilanradiologiques", on_delete=models.CASCADE, null=True)  # Linked to Radiologue
 
+
 # Represents images in a radiological analysis
 class RadiologyImage(models.Model):
     id_image = models.AutoField(primary_key=True)
@@ -153,6 +173,7 @@ class RadiologyImage(models.Model):
     bilan_radiologique = models.ForeignKey(BilanRadiologique, related_name="images", on_delete=models.CASCADE)  # Linked to BilanRadiologique
 
 # Represents a nursing care record
+
 class Soin(models.Model):
     id_soin = models.AutoField(primary_key=True)
     dpi = models.ForeignKey(DPI, related_name="soins", on_delete=models.CASCADE)  # Linked to DPI

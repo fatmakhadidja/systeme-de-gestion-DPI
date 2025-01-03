@@ -3,19 +3,19 @@
 <div class="main-container">
   <h2>Remplissage d'une Consultation</h2>
   <div class="button-container">
-    <button class="nav-button" routerLink="/resume">
+    <button class="nav-button" (click)="handleButton1()">
       <img class="img1" src="assets/document-icon.png" alt="Résumé Icon" />
       <span>Rédiger le résumé</span>
     </button>
-    <button class="nav-button" routerLink="/bilan-biologique">
+    <button class="nav-button" (click)="handleButton2()">
       <img class="img2" src="assets/bio-icon.png" alt="Bilan Biologique Icon" />
       <span>Ajouter un Examen Biologique</span>
     </button>
-    <button class="nav-button" routerLink="/bilan-radiologique">
+    <button class="nav-button" (click)="handleButton3()">
       <img class="img1" src="assets/radio-icon.png" alt="Bilan Radiologique Icon" />
       <span>Ajouter un Examen Radiologique</span>
     </button>
-    <button class="nav-button" routerLink="/ordonnance">
+    <button class="nav-button" (click)="handleButton4()">
       <img class="img1" src="assets/prescription-icon.png" alt="Ordonnance Icon" />
       <span>Rédiger une ordonnance</span>
     </button>
@@ -35,4 +35,12 @@
 
 <div class="image-container">
   <img src="assets/doctors.svg" alt="Doctor and Patient" />
+</div>
+
+<!-- Modale -->
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <p>{{ modalMessage }}</p>
+    <button (click)="closeModal()">Fermer</button>
+  </div>
 </div>

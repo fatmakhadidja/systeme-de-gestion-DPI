@@ -10,6 +10,8 @@ import { provideRouter } from '@angular/router';
 import { routes } from '../src/app/app.routes';
 import { provideHttpClient } from '@angular/common/http';
 
+
+
 // Modify the bootstrapApplication to include BrowserAnimationsModule
 bootstrapApplication(AppComponent, {
   providers: [

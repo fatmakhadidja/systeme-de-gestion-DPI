@@ -10,9 +10,7 @@ import { ConsultationHomeComponent } from './consultation-home/consultation-home
 import { CreationDPIComponent } from './creation-dpi/creation-dpi.component';
 import { ConsulterDpiComponent } from './ConsultationDPI/consulter-dpi/consulter-dpi.component';
 import { PageRadiologueComponent } from './Radiologue/page-radiologue/page-radiologue.component';
-
-
-
+import { PageInfirmierComponent } from './page-infirmier/page-infirmier.component';
 
 export const routes: Routes = [
     { path: 'ordonnance', component: OrdonnanceComponent },
@@ -23,10 +21,18 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'recherche-patient', component: RecherchePatientComponent },
 
+
     {path: 'creation-dpi', component: CreationDPIComponent},
+    { path : 'creation-consult', component : ConsultationHomeComponent},
+    { path : 'soins-infirmiers', component : PageInfirmierComponent},
     // { path: 'ConsultationDPI/consulter-dpi', component: ConsulterDpiComponent },
     // { path: '', redirectTo: '/recherche-patient', pathMatch: 'full' },
     {path: 'ajouter-consult',component:ConsultationHomeComponent},
     {path: 'consulter-dpi/:id/:role',component: ConsulterDpiComponent},
     {path:'page-radiologue' , component: PageRadiologueComponent}
 ];
+
+   
+
+
+

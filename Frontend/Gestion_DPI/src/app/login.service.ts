@@ -13,6 +13,7 @@ export class LoginService {
 
 login(email: string, password:string):Observable<any>{
     return this.http.post(this.apiUrl, {email,password});
+
 }
 
 handleLoginSuccess(response: any): void {
@@ -36,7 +37,8 @@ handleLoginSuccess(response: any): void {
     }else if (role === 'medecin') {
       this.router.navigate(['/recherche-patient']);
     } else if (role === 'infirmier') {
-      this.router.navigate(['']);
+      // Pass the infirmier_id as a query parameter
+      this.router.navigate(['/soins-infirmiers'], { queryParams: { id } });
     } else if (role === 'pharmacien'){
       this.router.navigate(['']);
     }else if (role === 'laborantin'){

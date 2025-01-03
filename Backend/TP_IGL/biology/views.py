@@ -257,6 +257,7 @@ class GetBilanBiologiquesByDPI(APIView):
 
 
 ''' id_bilan , id_laboratain , tableau mesure  ''' 
+
 class GetBilanBiologiqueByConsultation(APIView):
     def get(self, request, consultation_id):
         try:

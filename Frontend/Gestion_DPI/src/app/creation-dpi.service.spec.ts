@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CreationDpiService } from './creation-dpi.service';
 
-describe('CreationDpiService', () => {
-  let service: CreationDpiService;
+import { CreationDPIService } from './creation-dpi.service';
+
+describe('CreationDPIService', () => {
+  let service: CreationDPIService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CreationDpiService);
+    service = TestBed.inject(CreationDPIService);
+
   });
 
   it('should be created', () => {

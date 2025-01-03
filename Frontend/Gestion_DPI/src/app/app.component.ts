@@ -12,7 +12,9 @@ import { LoginComponent } from './login/login.component';
 
 @Component({
   selector: 'app-root',
+
   imports: [CommonModule, RouterOutlet, LoginComponent,LandingPageComponent,PageRadiologueComponent,ConsulterDpiComponent],
+
 
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
