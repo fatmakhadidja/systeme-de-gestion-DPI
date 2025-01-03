@@ -4,7 +4,8 @@ import {MatTableModule} from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import {Router,RouterLink, RouterLinkActive } from '@angular/router';
 import { RechercheService } from '../recherche.service';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-recherche-patient',
   imports: [HeaderComponent, MatTableModule, CommonModule, RouterLink, RouterLinkActive, FormsModule],
@@ -39,7 +40,8 @@ export class RecherchePatientComponent implements OnInit{
   }
 
   onRowClick(row: any): void {
-    this.router.navigate(['ConsultationDPI/consulter-dpi', row.id]);
+    this.router.navigate(['/consulter-dpi', row.id,'medecin']);
+
   }
 
   search(){
@@ -51,7 +53,8 @@ export class RecherchePatientComponent implements OnInit{
     this.rechercheService.searchDpiByNss(this.searchValue).subscribe({
       next: (data) => {
         this.dataSource = [{
-           id: data.id,
+          id: data.id,
+
           NSS: parseInt(data.nss, 10),
           Nom: data.nom_patient,
           Prenom: data.prenom_patient,
@@ -94,4 +97,6 @@ export class RecherchePatientComponent implements OnInit{
     });
   }
 
+
 }
+

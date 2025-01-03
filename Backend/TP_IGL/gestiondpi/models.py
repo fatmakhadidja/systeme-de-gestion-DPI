@@ -17,14 +17,26 @@ class Patient(models.Model):
     personne_a_contacter = models.CharField(max_length=100)  # Emergency contact
 
 # Represents a doctor with a specialty, linked to a User account
+    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
+    NSS = models.CharField(max_length=20, unique=True)  # Unique Social Security Number
+    date_de_naissance = models.DateField()  # Date of birth
+    adresse = models.TextField()  # Address
+    telephone = models.CharField(max_length=15)  # Phone number
+    mutuelle = models.CharField(max_length=100)  # Insurance provider
+    personne_a_contacter = models.CharField(max_length=100)  # Emergency contact
+
+# Represents a doctor with a specialty, linked to a User account
 class Medecin(models.Model):
     id_medecin = models.AutoField(primary_key=True)
+    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
+    specialite = models.CharField(max_length=100)  # Medical specialty
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
     specialite = models.CharField(max_length=100)  # Medical specialty
 
 # Represents a nurse, linked to a User account
 class Infirmier(models.Model):
     id_infirmier = models.AutoField(primary_key=True)
+    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
 # Represents a lab technician, linked to a User account
@@ -35,6 +47,7 @@ class Laborantin(models.Model):
 # Represents a radiologist, linked to a User account
 class Radiologue(models.Model):
     id_radiologue = models.AutoField(primary_key=True)
+    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
 # Represents an administrator, linked to a User account
@@ -73,15 +86,20 @@ class DPI(models.Model):
         # Generate QR code data and image
         nom_patient = self.patient.utilisateur.last_name
         prenom_patient = self.patient.utilisateur.first_name
+
+        # Génération du QR code
         qr = qrcode.QRCode(version=1, box_size=10, border=5)
         qr.add_data(self.patient.NSS)  # NSS as QR code data
         qr.make(fit=True)
+
         img = qr.make_image(fill_color="black", back_color="white")
         buffer = BytesIO()
         img.save(buffer, format="PNG")
 
         # Create a unique filename for the QR code
         unique_filename = f"qrcodes/{nom_patient}_{prenom_patient}_{self.patient.NSS}_qrcode_{uuid.uuid4().hex}.png"
+
+        # Enregistre l'image générée dans le champ qr_code
         self.qr_code.save(unique_filename, ContentFile(buffer.getvalue()), save=False)
 
 # Represents a summary of medical information
@@ -160,3 +178,4 @@ class Soin(models.Model):
     description = models.CharField(max_length=255)  # Care description
     date_soin = models.DateField()  # Date of care
     observation = models.TextField()  # Observations
+   
