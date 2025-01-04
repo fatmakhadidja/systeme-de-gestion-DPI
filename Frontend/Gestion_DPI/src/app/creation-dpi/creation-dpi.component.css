@@ -1,9 +1,5 @@
  @import url(../../styles.css);
 
- body {
-    background-color: rgba(33, 136, 121, 0.05);
- }
- 
 .main{
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
