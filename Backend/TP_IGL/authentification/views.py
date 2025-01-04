@@ -43,7 +43,6 @@ class RegisterView(GenericAPIView):
                     'message': 'thanks for signing up a passcode has be sent to verify your email'
                 }, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-<<<<<<< HEAD
 
 
 
@@ -78,5 +77,3 @@ class AddUserView(CreateAPIView):
 
         # Return a response with the user data and token
         return Response(response_data, status=status.HTTP_201_CREATED)
-=======
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
