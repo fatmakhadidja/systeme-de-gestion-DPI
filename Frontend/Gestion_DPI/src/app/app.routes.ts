@@ -14,8 +14,6 @@ import { PageRadiologueComponent } from './Radiologue/page-radiologue/page-radio
 
 
 import { PageInfirmierComponent } from './page-infirmier/page-infirmier.component';
-
-
 import { PageLaborantinComponent } from './page-laborantin/page-laborantin.component';
 
 export const routes: Routes = [
@@ -26,18 +24,12 @@ export const routes: Routes = [
     { path: '', component: LandingPageComponent},
     { path: 'login', component: LoginComponent },
     { path: 'recherche-patient', component: RecherchePatientComponent },
-
-
-    {path: 'creation-dpi', component: CreationDPIComponent},
+    { path: 'creation-dpi', component: CreationDPIComponent},
     { path : 'creation-consult', component : ConsultationHomeComponent},
     { path : 'soins-infirmiers', component : PageInfirmierComponent},
-    // { path: 'ConsultationDPI/consulter-dpi', component: ConsulterDpiComponent },
-    // { path: '', redirectTo: '/recherche-patient', pathMatch: 'full' },
-
-    {path: 'ajouter-consult',component:ConsultationHomeComponent},
-    {path: 'consulter-dpi/:id/:role',component: ConsulterDpiComponent},
-    {path:'page-radiologue' , component: PageRadiologueComponent}
-
+    { path: 'consulter-dpi/:id/:role',component: ConsulterDpiComponent},
+    { path:'page-radiologue' , component: PageRadiologueComponent},
+    { path:'page-laborantin' , component: PageLaborantinComponent}
 ];
 
    

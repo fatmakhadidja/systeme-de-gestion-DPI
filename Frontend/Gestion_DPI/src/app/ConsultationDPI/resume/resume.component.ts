@@ -14,7 +14,7 @@ import { ConsulterDpiService } from '../../services/consulter-dpi.service';
               MatDialogClose , 
               MatDialogTitle ,
               CommonModule,
-              MatDialogContainer],
+            ],
   templateUrl: './resume.component.html',
   styleUrl: './resume.component.css'
 })

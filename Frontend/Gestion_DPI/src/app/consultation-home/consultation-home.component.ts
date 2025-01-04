@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConsultationService } from '../services/consultation.service';
 import { HeaderComponent } from '../header-component/header.component';
 import { CommonModule } from '@angular/common';
 import { Consultation } from '../models/consultation.model';
 import { ConsultationApiService } from '../services/consultation-api.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-consultation-home',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
   imports: [HeaderComponent, CommonModule],
   styleUrls: ['./consultation-home.component.css'],
 })
-export class ConsultationHomeComponent {
+export class ConsultationHomeComponent implements OnInit {
   consultation: Consultation;
   
   showModal: boolean = false;
@@ -20,10 +21,37 @@ export class ConsultationHomeComponent {
   showWarning = false ;
 
   constructor(
+    private route: ActivatedRoute,
     private consultationService: ConsultationService,
     private consultationApiService: ConsultationApiService,
-    private router: Router) {
+    private router: Router
+  ) {
     this.consultation = this.consultationService.getConsultation();
+  }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      let nss = params['nss'];
+
+      if (nss) {
+        // Store the retrieved NSS in localStorage
+        localStorage.setItem('nss', nss);
+        console.log('NSS stored in localStorage:', nss);
+        
+      } else {
+        // Retrieve NSS from localStorage if not provided in the route
+        nss = localStorage.getItem('nss');
+        console.log('NSS retrieved from localStorage:', nss);
+      }
+
+      if (nss) {
+        // Update the service with the NSS
+        this.consultationService.updateConsultation('nss', nss);
+        console.log('NSS updated in service:', nss);
+      } else {
+        console.warn('No NSS found in queryParams or localStorage.');
+      }
+    });
   }
 
   // Function to check if the résumé is valid

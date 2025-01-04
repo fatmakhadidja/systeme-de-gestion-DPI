@@ -27,9 +27,7 @@ SECRET_KEY = "django-insecure-!-4nj^&wxu%y+gvg#*j)t%svc-pj#rf(78xkvfg7ne4gz6mqg6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CORS_ALLOW_CREDENTIALS = True
-
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = []
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = [
     "GET",
@@ -40,7 +38,7 @@ CORS_ALLOW_METHODS = [
     "OPTIONS",  # Ajoutez OPTIONS à la liste des méthodes autorisées
 ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
+    "http://localhost:8000",
 ]
 # Application definition
 
@@ -85,7 +83,8 @@ TEMPLATES = [
     {
 
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates']
+        ,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,7 +115,7 @@ WSGI_APPLICATION = "TP_IGL.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'TP_angular',
+        'NAME': 'test1',
         'USER': 'root',
         'PASSWORD': 'enteresta',
 =======

@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 
-
-
 .container{
   border: #218879 solid 0.2rem; 
   border-radius: 1rem;
@@ -210,15 +208,18 @@ td, th {
   color: white;
   border-radius: 1.5rem;
   padding: 1% 1%;
-  width: 15%;
+  width: 20%;
   border: 0.01rem solid #242855;
   outline: none;
   cursor: pointer;
+  font-family: Montserrat, sans-serif;
+  font-size: 1em;
+  font-weight: 700;
 }
 .ajoutercnsult button:hover{
   background-color: white;
-  color: #1E90FF;
-  border: 0.01rem solid #1E90FF;
+  color: #242855;
+  border: 0.01rem solid #242855;
 }
 .custom-dialog{
   border-radius: 20px;

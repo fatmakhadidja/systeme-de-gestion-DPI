@@ -82,15 +82,20 @@ class DPI(models.Model):
         # Generate QR code data and image
         nom_patient = self.patient.utilisateur.last_name
         prenom_patient = self.patient.utilisateur.first_name
+
+        # Génération du QR code
         qr = qrcode.QRCode(version=1, box_size=10, border=5)
         qr.add_data(self.patient.NSS)  # NSS as QR code data
         qr.make(fit=True)
+
         img = qr.make_image(fill_color="black", back_color="white")
         buffer = BytesIO()
         img.save(buffer, format="PNG")
 
         # Create a unique filename for the QR code
         unique_filename = f"qrcodes/{nom_patient}_{prenom_patient}_{self.patient.NSS}_qrcode_{uuid.uuid4().hex}.png"
+
+        # Enregistre l'image générée dans le champ qr_code
         self.qr_code.save(unique_filename, ContentFile(buffer.getvalue()), save=False)
 
 
