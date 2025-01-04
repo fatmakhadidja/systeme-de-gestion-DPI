@@ -1,17 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-<<<<<<< HEAD
-from rest_framework import status,request
-from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI
-from rest_framework import status
-from django.shortcuts import get_object_or_404
-
-=======
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from datetime import date
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 
 from .serializers import ConsultationSerializer, SoinSerializer, PatientSerializer
 from gestiondpi.models import Soin, Consultation, Prescription, DPI, Patient, Infirmier
@@ -22,43 +13,11 @@ from authentification.models import User
 # AjouterConsultation: Handles adding a consultation with nested data structures.
 # Expected frontend data format:
 # {
-<<<<<<< HEAD
-#     "dpi": 1, 
-#     "resume": {
-#         "diagnostic": "string", 
-#         "symptomes": "string", 
-#         "antecedents": "string", 
-#         "autres_informations": "string"
-#     },
-    
-#           "ordonnance": {
-#             "date_prescription": "2025-05-30",
-#             "etat_ordonnance": true,
-#             "prescription": [{
-#                 "dose": "string",
-#                 "duree": "string",
-#                 "medicament": {
-#                 "nom": "string",
-#                 "description": "string",
-#                 "prix": 10,
-#                 "quantite": 5
-#           }],
-#         }
-#     },
-#     "bilan_biologique": {
-#         "description": "string"
-#     },
-#     "bilan_radiologue": {
-#         "description": "string",
-#         "type": "string"
-#     }
-=======
 #     "nss": "1111111",
 #     "resume": { "diagnostic": "string", "symptomes": "string", ... },
 #     "ordonnance": { "prescription": [{ "dose": "string", ... }] },
 #     "bilan_biologique": { "description": "string" },
 #     "bilan_radiologue": { "description": "string", "type": "string" }
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 # }
 class AjouterConsultation(APIView):
     def post(self, request):
@@ -212,17 +171,6 @@ class GetResume(APIView):
             "antecedents": resume.antecedents,
             "autres_informations": resume.autres_informations
         }
-<<<<<<< HEAD
-        return Response(data)    
-
-# the data sent from the SGPH will be in the format 
-# {
-# "valide" :  true/false,
-# "id_consult" : 1
-# }    
-
-
-=======
         return Response(data)
 
 # -------------------------------------------------------------------------------------------
@@ -232,45 +180,10 @@ class GetResume(APIView):
 #     "valide": true/false,
 #     "id_consult": 1
 # }
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 class ValiderOrdonnance(APIView):
     def post(self, request):
         valide = request.data.get('valide')
         id_consult = request.data.get('id_consult')
-<<<<<<< HEAD
-        
-        if valide is None or id_consult is None:
-            return Response(
-                {"error": "Both 'valide' and 'id_consult' are required fields."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        try:
-            consultation = get_object_or_404(Consultation, id_consultation=id_consult)
-            ordonnance = consultation.ordonnance
-            
-            if valide is True:
-                ordonnance.etat_ordonnance = True
-                ordonnance.save()
-                return Response(
-                    {"message": "Ordonnance validated successfully."},
-                    status=status.HTTP_200_OK
-                )
-            else:
-                return Response(
-                    {"error": "Invalid value for 'valide'. Must be true."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-        except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
-
-
-=======
 
         if valide is None or id_consult is None:
             return Response({"error": "Both 'valide' and 'id_consult' are required fields."}, status=400)
@@ -284,4 +197,3 @@ class ValiderOrdonnance(APIView):
             return Response({"message": "Ordonnance validated successfully."}, status=200)
 
         return Response({"error": "Invalid value for 'valide'. Must be true."}, status=400)
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
