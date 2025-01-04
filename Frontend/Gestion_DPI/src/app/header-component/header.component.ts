@@ -19,6 +19,6 @@ export class HeaderComponent implements OnInit {
   }
 
   backToLandingPage() : void {
-    this.router.navigate(['']);
+    this.router.navigate(['/login']);
   }
 }
