@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'authentification',
     'creationdpi',
     'miseajourdpi',
-    'django_extensions'
+    'django_extensions',
     'rest_framework_swagger',
 
 ]
