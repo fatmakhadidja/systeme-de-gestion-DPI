@@ -106,6 +106,7 @@ loadConsultations() {
   // Effectuer l'appel pour récupérer les consultations
   this.consulterDpiService.getListConsultation(dpi).subscribe(data => {
     this.dataSource = data;
+    console.log("consultData",data);
   }, error => {
     console.error('Erreur lors de la récupération des consultations:', error);
   });

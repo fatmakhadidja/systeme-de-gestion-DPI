@@ -4,7 +4,14 @@ import {MatTableModule} from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import {Router,RouterLink, RouterLinkActive } from '@angular/router';
 import { RechercheService } from '../recherche.service';
-import { FormsModule } from '@angular/forms';
+
+import { FormsModule } from '@angular/forms'; 
+interface Patient{
+  id: number;
+  NSS: number;
+  Nom:string;
+  Prenom:string;
+}
 
 @Component({
   selector: 'app-recherche-patient',
@@ -14,7 +21,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class RecherchePatientComponent implements OnInit{
   displayedColumns: string[] = ['NSS', 'Nom', 'Prenom'];
-  dataSource :any[] = [];
+  dataSource :Patient[] = [];
   searchValue: string = '';
   selectedFile: File | null = null;
 

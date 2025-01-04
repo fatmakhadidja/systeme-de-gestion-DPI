@@ -86,8 +86,10 @@ class GetPatients(APIView):
 # ]
 class GetSoins(APIView):
     def get(self, request):
+
         #dpi = request.data.get('dpi')
         dpi = request.GET.get('dpi')
+
         if not dpi:
             return Response({"error": "dpi parameter is required"}, status=400)
 
@@ -107,6 +109,7 @@ class GetConsultations(APIView):
     def get(self, request):
         #dpi = request.data.get('dpi')
         dpi = request.GET.get('dpi')
+
         if not dpi:
             return Response({"error": "dpi parameter is required"}, status=400)
 
@@ -133,8 +136,10 @@ class GetConsultations(APIView):
 # ]
 class GetOrdonnance(APIView):
     def get(self, request):
+
        # id_consult = request.data.get('id_consult')
         id_consult = request.GET.get('id_consult')
+
         if not id_consult:
             return Response({"error": "id_consult parameter is required"}, status=400)
 
@@ -164,6 +169,7 @@ class GetResume(APIView):
     def get(self, request):
         #id_consult = request.data.get('id_consult')
         id_consult = request.GET.get('id_consult')
+
         if not id_consult:
             return Response({"error": "id_consult parameter is required"}, status=400)
 
@@ -201,3 +207,4 @@ class ValiderOrdonnance(APIView):
             return Response({"message": "Ordonnance validated successfully."}, status=200)
 
         return Response({"error": "Invalid value for 'valide'. Must be true."}, status=400)
+

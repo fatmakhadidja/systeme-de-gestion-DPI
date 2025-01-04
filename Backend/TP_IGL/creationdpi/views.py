@@ -14,6 +14,9 @@ from pyzbar.pyzbar import decode
 from PIL import Image
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import RetrieveAPIView
+from rest_framework.exceptions import NotFound
+
+
 
 
 
@@ -34,9 +37,10 @@ class DPICreationView(APIView):
                     "dpi_id": dpi.id_dpi,
                     "qr_code": dpi.qr_code.url,  # URL du QR code généré
                 },
-                status=status.HTTP_201_CREATED
+                status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class QRCodeView(APIView):
     def get(self, request, dpi_id):

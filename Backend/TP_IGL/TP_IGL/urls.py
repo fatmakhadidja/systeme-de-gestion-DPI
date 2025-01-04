@@ -18,11 +18,6 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-#from rest_framework_swagger.views import get_swagger_view
-
-# Create the Swagger view for the documentation
-#schema_view = get_swagger_view(title='Your API Title')
-
 from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
