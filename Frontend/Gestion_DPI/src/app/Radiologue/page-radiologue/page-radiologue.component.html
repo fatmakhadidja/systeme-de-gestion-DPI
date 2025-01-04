@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div class="containerRad">
-    <h2>Saisie des Resultats des Radios</h2>
+    <h2>Saisie des <span class="title-gradient">Resultats d'Imagerie</span></h2>
     <div class="select-container">
 
         <div class="select">
@@ -9,7 +9,7 @@
         <div class="dropdown-container">
             <div class="dropdown-container">
                 <div class="dropdown-label" (click)="toggleDropdown()">
-                   {{ selectedValue.name || 'cliquer pour choisir un patient' }}
+                   {{ selectedValue.name || 'Cliquer pour choisir un patient' }}
                  </div>
                  <ul *ngIf="dropdownOpen" class="dropdown-list">
                  <li *ngFor="let patient of listPatients" (click)="selectItem(patient); $event.stopPropagation();">
@@ -21,7 +21,7 @@
         </div>
     </div>
     <div *ngIf="selectedValue.name" class="details-table">
-        <p>Bilan biologique de  {{ selectedValue.name }}</p>
+        <p>Bilans biologiques de  {{ selectedValue.name }}</p>
         <table mat-table [dataSource]="dataSource" class="tabbilans">
         
             <ng-container matColumnDef="Type">
