@@ -1,15 +1,37 @@
+// src/app/app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app.component';  // Standalone Component
-import { PageInfirmierComponent } from './page-infirmier/page-infirmier.component';
-import { PatientSelectionComponent } from './patient-selection/patient-selection.component';
-import { SoinFormComponent } from './soin-form/soin-form.component';
 
-// This is the new approach with standalone components
+import { AppRoutingModule } from './app-routing.module';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+  ],
+ 
+  providers: [],
+  bootstrap: [],
+})
+export class AppModule {}
+import { bootstrapApplication } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // Import BrowserAnimationsModule
+import { importProvidersFrom } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+
 bootstrapApplication(AppComponent, {
   providers: [
-    // You can add global providers here, if necessary
-  ]
+
+    importProvidersFrom(
+      BrowserAnimationsModule,
+      FormsModule,
+      ReactiveFormsModule,
+      MatFormFieldModule,
+      MatSelectModule
+    ),
+  ],
 });

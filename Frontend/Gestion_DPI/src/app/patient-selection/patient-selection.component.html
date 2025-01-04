@@ -1,10 +1,22 @@
 <section class="patient-selection">
-    <label for="patient-select" class="section-title">Sélectionner un Patient</label>
-    <select id="patient-select" (change)="onPatientChange($event)">
-      <option value="" disabled selected>Choisir un Patient</option>
-      <option *ngFor="let patient of patients" [value]="patient.id">
-        {{ patient.name }}
-      </option>
-    </select>
-  </section>
-  
+  <label for="patient-select" class="section-title">Sélectionner un Patient</label>
+
+  <!-- Show loading spinner or error message if needed -->
+  <div *ngIf="loading" class="loading-message">Chargement des patients...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <!-- Dropdown to select patients -->
+  <select
+    id="patient-select"
+    (change)="onPatientChange($event)"
+    [disabled]="loading || !!errorMessage"
+  >
+    <option value="" disabled selected>Choisir un Patient</option>
+    <option
+      *ngFor="let patient of patients"
+      [value]="patient.id_patient"
+    >
+      {{ patient.first_name }} {{ patient.last_name }}
+    </option>
+  </select>
+</section>

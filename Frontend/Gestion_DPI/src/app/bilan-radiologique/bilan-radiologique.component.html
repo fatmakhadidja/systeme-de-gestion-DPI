@@ -1,0 +1,58 @@
+<app-header />
+<div class="form-container">
+  <!-- Titre -->
+  <h2>Examen Radiologique</h2>
+
+  <!-- Formulaire -->
+  <form (ngSubmit)="saveBilanRadiologique()">
+    <!-- Zone de texte pour la description -->
+    <textarea 
+      [(ngModel)]="bilanRadiologique.description" 
+      name="description" 
+      placeholder="Veuillez rédiger l’examen radiologique ici ..." 
+      rows="5" 
+      required>
+    </textarea>
+
+    <!-- Conteneur pour image et choix -->
+    <div class="radiology-flex">
+      <!-- Illustration -->
+      <div class="radiology-image">
+        <img src="assets/radiology-illustration.png" alt="Radiology Illustration">
+      </div>
+
+      <!-- Section pour le choix du type de bilan -->
+      <div class="radiology-options">
+        <label class="type-label">Choisissez le type du bilan</label>
+        <div class="checkbox-group">
+          <label>
+            <input type="radio" [(ngModel)]="bilanRadiologique.type" name="type" value="IRM" required>
+            IRM
+          </label>
+          <label>
+            <input type="radio" [(ngModel)]="bilanRadiologique.type" name="type" value="Échographie" required>
+            Échographie
+          </label>
+          <label>
+            <input type="radio" [(ngModel)]="bilanRadiologique.type" name="type" value="Radiographie" required>
+            Radiographie
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Boutons -->
+    <div class="button-group">
+      <button type="button" class="button-cancel" (click)="navigateToConsultation()">Annuler</button>
+      <button type="submit" class="button-confirm">Confirmer</button>
+    </div>
+  </form>
+
+  <!-- Modale -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <p>{{ modalMessage }}</p>
+      <button (click)="closeModal()">Fermer</button>
+    </div>
+  </div>
+</div>

@@ -4,7 +4,8 @@
 
 /* Page Title with Gradient */
 .page-title {
-    font-size: 2rem;
+    font-size: 1.7rem;
+    margin-top : 8px;
     text-align: center;
     font-weight: bold;
   }
@@ -34,23 +35,23 @@
   }
   
   .ajout-soins-titre {
-    font-size : 1.4rem;
+    font-size : 1.2rem;
     font-weight : 700 ;
     color : #4a4a4a;
     display: block;
     padding-top : 1rem;
   }
 
-  .soins-ajoutees-titre {
+  .soins-ajoutes-titre {
     color : #4a4a4a;
   }
 
   .soins-ajoutes {
     margin-top: 1rem;
-    max-height: 300px;
+    max-height: 400px;
   }
   
-  .liste-soins-ajoutees {
+  .liste-soins-ajoutes {
     max-height: 300px;
     overflow-y: auto; /* Scroll for added forms */
   }
@@ -117,3 +118,50 @@
     border: solid 1px #4ed6c4;
   }
   
+
+  /* Modale */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content p {
+  font-size: 16px;
+  font-family: Nunito, sans-serif;
+  margin-bottom: 20px;
+}
+
+.modal-content button {
+  background-color: black;
+  color: white;
+  border: solid 1px black;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-family: Montserrat, sans-serif;
+  font-weight: 700;
+}
+
+.modal-content button:hover {
+  background-color: white;
+  color: black;
+  border: solid 1px black;
+}

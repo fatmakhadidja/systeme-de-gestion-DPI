@@ -12,13 +12,13 @@
     align-items: center;
     padding: 20px 40px;
     min-height: 80vh;
-    position: relative; /* Ensures proper positioning of elements inside the section */
+    position: relative; 
 }
 
 #accueil .text {
     flex: 1;
     max-width: 50%;
-    z-index: 1; /* Keeps the text above the image */
+    z-index: 1;
 }
 
 #accueil h1 {
@@ -34,7 +34,7 @@
     line-height: 1.6;
 }
 
-#accueil button {
+#accueil a {
     font-family: var(--font-family-text);
     padding: 10px 20px;
     background-color: var(--Port-gore);
@@ -44,6 +44,7 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-decoration: none;
 }
 
 #accueil button:hover {
@@ -51,14 +52,14 @@
 }
 
 #accueil img {
-    position: absolute; /* Position the image absolutely */
-    right: 40px; /* Adjust the right margin */
-    top: 50%; /* Center the image vertically */
-    transform: translateY(-50%); /* Fine-tune vertical alignment */
-    max-width: 40%; /* Ensure the image does not exceed its container */
-    height: auto; /* Maintain aspect ratio */
-    z-index: 0; /* Place the image behind the text */
-    opacity: 0.9; /* Add slight transparency, if desired */
+    position: absolute; 
+    right: 40px; 
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 40%; 
+    height: auto; 
+    z-index: 0; 
+    opacity: 0.9;
 }
 
 

@@ -1,0 +1,70 @@
+<app-header></app-header>
+<div class="ordonnance-container">
+  <h1>Ordonnance</h1>
+
+  <div class="input-fields">
+    <input
+      type="text"
+      placeholder="Nom"
+      [(ngModel)]="prescription.medicament"
+      class="input-field"
+    />
+    <input
+      type="text"
+      placeholder="Dose"
+      [(ngModel)]="prescription.dose"
+      class="input-field"
+    />
+    <input
+      type="text"
+      placeholder="Durée"
+      [(ngModel)]="prescription.duree"
+      class="input-field"
+    />
+  </div>
+
+  <div class="prescription-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Dose</th>
+          <th>Durée</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="ordonnance.prescription.length === 0">
+          <td colspan="3">Aucune prescription ajoutée</td>
+        </tr>
+        <tr *ngFor="let prescription of ordonnance.prescription">
+          <td>{{ prescription.medicament }}</td>
+          <td>{{ prescription.dose }}</td>
+          <td>{{ prescription.duree }}</td>
+        </tr>
+      </tbody>      
+    </table>
+  </div>
+
+  <div class="image-buttons-container">
+    <div class="image-container">
+      <img src="assets/ordonnance.png" alt="Illustration" class="image" />
+    </div>
+    <div class="action-buttons">
+      <div>
+        <button class="btn btn-add" (click)="addPrescription()">+ Ajouter le Médicament</button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-cancel" (click)="cancel()">Annuler</button>
+        <button class="btn btn-confirm" (click)="confirm()">Confirmer</button>
+      </div>
+    </div>        
+  </div>
+
+  <!-- Modale -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <p>{{ modalMessage }}</p>
+      <button (click)="closeModal()">Fermer</button>
+    </div>
+  </div>
+</div>
