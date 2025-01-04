@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     'authentification',
     'creationdpi',
     'miseajourdpi',
-
     'django_extensions',
     'rest_framework_swagger',
 
@@ -113,13 +112,6 @@ WSGI_APPLICATION = "TP_IGL.wsgi.application"
     }
 }
 
-<<<<<<< HEAD
-
-'''
-<<<<<<< HEAD
-
-=======
-'''
 
 DATABASES = {
     'default': {
@@ -148,13 +140,13 @@ DATABASES = {
         "PORT": "3306",
 
     }
-},
 
-
+}
 
 DATABASES['default']['TEST'] = {
     'NAME': 'test_igl_db',
 }
+
 
 REST_FRAMEWORK={
     'NON_FIELD_ERRORS_KEY':'error',
