@@ -207,7 +207,14 @@ h2{
     font-family: var(--font-family-text);
     color: var(--Tundora);
 }
-  
+.frozen-row {
+  background-color: #f0f0f0; /* Change to any color you prefer */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for better visibility */
+}
+
     @media (max-width:800px){
         .above-table{
             display: flex;

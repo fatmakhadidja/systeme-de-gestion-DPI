@@ -122,7 +122,7 @@ selectedBilanId: number | null = null;
       width: '80vw',
       height: 'auto',
       maxWidth: '80vw',
-      data: { bilan_id: row.bilan_id }, // Pass bilan_id here
+      data: { bilan_id: row.bilan_id, id_dpi: this.patientSelecione.id_dpi, }, // Pass bilan_id here
     });
   
     dialogRef.afterClosed().subscribe(result => {
@@ -145,7 +145,6 @@ selectedBilanId: number | null = null;
     MatExpansionModule,
     CommonModule,
     MatButtonModule
-
   ],
 })
 
@@ -179,17 +178,23 @@ export class RemplirResultat {
     this.divs = this.divs.filter(div => div.id !== id);
   }
   readonly dialog = inject(MatDialog);
-  openDialog_genererGraphe(): void{
+  openDialog_genererGraphe(): void {
+    const newValues = this.divs.map((div) => ({
+      parametre: div.parametre,
+      valeur: div.valeur,
+    }));
+  
     const dialogRef = this.dialog.open(GenererGraphe, {
-      width: '80vw', 
-      height: 'auto',  
+      width: '80vw',
+      height: 'auto',
       maxWidth: '80vw',
-      data: {},
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      data: {
+        id_dpi: this.data.id_dpi,
+        newValues,
+      },
     });
   }
+  
  
   enregistrer() {
     this.isDisable = false;
@@ -200,33 +205,34 @@ export class RemplirResultat {
         alert(`Paramètre "${div.parametre}" non valide`);
         throw new Error(`Invalid paramètre: ${div.parametre}`);
       }
-
+  
       return {
         "id-mesure": matchedParam.id, // Send the ID of the parameter
         "valeur_mesure": div.valeur,
         "date_mesure": div.date,
       };
     });
+  
     const bilan_id = this.data.bilan_id;
     const updateData = {
       bilan_id: bilan_id, // Include the bilan_id passed from the parent
       laborantin_id: 1,
       mesure: mesures,
     };
-
+  
     this.laborantinUpdate.postBilanResultat(updateData).subscribe({
       next: response => {
         console.log("L'ajout des paramètres a réussi", response);
-        alert(`L'ajout des paramètres a réussi`);
-        this.dialogRef.close(); // Close dialog after success
+        // Show a success message (optional), but keep the dialog open
+        alert("Les données ont été enregistrées avec succès.");
       },
       error: err => {
         console.log("L'ajout des paramètres a échoué", err);
-          console.error("Failed to send data:", err.error); // Log the error body
-          alert(`Erreur: ${JSON.stringify(err.error)}`);
+        console.error("Failed to send data:", err.error); // Log the error body
       },
     });
   }
+  
 }
 
 
@@ -253,17 +259,13 @@ interface Graphe{
 
 export class GenererGraphe implements AfterViewInit{
   readonly dialogRef = inject(MatDialogRef<GenererGraphe>);
-  // readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+  readonly data = inject(MAT_DIALOG_DATA);
 
-   graphe : Graphe[]=[
-    {nom: 'Cholestérol total', valAnc: '12', valNouv:'7'},
-    {nom: 'HDL', valAnc: '5', valNouv:'13'},
-    {nom: ' LDL ', valAnc: '12', valNouv:'4'},
-   ]
-
+   grapheData : Graphe[]=[]
+   newValues: any[] = [];
    chart: any;
 
-   constructor() {
+   constructor(private laborantinService: LaborantinService) {
     Chart.register(
       CategoryScale, 
       LinearScale,    
@@ -273,70 +275,130 @@ export class GenererGraphe implements AfterViewInit{
       Legend,
       BarController        
     );
+    
   }
 
-  ngOnInit(): void {
-  }
 
   ngAfterViewInit(): void {
-    this.createChart();
-  }
-
-  createChart() {
-    const labels = this.graphe.map(item => item.nom);
-    const valAnc = this.graphe.map(item => parseFloat(item.valAnc));
-    const valNouv = this.graphe.map(item => parseFloat(item.valNouv));
-
-    const ctx = document.getElementById('barChart') as HTMLCanvasElement;  
-    if (ctx) {
-      this.chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Ancien',
-              data: valAnc,
-              backgroundColor: 'rgb(33, 150, 243)',
-              
-              borderWidth: 1,
-              barThickness: 'flex', 
-              maxBarThickness: 50,
-            },
-            {
-              label: 'Nouveau',
-              data: valNouv,
-              backgroundColor: 'rgb(76, 175, 80)',
-              
-              borderWidth: 1,
-              barThickness: 'flex', 
-              maxBarThickness: 50,
-            },
-          ],
+    this.newValues = this.data.newValues || []; // Store new values
+    this.fetchGraphData();
+    }
+    fetchGraphData(): void {
+      const id_dpi = this.data.id_dpi; // Use the passed id_dpi
+  
+      this.laborantinService.getGraphData(id_dpi).subscribe({
+        next: (response) => {
+          console.log('Graph data fetched successfully:', response);
+          this.combineGraphData(response, this.newValues); // Combine old and new values
+          this.createChart();
         },
-        options: {
-          responsive: true,
-          scales: {
-            x: {
-              stacked: true,
-              grid: {
-                display: false, 
-              }, 
-            },
-
-            y: {
-              stacked: true,
-            },
-          },
+        error: (err) => {
+          console.error('Error fetching graph data:', err);
         },
       });
-    } else {
-      console.error('Canvas element not found!');
     }
-  }
+    combineGraphData(oldValues: any, newValues: any[]): void {
+      // Ensure oldValues is an object with a 'parametres' array
+      if (!oldValues || !Array.isArray(oldValues.parametres)) {
+        console.error("Invalid oldValues format. Defaulting to empty array.");
+        oldValues = { parametres: [] };
+      }
+    
+      // Map through the parameters in oldValues
+      this.grapheData = oldValues.parametres
+        .filter((param: any) =>
+          ["Glucose", "Cholesterol", "Pression_arterielle"].includes(param.nom)
+        )
+        .map((oldItem: any) => {
+          const newItem = newValues.find(
+            (newVal) => newVal.parametre === oldItem.nom
+          );
+    
+          return {
+            nom: oldItem.nom,
+            valAnc: oldItem.valeur_mesuree, // Old value from parametres
+            valNouv: newItem ? newItem.valeur : null, // New value (if available)
+          };
+        });
+    
+      console.log("Combined graph data:", this.grapheData);
+    }
+       
+  
+    createChart(): void {
+      // Parameters to visualize
+      const requiredParameters = ["Glucose", "Cholesterol", "Pression_arterielle"];
+      const colors = {
+        old: 'rgb(33, 150, 243)', // Blue for old values
+        new: 'rgb(76, 175, 80)',  // Green for new values
+      };
+    
+      // Iterate through each parameter to create individual charts
+      requiredParameters.forEach((parameter) => {
+        const data = this.grapheData.find((item) => item.nom === parameter);
+    
+        if (data) {
+          const ctx = document.getElementById(`barChart`) as HTMLCanvasElement;
+    
+          if (ctx) {
+            new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: ['Ancien (Old)', 'Nouveau (New)'], // Top (Old) and bottom (New) bars
+                datasets: [
+                  {
+                    label: 'Ancien (Old Values)',
+                    data: [parseFloat(data.valAnc)],
+                    backgroundColor: colors.old,
+                    barThickness: 'flex',
+                    maxBarThickness: 50,
+                  },
+                  {
+                    label: 'Nouveau (New Values)',
+                    data: [parseFloat(data.valNouv || '0')], // Default to 0 if no new value
+                    backgroundColor: colors.new,
+                    barThickness: 'flex',
+                    maxBarThickness: 50,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                indexAxis: 'y', // Vertical orientation (bars stack top to bottom)
+                scales: {
+                  x: {
+                    beginAtZero: true,
+                    grid: { display: false },
+                  },
+                  y: {
+                    grid: { display: false },
+                  },
+                },
+                plugins: {
+                  legend: {
+                    position: 'top',
+                  },
+                  title: {
+                    display: true,
+                    text: `Comparaison des Valeurs (${parameter})`, // Dynamic title per chart
+                  },
+                },
+              },
+            });
+          } else {
+            console.error(`Canvas element for ${parameter} not found!`);
+          }
+        } else {
+          console.error(`No data found for parameter: ${parameter}`);
+        }
+      });
+    }
+    
+    
+  
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
   
 }

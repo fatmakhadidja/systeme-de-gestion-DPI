@@ -4,7 +4,6 @@ import {MatTableModule} from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import {Router,RouterLink, RouterLinkActive } from '@angular/router';
 import { RechercheService } from '../recherche.service';
-<<<<<<< HEAD
 import { FormsModule } from '@angular/forms'; 
 interface Patient{
   id: number;
@@ -12,10 +11,7 @@ interface Patient{
   Nom:string;
   Prenom:string;
 }
-=======
-import { FormsModule } from '@angular/forms';
 
->>>>>>> e46932016749790127e376879d64d413e26e6483
 @Component({
   selector: 'app-recherche-patient',
   imports: [HeaderComponent, MatTableModule, CommonModule, RouterLink, RouterLinkActive, FormsModule],

@@ -1,25 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-<<<<<<< HEAD
-<<<<<<< HEAD
-from rest_framework import status,request
-from .serializers import ConsultationSerializer,SoinSerializer,DPISerializer
-from gestiondpi.models import Soin,Consultation,Prescription,Medecin,DPI
-from rest_framework import status
-from django.shortcuts import get_object_or_404
-
-=======
-from rest_framework import status
-from django.shortcuts import get_object_or_404
-from datetime import date
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
-
-=======
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from datetime import date
 
->>>>>>> e46932016749790127e376879d64d413e26e6483
 from .serializers import ConsultationSerializer, SoinSerializer, PatientSerializer
 from gestiondpi.models import Soin, Consultation, Prescription, DPI, Patient, Infirmier
 from authentification.models import User
@@ -29,62 +13,26 @@ from authentification.models import User
 # AjouterConsultation: Handles adding a consultation with nested data structures.
 # Expected frontend data format:
 # {
-<<<<<<< HEAD
-<<<<<<< HEAD
-#     "dpi": 1, 
-#     "resume": {
-#         "diagnostic": "string", 
-#         "symptomes": "string", 
-#         "antecedents": "string", 
-#         "autres_informations": "string"
-#     },
-    
-#           "ordonnance": {
-#             "date_prescription": "2025-05-30",
-#             "etat_ordonnance": true,
-#             "prescription": [{
-#                 "dose": "string",
-#                 "duree": "string",
-#                 "medicament": {
-#                 "nom": "string",
-#                 "description": "string",
-#                 "prix": 10,
-#                 "quantite": 5
-#           }],
-#         }
-#     },
-#     "bilan_biologique": {
-#         "description": "string"
-#     },
-#     "bilan_radiologue": {
-#         "description": "string",
-#         "type": "string"
-#     }
-=======
-=======
->>>>>>> e46932016749790127e376879d64d413e26e6483
 #     "nss": "1111111",
 #     "resume": { "diagnostic": "string", "symptomes": "string", ... },
 #     "ordonnance": { "prescription": [{ "dose": "string", ... }] },
 #     "bilan_biologique": { "description": "string" },
 #     "bilan_radiologue": { "description": "string", "type": "string" }
-<<<<<<< HEAD
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
-=======
->>>>>>> e46932016749790127e376879d64d413e26e6483
 # }
 class AjouterConsultation(APIView):
     def post(self, request):
-        nss = request.data.pop('nss', None)
+        nss = request.data.pop("nss", None)
         patient = Patient.objects.get(NSS=nss)
         dpi = DPI.objects.get(patient=patient)
-        request.data['dpi'] = dpi.id_dpi
+        request.data["dpi"] = dpi.id_dpi
 
         serializer = ConsultationSerializer(data=request.data)
         if serializer.is_valid():
             consultation = serializer.create(serializer.validated_data)
             consultation_serializer = ConsultationSerializer(consultation)
-            return Response(consultation_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(
+                consultation_serializer.data, status=status.HTTP_201_CREATED
+            )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -101,13 +49,13 @@ class AjouterConsultation(APIView):
 class RemplirSoin(APIView):
     def post(self, request):
         data = request.data.copy()
-        data['dpi'] = data.pop('patient', None)
-        data['date_soin'] = date.today().strftime('%Y-%m-%d')
-        id_user = data.pop('user')
+        data["dpi"] = data.pop("patient", None)
+        data["date_soin"] = date.today().strftime("%Y-%m-%d")
+        id_user = data.pop("user")
 
         user_infirmier = User.objects.get(id=id_user)
         infirmier = Infirmier.objects.get(utilisateur=user_infirmier)
-        data['infirmier'] = infirmier.id_infirmier
+        data["infirmier"] = infirmier.id_infirmier
 
         serializer = SoinSerializer(data=data)
         if serializer.is_valid():
@@ -140,12 +88,7 @@ class GetPatients(APIView):
 # ]
 class GetSoins(APIView):
     def get(self, request):
-<<<<<<< HEAD
-        dpi = request.data.get('dpi')
-=======
-        #dpi = request.data.get('dpi')
-        dpi = request.GET.get('dpi')
->>>>>>> e46932016749790127e376879d64d413e26e6483
+        dpi = request.data.get("dpi")
         if not dpi:
             return Response({"error": "dpi parameter is required"}, status=400)
 
@@ -163,12 +106,7 @@ class GetSoins(APIView):
 # ]
 class GetConsultations(APIView):
     def get(self, request):
-<<<<<<< HEAD
-        dpi = request.data.get('dpi')
-=======
-        #dpi = request.data.get('dpi')
-        dpi = request.GET.get('dpi')
->>>>>>> e46932016749790127e376879d64d413e26e6483
+        dpi = request.data.get("dpi")
         if not dpi:
             return Response({"error": "dpi parameter is required"}, status=400)
 
@@ -181,7 +119,8 @@ class GetConsultations(APIView):
                 "bilan_biologique": bool(consultation.bilan_biologique),
                 "bilan_radiologique": bool(consultation.bilan_radiologue),
                 "resume": bool(consultation.resume),
-            } for consultation in consultations
+            }
+            for consultation in consultations
         ]
         return Response(data)
 
@@ -195,12 +134,7 @@ class GetConsultations(APIView):
 # ]
 class GetOrdonnance(APIView):
     def get(self, request):
-<<<<<<< HEAD
-        id_consult = request.data.get('id_consult')
-=======
-       # id_consult = request.data.get('id_consult')
-        id_consult = request.GET.get('id_consult')
->>>>>>> e46932016749790127e376879d64d413e26e6483
+        id_consult = request.data.get("id_consult")
         if not id_consult:
             return Response({"error": "id_consult parameter is required"}, status=400)
 
@@ -211,10 +145,12 @@ class GetOrdonnance(APIView):
             {
                 "medicament": prescription.medicament,
                 "dose": prescription.dose,
-                "duree": prescription.duree
-            } for prescription in prescriptions
+                "duree": prescription.duree,
+            }
+            for prescription in prescriptions
         ]
         return Response(data)
+
 
 # -------------------------------------------------------------------------------------------
 # GetResume: Fetches the summary details for a specific consultation.
@@ -228,12 +164,7 @@ class GetOrdonnance(APIView):
 # }
 class GetResume(APIView):
     def get(self, request):
-<<<<<<< HEAD
-        id_consult = request.data.get('id_consult')
-=======
-        #id_consult = request.data.get('id_consult')
-        id_consult = request.GET.get('id_consult')
->>>>>>> e46932016749790127e376879d64d413e26e6483
+        id_consult = request.data.get("id_consult")
         if not id_consult:
             return Response({"error": "id_consult parameter is required"}, status=400)
 
@@ -243,23 +174,10 @@ class GetResume(APIView):
             "diagnostic": resume.diagnostic,
             "symptomes": resume.symptomes,
             "antecedents": resume.antecedents,
-            "autres_informations": resume.autres_informations
+            "autres_informations": resume.autres_informations,
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-        return Response(data)    
-
-# the data sent from the SGPH will be in the format 
-# {
-# "valide" :  true/false,
-# "id_consult" : 1
-# }    
-
-
-=======
-=======
->>>>>>> e46932016749790127e376879d64d413e26e6483
         return Response(data)
+
 
 # -------------------------------------------------------------------------------------------
 # ValiderOrdonnance: Validates an ordonnance.
@@ -268,54 +186,16 @@ class GetResume(APIView):
 #     "valide": true/false,
 #     "id_consult": 1
 # }
-<<<<<<< HEAD
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
-=======
->>>>>>> e46932016749790127e376879d64d413e26e6483
 class ValiderOrdonnance(APIView):
     def post(self, request):
-        valide = request.data.get('valide')
-        id_consult = request.data.get('id_consult')
-<<<<<<< HEAD
-<<<<<<< HEAD
-        
+        valide = request.data.get("valide")
+        id_consult = request.data.get("id_consult")
+
         if valide is None or id_consult is None:
             return Response(
                 {"error": "Both 'valide' and 'id_consult' are required fields."},
-                status=status.HTTP_400_BAD_REQUEST
+                status=400,
             )
-        
-        try:
-            consultation = get_object_or_404(Consultation, id_consultation=id_consult)
-            ordonnance = consultation.ordonnance
-            
-            if valide is True:
-                ordonnance.etat_ordonnance = True
-                ordonnance.save()
-                return Response(
-                    {"message": "Ordonnance validated successfully."},
-                    status=status.HTTP_200_OK
-                )
-            else:
-                return Response(
-                    {"error": "Invalid value for 'valide'. Must be true."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-        except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-
-
-
-=======
-=======
->>>>>>> e46932016749790127e376879d64d413e26e6483
-
-        if valide is None or id_consult is None:
-            return Response({"error": "Both 'valide' and 'id_consult' are required fields."}, status=400)
 
         consultation = get_object_or_404(Consultation, id_consultation=id_consult)
         ordonnance = consultation.ordonnance
@@ -323,11 +203,10 @@ class ValiderOrdonnance(APIView):
         if valide:
             ordonnance.etat_ordonnance = True
             ordonnance.save()
-            return Response({"message": "Ordonnance validated successfully."}, status=200)
+            return Response(
+                {"message": "Ordonnance validated successfully."}, status=200
+            )
 
-<<<<<<< HEAD
-        return Response({"error": "Invalid value for 'valide'. Must be true."}, status=400)
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
-=======
-        return Response({"error": "Invalid value for 'valide'. Must be true."}, status=400)
->>>>>>> e46932016749790127e376879d64d413e26e6483
+        return Response(
+            {"error": "Invalid value for 'valide'. Must be true."}, status=400
+        )
