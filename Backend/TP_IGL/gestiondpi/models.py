@@ -34,20 +34,20 @@ class Infirmier(models.Model):
 # Represents a lab technician, linked to a User account
 class Laborantin(models.Model):
     id_laborantin = models.AutoField(primary_key=True)
-
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
-# Represents a radiologist, linked to a User account
 
+# Represents a radiologist, linked to a User account
 class Radiologue(models.Model):
     id_radiologue = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
-# Represents an administrator, linked to a User account
 
+# Represents an administrator, linked to a User account
 class Admin(models.Model):
     id_admin = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
+
 
 
 # Represents a hospital pharmacist with a method to validate prescriptions
@@ -67,7 +67,6 @@ class DPI(models.Model):
     patient = models.OneToOneField('Patient', on_delete=models.CASCADE, default=1)  # Each patient has one DPI
     medecin = models.ForeignKey('Medecin', related_name="medcin", on_delete=models.CASCADE, default=1)  # Linked to a doctor
     qr_code = models.ImageField(upload_to='qrcodes/', unique=True)  # QR code for identification
-
 
     def save(self, *args, **kwargs):
         """Generates a QR code before saving the DPI."""
@@ -106,13 +105,11 @@ class Resume(models.Model):
     def __str__(self):
         return "Résumé"
 
-
 # Represents a prescription document
 class Ordonnance(models.Model):
     id_ordonnance = models.AutoField(primary_key=True)
     date_prescription = models.DateField()  # Date of prescription
     etat_ordonnance = models.BooleanField(default=False)  # Validation status
-
 
 # Represents a medical consultation
 class Consultation(models.Model):
@@ -123,7 +120,6 @@ class Consultation(models.Model):
     ordonnance = models.OneToOneField(Ordonnance, related_name="consultation", on_delete=models.CASCADE, null=True)  # Linked to Ordonnance
     bilan_radiologue = models.ForeignKey('BilanRadiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)  # Radiological report
     bilan_biologique = models.ForeignKey('BilanBiologique', related_name="consultations", on_delete=models.SET_NULL, null=True, blank=True)  # Biological report
-
 
     def __str__(self):
         return f"Consultation {self.id_consultation} pour DPI {self.dpi.id_dpi}"
@@ -137,8 +133,8 @@ class Prescription(models.Model):
     duree = models.CharField(max_length=50)  # Duration of treatment
     medicament = models.CharField(max_length=100, default='Default Value')  # Medication name
 
-# Represents a biological analysis
 
+# Represents a biological analysis
 class BilanBiologique(models.Model):
     id_bilanbiologique = models.AutoField(primary_key=True)
     description = models.TextField(default="")  # Description of the analysis
@@ -172,8 +168,8 @@ class RadiologyImage(models.Model):
     image = models.ImageField(upload_to="radiologies/")  # Radiology image
     bilan_radiologique = models.ForeignKey(BilanRadiologique, related_name="images", on_delete=models.CASCADE)  # Linked to BilanRadiologique
 
-# Represents a nursing care record
 
+# Represents a nursing care record
 class Soin(models.Model):
     id_soin = models.AutoField(primary_key=True)
     dpi = models.ForeignKey(DPI, related_name="soins", on_delete=models.CASCADE)  # Linked to DPI
@@ -181,3 +177,4 @@ class Soin(models.Model):
     description = models.CharField(max_length=255)  # Care description
     date_soin = models.DateField()  # Date of care
     observation = models.TextField()  # Observations
+
