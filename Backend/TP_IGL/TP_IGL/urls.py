@@ -24,6 +24,7 @@ from django.conf.urls.static import static
 # Create the Swagger view for the documentation
 # schema_view = get_swagger_view(title='Your API Title')
 
+
 from django.urls import path, include
 
 urlpatterns = [

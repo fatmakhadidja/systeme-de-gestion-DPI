@@ -13,7 +13,7 @@ import { ActivatedRoute ,Router ,RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-consulter-dpi',
-  imports: [CommonModule,MatTableModule,OrdonnanceComponent,HeaderComponent,RouterModule],
+  imports: [CommonModule,MatTableModule,HeaderComponent,RouterModule],
   templateUrl:'./consulter-dpi.component.html' ,
   styleUrl: './consulter-dpi.component.css',
   standalone: true
@@ -80,21 +80,12 @@ ngOnInit(): void {
     });
   });
   
- 
-  /*this.route.queryParams.subscribe(params => {
-    this.role = params['role'];
-    console.log('Role:', this.role);
-    if (this.role === 'patient') { // Exemple de condition pour le rôle
-      this.showButton = false; // Afficher le bouton si l'utilisateur est admin
-    } else {
-      this.showButton = true; // Sinon, ne pas afficher le bouton
-    }
-  });*/
+
   // Récupérer le rôle de l'utilisateur
   this.role = this.route.snapshot.paramMap.get('role')!;
   console.log('Role:', this.role);
-  if (this.role === 'patient') { // Exemple de condition pour le rôle
-    this.showButton = false; // Afficher le bouton si l'utilisateur est admin
+  if (this.role === 'patient') {
+    this.showButton = false; // Afficher le bouton si l'utilisateur est médecin
   } else {
     this.showButton = true; // Sinon, ne pas afficher le bouton
   }
@@ -115,6 +106,7 @@ loadConsultations() {
   // Effectuer l'appel pour récupérer les consultations
   this.consulterDpiService.getListConsultation(dpi).subscribe(data => {
     this.dataSource = data;
+    console.log("consultData",data);
   }, error => {
     console.error('Erreur lors de la récupération des consultations:', error);
   });
@@ -133,8 +125,9 @@ loadSoins() {
 }
 // navigation vers la page de l'ajout de la création du consultation 
 navigateToCreationDpi(): void {
-  this.router.navigate(['/ajouter-consult']);
+  this.router.navigate(['/creation-consult'], { queryParams: { nss: this.dpiDetails.nss } });
 }
+
 // ouvrir la fenetre du résumé 
   openOrdonnance(idConsult: number): void {
     this.dialog.open(OrdonnanceComponent, {

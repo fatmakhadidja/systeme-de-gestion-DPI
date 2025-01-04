@@ -4,6 +4,7 @@ import {MatTableModule} from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import {Router,RouterLink, RouterLinkActive } from '@angular/router';
 import { RechercheService } from '../recherche.service';
+
 import { FormsModule } from '@angular/forms'; 
 interface Patient{
   id: number;

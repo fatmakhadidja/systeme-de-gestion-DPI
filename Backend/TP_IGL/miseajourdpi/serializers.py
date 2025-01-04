@@ -11,6 +11,7 @@ from gestiondpi.models import (
     BilanRadiologique,
     BilanBiologique,
 )
+
 from datetime import date
 
 
@@ -49,6 +50,7 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ordonnance
+
         fields = ["prescription"]
 
     def create(self, validated_data):
@@ -75,6 +77,7 @@ class OrdonnanceSerializer(serializers.ModelSerializer):
 class BilanRadiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanRadiologique
+
         fields = ["description", "type"]
         extra_kwargs = {
             "description": {"allow_blank": True},
@@ -87,6 +90,7 @@ class BilanRadiologiqueSerializer(serializers.ModelSerializer):
 class BilanBiologiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = BilanBiologique
+
         fields = ["description"]
         extra_kwargs = {
             "description": {"allow_blank": True},
@@ -181,6 +185,7 @@ class SoinSerializer(serializers.ModelSerializer):
     dpi = serializers.PrimaryKeyRelatedField(
         queryset=Patient.objects.all(), required=False
     )  # Reference Patient by ID
+
     infirmier = serializers.PrimaryKeyRelatedField(queryset=Infirmier.objects.all())
 
     class Meta:

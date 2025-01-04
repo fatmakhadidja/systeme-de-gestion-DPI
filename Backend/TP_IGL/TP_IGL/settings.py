@@ -29,6 +29,7 @@ DEBUG = True
 CORS_ALLOW_CREDENTIALS = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = [
     "GET",
@@ -39,7 +40,7 @@ CORS_ALLOW_METHODS = [
     "OPTIONS",  # Ajoutez OPTIONS à la liste des méthodes autorisées
 ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
+    "http://localhost:8000",
 ]
 # Application definition
 
@@ -106,24 +107,27 @@ WSGI_APPLICATION = "TP_IGL.wsgi.application"
     }
 }
 
-<<<<<<< HEAD
 
-'''
-<<<<<<< HEAD
-
-=======
-'''
->>>>>>> d00efe31b7deaa069ca3991ebafad176a081ced2
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        'NAME': 'test1',
+        'USER': 'root',
+        'PASSWORD': 'enteresta',
+=======
+>>>>>>> de337eb79801749419f70d2d20c3695a7bba9987
         'NAME': 'TP_IGL',
         'USER': 'fatma',
         'PASSWORD': '30 may 05 30 may 05',
         'HOST': 'localhost',
         'PORT': '3306',
-=======
+=======  
+        "NAME": "mydjango_db",
+        "USER": "root",
+        "PASSWORD": "mysql2024",
 """
 
 #'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -146,6 +150,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
+
 # SPECTACULAR_SETTINGS = {
 #     'TITLE': 'GesdtionDPI',  # The title of API
 #     'DESCRIPTION': 'Detailed description of your API',  # Description of the API

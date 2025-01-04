@@ -7,6 +7,8 @@ from django.core.files.base import ContentFile
 
 
 # Represents a patient with personal and medical details, linked to a User account
+
+
 class Patient(models.Model):
     id_patient = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(
@@ -40,12 +42,12 @@ class Infirmier(models.Model):
 # Represents a lab technician, linked to a User account
 class Laborantin(models.Model):
     id_laborantin = models.AutoField(primary_key=True)
+
     utilisateur = models.OneToOneField(
         User, on_delete=models.CASCADE
     )  # One-to-one link with User
 
 
-# Represents a radiologist, linked to a User account
 class Radiologue(models.Model):
     id_radiologue = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(
@@ -61,7 +63,6 @@ class Admin(models.Model):
     )  # One-to-one link with User
 
 
-# Represents a hospital pharmacist with a method to validate prescriptions
 class PharmacienHospitalier(models.Model):
     id_pharmacienHospitalier = models.AutoField(primary_key=True)
     utilisateur = models.OneToOneField(
@@ -101,6 +102,8 @@ class DPI(models.Model):
         # Generate QR code data and image
         nom_patient = self.patient.utilisateur.last_name
         prenom_patient = self.patient.utilisateur.first_name
+
+        # Génération du QR code
         qr = qrcode.QRCode(version=1, box_size=10, border=5)
         qr.add_data(self.patient.NSS)  # NSS as QR code data
         qr.make(fit=True)
@@ -110,10 +113,13 @@ class DPI(models.Model):
 
         # Create a unique filename for the QR code
         unique_filename = f"qrcodes/{nom_patient}_{prenom_patient}_{self.patient.NSS}_qrcode_{uuid.uuid4().hex}.png"
+
         self.qr_code.save(unique_filename, ContentFile(buffer.getvalue()), save=False)
 
 
 # Represents a summary of medical information
+
+
 class Resume(models.Model):
     diagnostic = models.TextField(blank=True, null=True)  # Diagnostic details
     symptomes = models.TextField(blank=True, null=True)  # Symptoms
@@ -138,6 +144,7 @@ class Consultation(models.Model):
         DPI, related_name="consultations", on_delete=models.CASCADE
     )  # Linked to DPI
     date_consult = models.DateField()  # Date of consultation
+
     resume = models.OneToOneField(
         Resume, related_name="consultation", on_delete=models.CASCADE
     )  # Linked to Resume
@@ -232,6 +239,7 @@ class RadiologyImage(models.Model):
 # Represents a nursing care record
 class Soin(models.Model):
     id_soin = models.AutoField(primary_key=True)
+
     dpi = models.ForeignKey(
         DPI, related_name="soins", on_delete=models.CASCADE
     )  # Linked to DPI

@@ -31,7 +31,7 @@ export interface ListMeds {
     observation: string ;
   }
   export interface ConsultationData {
-    num_consult: number;
+    id_consult: number;
     date_consult: string;
     ordonnance: boolean;
     bilan_biologique: boolean;
@@ -79,7 +79,7 @@ export class ConsulterDpiService {
       return this.http.get<ConsultationData[]>(this.apiUrl, { params }).pipe(
         map((data: ConsultationData[]) => 
           data.map(consultation => ({
-            NConsultation: consultation.num_consult,        // num_consult -> NConsultation
+            NConsultation: consultation.id_consult,        // num_consult -> NConsultation
             date: consultation.date_consult,                // date_consult -> date
             Ordo: consultation.ordonnance ? 'oui' : 'non',  // ordonnance -> Ordo (oui/non)
             Bilan_bio: consultation.bilan_biologique ? 'oui' : 'non',                             // Utiliser vos propres données pour Bilan_bio
@@ -87,8 +87,7 @@ export class ConsulterDpiService {
             Resume: consultation.resume ? 'oui' : 'non'    // resume -> Resume (oui/non)
           }))
         )
-      );
-      
+      ); 
     }
 
     getResume(id_consult: number): Observable<any> {

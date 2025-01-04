@@ -42,6 +42,10 @@ class StaticTableHelper:
     @staticmethod
     def get_static_table():
         return [
+<<<<<<< HEAD
+=======
+
+>>>>>>> de337eb79801749419f70d2d20c3695a7bba9987
             {
                 "id": 1,
                 "nom": "Pression_arterielle",
@@ -64,6 +68,7 @@ class StaticTableHelper:
 
 
 """ test  {
+<<<<<<< HEAD
 
              {'id': 1, 'nom': 'Pression_arterielle', 'unite_mesure': 'mmHg', 'valeur_normale': '120/80'},
              {'id': 2, 'nom': 'Glycemie', 'unite_mesure': 'mg/dL', 'valeur_normale': '70-99'},
@@ -76,6 +81,9 @@ class StaticTableHelper:
 
  test  {
 >>>>>>> e46932016749790127e376879d64d413e26e6483
+=======
+>>>>>>> ea38466d4b84382f96b1c083a700f64a2ec7dc83
+>>>>>>> de337eb79801749419f70d2d20c3695a7bba9987
   "bilan_id": 1,
   "laborantin_id": 1,
   "mesure": [
@@ -296,7 +304,12 @@ class Generergraph(APIView):
 
         except Exception as e:
 
+<<<<<<< HEAD
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+=======
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+>>>>>>> de337eb79801749419f70d2d20c3695a7bba9987
 
 
 class GetBilanBiologiquesByDPI(APIView):

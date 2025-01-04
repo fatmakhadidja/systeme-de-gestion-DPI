@@ -6,6 +6,7 @@ import { ResumeComponent } from './resume/resume.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 import { RecherchePatientComponent } from './recherche-patient/recherche-patient.component';
+
 import { ConsultationHomeComponent } from './consultation-home/consultation-home.component';
 import { CreationDPIComponent } from './creation-dpi/creation-dpi.component';
 import { ConsulterDpiComponent } from './ConsultationDPI/consulter-dpi/consulter-dpi.component';
@@ -20,9 +21,7 @@ export const routes: Routes = [
     { path: '', component: LandingPageComponent},
     { path: 'login', component: LoginComponent },
     { path: 'recherche-patient', component: RecherchePatientComponent },
-
-
-    {path: 'creation-dpi', component: CreationDPIComponent},
+    { path: 'creation-dpi', component: CreationDPIComponent},
     { path : 'creation-consult', component : ConsultationHomeComponent},
     { path : 'soins-infirmiers', component : PageInfirmierComponent},
     // { path: 'ConsultationDPI/consulter-dpi', component: ConsulterDpiComponent },
@@ -34,6 +33,7 @@ export const routes: Routes = [
     {path: 'ajouter-consult',component:ConsultationHomeComponent},
     {path: 'consulter-dpi/:id/:role',component: ConsulterDpiComponent},
     {path:'page-radiologue' , component: PageRadiologueComponent}
+
 ];
 
    
