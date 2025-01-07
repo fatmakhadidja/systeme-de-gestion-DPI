@@ -14,20 +14,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+# from rest_framework_swagger.views import get_swagger_view
+
+# Create the Swagger view for the documentation
+# schema_view = get_swagger_view(title='Your API Title')
+
+
 from django.urls import path, include
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/v1/auth/', include("authentification.urls")),
-    path('api/dpi/', include("creationdpi.urls")),
-    path('api/miseajourdpi/',include("miseajourdpi.urls")),
-    path('api/biology/',include("biology.urls")),
-    path('api/radiology/',include("radiology.urls")),
-    #path('swagger/', schema_view),
+    path("admin/", admin.site.urls),
+    path("api/v1/auth/", include("authentification.urls")),
+    path("api/dpi/", include("creationdpi.urls")),
+    path("api/miseajourdpi/", include("miseajourdpi.urls")),
+    path("api/biology/", include("biology.urls")),
+    path("api/radiology/", include("radiology.urls")),
+    # path('swagger/', schema_view),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
