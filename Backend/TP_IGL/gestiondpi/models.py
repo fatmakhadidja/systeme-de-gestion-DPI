@@ -49,18 +49,6 @@ class Admin(models.Model):
     utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
 
 
-
-# Represents a hospital pharmacist with a method to validate prescriptions
-
-class PharmacienHospitalier(models.Model):
-    id_pharmacienHospitalier = models.AutoField(primary_key=True)
-    utilisateur = models.OneToOneField(User, on_delete=models.CASCADE)  # One-to-one link with User
-
-    def valider_ordonnance(self, ordonnance):
-        """Marks a prescription as validated."""
-        ordonnance.etat_ordonnance = True
-        ordonnance.save()
-
 # Represents a Digital Patient Record, linked to a patient and a doctor, with a QR code
 class DPI(models.Model):
     id_dpi = models.AutoField(primary_key=True)
