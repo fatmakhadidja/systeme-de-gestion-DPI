@@ -47,6 +47,7 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'drf_yasg',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -134,6 +135,7 @@ DATABASES = {
 
 
 DATABASES = {
+
     "default": {
         "ENGINE": "django.db.backends.mysql",
         'NAME': 'TP_angular',
@@ -141,6 +143,7 @@ DATABASES = {
         'PASSWORD': 'enteresta',
         "HOST": "localhost",
         "PORT": "3306",
+
     }
 }
 REST_FRAMEWORK = {
