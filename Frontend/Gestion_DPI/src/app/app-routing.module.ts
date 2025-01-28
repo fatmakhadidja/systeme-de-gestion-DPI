@@ -7,8 +7,12 @@ import { BilanBiologiqueComponent } from './bilan-biologique/bilan-biologique.co
 import { BilanRadiologiqueComponent } from './bilan-radiologique/bilan-radiologique.component';
 import { PageRadiologueComponent } from './Radiologue/page-radiologue/page-radiologue.component';
 import { PageLaborantinComponent } from './page-laborantin/page-laborantin.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
+  { path: '', component: LandingPageComponent},
+  { path: 'login', component: LoginComponent },
   { path: 'resume', component: ResumeComponent },
   { path: 'ordonnance', component: OrdonnanceComponent },
   { path: 'bilan-biologique', component: BilanBiologiqueComponent },

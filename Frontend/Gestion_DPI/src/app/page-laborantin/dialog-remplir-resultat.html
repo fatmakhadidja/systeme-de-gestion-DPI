@@ -15,17 +15,17 @@
       <div *ngFor="let div of divs; let i = index" class="add-params">
         <div>
           <label for="name-{{ div.id }}">Paramètre</label>
-          <select id="name-{{ div.id }}" [(ngModel)]="div.parametre" name="param-{{ div.id }}" placeholder="Choisir un paramètre" required>
+          <select id="name-{{ div.id }}" [(ngModel)]="div.parametre" name="param-{{ div.id }}" placeholder="Choisir un paramètre">
             <option *ngFor="let param of params" [value]="param.name">{{ param.name }}</option>
           </select>
         </div>
         <div>
           <label for="value-{{ div.id }}">Valeur</label>
-          <input id="value-{{ div.id }}" [(ngModel)]="div.valeur" placeholder="Valeur mesuré" name="valeur-{{ div.id }}" required>
+          <input id="value-{{ div.id }}" [(ngModel)]="div.valeur" placeholder="Valeur mesuré" name="valeur-{{ div.id }}">
         </div>
         <div>
           <label for="value-{{ div.id }}">Date</label>
-          <input id="value-{{ div.id }}" [(ngModel)]="div.date" placeholder="Date" name="date-{{ div.id }}" type="date" required>
+          <input id="value-{{ div.id }}" [(ngModel)]="div.date" placeholder="Date" name="date-{{ div.id }}" type="date">
         </div>
         <button (click)="deleteDiv(div.id)">Delete</button>
       </div>

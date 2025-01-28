@@ -64,22 +64,7 @@ class StaticTableHelper:
 
 
 """ test  {
-<<<<<<< HEAD
-
-             {'id': 1, 'nom': 'Pression_arterielle', 'unite_mesure': 'mmHg', 'valeur_normale': '120/80'},
-             {'id': 2, 'nom': 'Glycemie', 'unite_mesure': 'mg/dL', 'valeur_normale': '70-99'},
-             {'id': 3, 'nom': 'Niveau_cholesterol', 'unite_mesure': 'mg/dL', 'valeur_normale': '125-200'},
-        ]
-'''
-    Pression_arterielle : '', 
-    Glycemie: '',
-    Niveau_cholesterol: '',
-
- test  {
->>>>>>> e46932016749790127e376879d64d413e26e6483
-=======
 >>>>>>> ea38466d4b84382f96b1c083a700f64a2ec7dc83
->>>>>>> de337eb79801749419f70d2d20c3695a7bba9987
   "bilan_id": 1,
   "laborantin_id": 1,
   "mesure": [
@@ -341,9 +326,7 @@ class GetBilanBiologiquesByDPI(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
-""" id_bilan , id_laboratain , tableau mesure  """
-
+''' id_bilan , id_laboratain , tableau mesure  ''' 
 
 class GetBilanBiologiqueByConsultation(APIView):
     def get(self, request, consultation_id):

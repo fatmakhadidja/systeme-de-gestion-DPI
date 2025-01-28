@@ -37,10 +37,9 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             
             <tr mat-row
-              (click)="openDialog_remplirResultat(row)" 
-              [class.demo-row-is-clicked]="clickedRows.has(row)"
-              [ngClass]="{'frozen-row': row.rempli}" 
-              *matRowDef="let row; columns: displayedColumns;">
+                (click)="openDialog_remplirResultat(row)" 
+                [class.demo-row-is-clicked]="clickedRows.has(row)"
+                *matRowDef="let row; columns: displayedColumns;">
             </tr>
         </table>
     </div>

@@ -21,18 +21,16 @@ from authentification.models import User
 # }
 class AjouterConsultation(APIView):
     def post(self, request):
-        nss = request.data.pop("nss", None)
+        nss = request.data.pop('nss', None)
         patient = Patient.objects.get(NSS=nss)
         dpi = DPI.objects.get(patient=patient)
-        request.data["dpi"] = dpi.id_dpi
+        request.data['dpi'] = dpi.id_dpi
 
         serializer = ConsultationSerializer(data=request.data)
         if serializer.is_valid():
             consultation = serializer.create(serializer.validated_data)
             consultation_serializer = ConsultationSerializer(consultation)
-            return Response(
-                consultation_serializer.data, status=status.HTTP_201_CREATED
-            )
+            return Response(consultation_serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -49,13 +47,13 @@ class AjouterConsultation(APIView):
 class RemplirSoin(APIView):
     def post(self, request):
         data = request.data.copy()
-        data["dpi"] = data.pop("patient", None)
-        data["date_soin"] = date.today().strftime("%Y-%m-%d")
-        id_user = data.pop("user")
+        data['dpi'] = data.pop('patient', None)
+        data['date_soin'] = date.today().strftime('%Y-%m-%d')
+        id_user = data.pop('user')
 
         user_infirmier = User.objects.get(id=id_user)
         infirmier = Infirmier.objects.get(utilisateur=user_infirmier)
-        data["infirmier"] = infirmier.id_infirmier
+        data['infirmier'] = infirmier.id_infirmier
 
         serializer = SoinSerializer(data=data)
         if serializer.is_valid():
@@ -123,8 +121,7 @@ class GetConsultations(APIView):
                 "bilan_biologique": bool(consultation.bilan_biologique),
                 "bilan_radiologique": bool(consultation.bilan_radiologue),
                 "resume": bool(consultation.resume),
-            }
-            for consultation in consultations
+            } for consultation in consultations
         ]
         return Response(data)
 
@@ -151,12 +148,10 @@ class GetOrdonnance(APIView):
             {
                 "medicament": prescription.medicament,
                 "dose": prescription.dose,
-                "duree": prescription.duree,
-            }
-            for prescription in prescriptions
+                "duree": prescription.duree
+            } for prescription in prescriptions
         ]
         return Response(data)
-
 
 # -------------------------------------------------------------------------------------------
 # GetResume: Fetches the summary details for a specific consultation.
@@ -182,10 +177,9 @@ class GetResume(APIView):
             "diagnostic": resume.diagnostic,
             "symptomes": resume.symptomes,
             "antecedents": resume.antecedents,
-            "autres_informations": resume.autres_informations,
+            "autres_informations": resume.autres_informations
         }
         return Response(data)
-
 
 # -------------------------------------------------------------------------------------------
 # ValiderOrdonnance: Validates an ordonnance.
@@ -196,14 +190,11 @@ class GetResume(APIView):
 # }
 class ValiderOrdonnance(APIView):
     def post(self, request):
-        valide = request.data.get("valide")
-        id_consult = request.data.get("id_consult")
+        valide = request.data.get('valide')
+        id_consult = request.data.get('id_consult')
 
         if valide is None or id_consult is None:
-            return Response(
-                {"error": "Both 'valide' and 'id_consult' are required fields."},
-                status=400,
-            )
+            return Response({"error": "Both 'valide' and 'id_consult' are required fields."}, status=400)
 
         consultation = get_object_or_404(Consultation, id_consultation=id_consult)
         ordonnance = consultation.ordonnance
@@ -211,10 +202,7 @@ class ValiderOrdonnance(APIView):
         if valide:
             ordonnance.etat_ordonnance = True
             ordonnance.save()
-            return Response(
-                {"message": "Ordonnance validated successfully."}, status=200
-            )
+            return Response({"message": "Ordonnance validated successfully."}, status=200)
 
-        return Response(
-            {"error": "Invalid value for 'valide'. Must be true."}, status=400
-        )
+        return Response({"error": "Invalid value for 'valide'. Must be true."}, status=400)
+
