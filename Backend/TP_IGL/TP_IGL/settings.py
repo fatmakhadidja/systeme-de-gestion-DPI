@@ -76,7 +76,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "TP_IGL.urls"
+ROOT_URLCONF = 'TP_IGL.urls'
 
 TEMPLATES = [
     {
@@ -100,35 +100,7 @@ WSGI_APPLICATION = "TP_IGL.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-"""DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        'NAME': 'test1',
-        'USER': 'root',
-        'PASSWORD': 'enteresta',
-=======
->>>>>>> de337eb79801749419f70d2d20c3695a7bba9987
-        'NAME': 'TP_IGL',
-        'USER': 'fatma',
-        'PASSWORD': '30 may 05 30 may 05',
-        'HOST': 'localhost',
-        'PORT': '3306',
-=======  
-        "NAME": "mydjango_db",
-        "USER": "root",
-        "PASSWORD": "mysql2024",
-"""
 
 #'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
@@ -136,13 +108,14 @@ DATABASES = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "mydjango_db",
+        "NAME": "battabase",
         "USER": "root",
-        "PASSWORD": "mysql2024",
+        "PASSWORD": "batta2004",
         "HOST": "localhost",
         "PORT": "3306",
     }
 }
+
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEY": "error",
     "DEFAULT_AUTHENTICATION_CLASSES": (
