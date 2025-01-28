@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -9,9 +10,8 @@ export class CreationDPIService {
 
   constructor(private http: HttpClient) { }
 
-  createDPI(dpiData:any): Observable<any> {
-    return this.http.post(this.apiUrl, dpiData);
+  createDPI(dpiData: any): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(this.apiUrl, dpiData, { headers });
   }
-
 }
-
