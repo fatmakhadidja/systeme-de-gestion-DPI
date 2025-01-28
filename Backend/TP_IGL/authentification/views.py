@@ -31,19 +31,21 @@ class LoginUserView(GenericAPIView):
 class RegisterView(GenericAPIView):
         serializer_class = UserRegisterSerializer
 
-        def post(self, request):
-            user = request.data
-            serializer = self.serializer_class(data=user)
-            if serializer.is_valid(raise_exception=True):
-                serializer.save()
-                user_data = serializer.data
+    def post(self, request):
+        user = request.data
+        serializer = self.serializer_class(data=user)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            user_data = serializer.data
 
-                return Response({
-                    'data': user_data,
-                    'message': 'thanks for signing up a passcode has be sent to verify your email'
-                }, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response(
+                {
+                    "data": user_data,
+                    "message": "thanks for signing up a passcode has be sent to verify your email",
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AddUserView(CreateAPIView):

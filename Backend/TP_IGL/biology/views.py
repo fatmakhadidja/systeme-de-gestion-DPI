@@ -42,7 +42,6 @@ class StaticTableHelper:
     @staticmethod
     def get_static_table():
         return [
-
             {
                 "id": 1,
                 "nom": "Pression_arterielle",
@@ -286,8 +285,9 @@ class Generergraph(APIView):
 
         except Exception as e:
 
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        
+
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class GetBilanBiologiquesByDPI(APIView):

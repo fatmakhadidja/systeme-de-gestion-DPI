@@ -130,6 +130,7 @@ DATABASES = {
         "PASSWORD": "mysql2024",
 """
 DATABASES = {
+
     "default": {
         "ENGINE": "django.db.backends.mysql",
         'NAME': 'battabase',

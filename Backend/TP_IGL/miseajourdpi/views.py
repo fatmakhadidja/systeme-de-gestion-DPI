@@ -86,7 +86,6 @@ class GetPatients(APIView):
 # ]
 class GetSoins(APIView):
     def get(self, request):
-
         #dpi = request.data.get('dpi')
         dpi = request.GET.get('dpi')
 
@@ -136,8 +135,7 @@ class GetConsultations(APIView):
 # ]
 class GetOrdonnance(APIView):
     def get(self, request):
-
-       # id_consult = request.data.get('id_consult')
+        # id_consult = request.data.get('id_consult')
         id_consult = request.GET.get('id_consult')
 
         if not id_consult:

@@ -304,8 +304,7 @@ export class GenererGraphe implements OnInit{
         console.error('Error fetching graph data', err);
       }
     });
-  };
-  
+  }
   createChart() {
     const labels = this.graphe.map(item => item.nom);
     console.log(labels);
