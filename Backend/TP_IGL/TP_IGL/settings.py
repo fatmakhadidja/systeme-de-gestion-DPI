@@ -121,7 +121,7 @@ DATABASES = {
 =======
         'NAME': 'TP_IGL',
         'USER': 'fatma',
-        'PASSWORD': '30 may 05 30 may 05',
+        'PASSWORD': '30 MAY 05 30 MAY 05',
         'HOST': 'localhost',
         'PORT': '3306',
 =======  
