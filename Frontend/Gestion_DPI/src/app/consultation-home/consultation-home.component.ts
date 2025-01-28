@@ -71,30 +71,40 @@ export class ConsultationHomeComponent implements OnInit {
   // Save handler
   handleSave() {
     if (!this.isResumeValid()) {
-      // Show warning if the résumé is invalid
-      this.showWarning = true ;
+      // Afficher l'avertissement si le résumé est invalide
+      this.showWarning = true;
     } else {
-      // Hide the warning and proceed with saving
-    this.showWarning = false;
-
-    // Log the consultation object to check the structure
-    const consultation = this.consultationService.getConsultation();
-    console.log('Consultation to send:', consultation);
-    
-    this.consultationApiService.ajouterConsultation(consultation).subscribe({
-      next: () => {
-        this.modalMessage = 'Consultation enregistrée avec succès.';
-        this.showModal = true;
-        this.router.navigate(['/recherche-patient']); // Redirect to the desired page after saving
-      },
-      error: (error) => {
-        console.error('Erreur lors de l\'enregistrement de la consultation :', error);
-        this.modalMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
-        this.showModal = true;
-      },
-    });     
+      // Masquer l'avertissement et continuer avec l'enregistrement
+      this.showWarning = false;
+  
+      // Obtenir la consultation à partir du service
+      const consultation = this.consultationService.getConsultation();
+      console.log('Consultation à enregistrer :', consultation);
+  
+      // Appel API pour ajouter la consultation
+      this.consultationApiService.ajouterConsultation(consultation).subscribe({
+        next: () => {
+          this.modalMessage = 'Consultation enregistrée avec succès.';
+          this.showModal = true;
+  
+          // Réinitialiser la consultation après l'enregistrement réussi
+          this.consultationService.resetConsultation();
+  
+          // Mettre à jour l'objet consultation dans le composant
+          this.consultation = this.consultationService.getConsultation();
+  
+          // Redirection après l'enregistrement
+          this.router.navigate(['/recherche-patient']);
+        },
+        error: (error) => {
+          console.error('Erreur lors de l\'enregistrement de la consultation :', error);
+          this.modalMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
+          this.showModal = true;
+        },
+      });
     }
   }
+  
 
   handleButton1() {
     this.router.navigate(['/resume']);

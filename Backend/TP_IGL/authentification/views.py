@@ -1,4 +1,3 @@
-
 from django.shortcuts import render
 
 # Create your views here.
@@ -27,55 +26,50 @@ class LoginUserView(GenericAPIView):
         return Response(response_data, status=status.HTTP_200_OK)
 
 
-
-class RegisterView(GenericAPIView):
-        serializer_class = UserRegisterSerializer
-
-    def post(self, request):
-        user = request.data
-        serializer = self.serializer_class(data=user)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            user_data = serializer.data
-
-            return Response(
-                {
-                    "data": user_data,
-                    "message": "thanks for signing up a passcode has be sent to verify your email",
-                },
-                status=status.HTTP_201_CREATED,
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class AddUserView(CreateAPIView):
     serializer_class = UserRegisterSerializer
 
     def perform_create(self, serializer):
         # Save the user instance created from the serializer
         user = serializer.save()
-        # Generate tokens for the user (if applicable in your model)
-        tokens = user.tokens() if hasattr(user, 'tokens') else {}
 
-        # Prepare response data
-        response_data = {
-            'id': user.id,
+        # After user is saved, generate the access token for that user
+        tokens = user.tokens()  # Generate the access token
+        # Add the tokens and other relevant info to the response
+        return {
             'username': user.username,
             'full_name': user.get_full_name(),
-            'email': user.email,
             'role': user.role,
-            'access_token': tokens.get('access', '')  # Include token if available
+            'access_token': tokens['access'],  # Return only access token
+            'id': user.id,
         }
-
-        return response_data
 
     def post(self, request, *args, **kwargs):
         # Get serializer and validate data
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # Perform user creation and get response data
+        # Perform user creation
         response_data = self.perform_create(serializer)
 
         # Return a response with the user data and token
         return Response(response_data, status=status.HTTP_201_CREATED)
+
+
+class RegisterView(GenericAPIView):
+        serializer_class = UserRegisterSerializer
+
+        def post(self, request):
+            user = request.data
+            serializer = self.serializer_class(data=user)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                user_data = serializer.data
+
+                return Response({
+                    'data': user_data,
+                    'message': 'thanks for signing up a passcode has be sent to verify your email'
+                }, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
