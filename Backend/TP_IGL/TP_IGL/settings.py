@@ -136,9 +136,9 @@ DATABASES = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "mydjango_db",
-        "USER": "root",
-        "PASSWORD": "mysql2024",
+        'NAME': 'TP_angular',
+        'USER': 'root',
+        'PASSWORD': 'enteresta',
         "HOST": "localhost",
         "PORT": "3306",
     }

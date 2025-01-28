@@ -286,24 +286,25 @@ export class GenererGraphe implements OnInit{
 
   fetchGraphData(id_dpi: number): void {
     this.drawingGrapheService.getGraphData(id_dpi).subscribe({
-      next:data => {
-        this.valAnc = data.parametres.slice(0, 3);  
-        this.valNouv = data.parametres.slice(3, 6);   
-        for (let i = 0; i < 3; i++) {
+      next: data => {
+        // Process data directly into grapheObject
+        data.parametres.forEach((param: any) => {
           const grapheObject: Graphe = {
-          nom: this.valAnc[i].nom,
-          valAnc: this.valAnc[i].valeur_mesuree,
-          valNouv: this.valNouv[i].valeur_mesuree,
-        };
-        this.graphe.push(grapheObject);
-        }
+            nom: param.nom, // Assuming param.nom exists
+            valAnc: param.mesurebefore, // Directly use mesurebefore
+            valNouv: param.mesureafter, // Directly use mesureafter
+          };
+          this.graphe.push(grapheObject); // Push directly to graphe array
+        });
+  
+        // Create the chart with the processed data
         this.createChart();
       },
       error: err => {
         console.error('Error fetching graph data', err);
       }
-  });
-  };
+    });
+  }
   createChart() {
     const labels = this.graphe.map(item => item.nom);
     console.log(labels);
