@@ -80,7 +80,7 @@ Lab technicians can enter and manage biological test results, providing crucial 
 
 ## 🚀 Built by the Team  
 
-👑 **@agal04imene** – Frontend Developer (Best Team Leader Ever)  
+👑 **@agal04imene** – Frontend (Best Team Leader Ever)  
 🔹 **@fatmakhadidja** – Backend  
 🔹 **@meriemmerouane** – Backend  
 🔹 **@ChahrazedMendjel** – Backend  
