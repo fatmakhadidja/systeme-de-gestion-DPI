@@ -1,6 +1,6 @@
 # 🏥 Digital Patient Record Management Web App (DPI)
 
-This web application is developed as part of the **Introduction to Software Engineering (IGL) course** at the **École Nationale Supérieure d’Informatique (ENSI - Ex. INI), Algeria**.
+This web application is developed as part of the **Introduction to Software Engineering (IGL) course** at the **École Nationale Supérieure d’Informatique (ESI - Ex. INI), Algeria**.
 
 ## 📌 Project Overview  
 The goal of this project is to design and implement a **Digital Patient Record (DPI) management system**, allowing healthcare professionals to centralize and manage patient medical records efficiently. The application improves healthcare services by facilitating:  
@@ -81,8 +81,8 @@ Lab technicians can enter and manage biological test results, providing crucial 
 ## 🚀 Built by the Team  
 
 👑 **@agal04imene** – Frontend Developer (Best Team Leader Ever)  
-🔹 **@fatmakhadidja** – Backend Developer  
-🔹 **@meriemmerouane** – Backend Developer  
-🔹 **@ChahrazedMendjel** – Backend Developer  
-🎨 **@Meriem1551** – Frontend Developer  
-🎨 **@AmiraBouderbala** – Frontend Developer  
+🔹 **@fatmakhadidja** – Backend  
+🔹 **@meriemmerouane** – Backend  
+🔹 **@ChahrazedMendjel** – Backend  
+🎨 **@Meriem1551** – Frontend  
+🎨 **@AmiraBouderbala** – Frontend   
