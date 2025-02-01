@@ -35,17 +35,16 @@ The project follows a structured **object-oriented model**, including:
 
 ## 📸 Some Application Pages 
 
-### 🔐 Login Page  
-The login page provides secure authentication for different user roles, ensuring that only authorized personnel can access patient records.  
-
-![loginPage](https://github.com/user-attachments/assets/78ad952c-f64d-4355-be8c-872cc48247c2)
-
 ### 🏠 Landing Page  
 The landing page serves as the main entry point to the application, providing an overview of its functionalities and guiding users to their respective dashboards.  
 
 ![landingPage](https://github.com/user-attachments/assets/46e3a324-b680-4b95-88b6-50a6fefc04e7)  
 ![landingPage2](https://github.com/user-attachments/assets/b2ffd04d-1331-44ce-ad20-9cc80c54a4c3)
 
+### 🔐 Login Page  
+The login page provides secure authentication for different user roles, ensuring that only authorized personnel can access patient records.  
+
+![loginPage](https://github.com/user-attachments/assets/78ad952c-f64d-4355-be8c-872cc48247c2)
 ### 👨‍⚕️ Doctor Dashboard  
 The doctor’s dashboard allows healthcare professionals to view and manage patient records, access past consultations, and create new medical reports.  
 
