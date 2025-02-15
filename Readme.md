@@ -26,10 +26,6 @@ The project follows a structured **object-oriented model**, including:
  📌 **Class Diagram** – Defines entities such as Patient, Consultation, Medical Reports, and Healthcare Staff.  
  📌 **Relational Database Schema** – Ensures proper data organization and security.  
 
-## 🚀 Future Enhancements  
-- 🔸 Integration with hospital management systems (billing, HR)  
-- 🔸 Mobile app for patient and doctor access  
-- 🔸 AI-powered analysis for medical recommendations  
 
 ---
 
