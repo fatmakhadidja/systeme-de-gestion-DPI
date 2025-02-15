@@ -27,8 +27,6 @@ The project follows a structured **object-oriented model**, including:
  📌 **Relational Database Schema** – Ensures proper data organization and security.  
 
 
----
-
 ## 📸 Some Application Pages 
 
 ### 🏠 Landing Page  
